@@ -4,10 +4,9 @@ import React, { useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { Button } from '@/components/ui/button'
-// 1. Importamos los hooks de scroll y animación
 import { motion, useScroll, useMotionValueEvent } from 'framer-motion'
 
-// 2. Definimos las variantes para el SUBRAYADO (sin 'ease' para evitar el bug)
+// Variantes para el SUBRAYADO
 const underlineVariants = {
   rest: { 
     scaleX: 0, 
@@ -16,170 +15,103 @@ const underlineVariants = {
   hover: { 
     scaleX: 1, 
     opacity: 1,
-    transition: { duration: 0.3 } // Arreglado: Sin 'ease'
+    transition: { duration: 0.3 }
   }
 };
 
-// 3. Definimos las variantes para el TEXTO (la animación de scale)
+// Variantes para el TEXTO
 const textVariants = {
   rest: { 
     scale: 1 
   },
   hover: { 
-    scale: 1.1, // Se agranda un 10%
+    scale: 1.05,
     transition: { duration: 0.2 }
   }
 };
 
-
 export default function Navbar() {
-  // 4. Creamos un estado para saber si el navbar está oculto
   const [hidden, setHidden] = useState(false);
-  
-  // 5. Traemos el valor 'y' del scroll de la página
   const { scrollY } = useScroll();
 
-  // 6. Este hook "escucha" los cambios en el scroll
   useMotionValueEvent(scrollY, "change", (latest) => {
-    const previous = scrollY.getPrevious(); // El valor anterior del scroll
-
-    // --- ARREGLO ACÁ ---
-    // 7. Chequeamos que 'previous' NO sea 'undefined' antes de comparar
+    const previous = scrollY.getPrevious();
     if (previous !== undefined && latest > previous && latest > 150) {
       setHidden(true);
     } 
-    // Si scrolleamos para ARRIBA, lo mostramos de nuevo.
     else {
       setHidden(false);
     }
   });
 
   return (
-    // 8. Usamos 'animate' y 'variants' para la animación de OCULTAR/MOSTRAR
     <motion.nav
       variants={{
-        visible: { y: 0 }, // Estado visible (en la posición 0)
-        hidden: { y: "-100%" } // Estado oculto (se va para arriba)
+        visible: { y: 0 },
+        hidden: { y: "-100%" }
       }}
-      animate={hidden ? "hidden" : "visible"} // Elige la variante según el estado
-      transition={{ duration: 0.35, ease: "easeInOut" }} // Animación suave al ocultarse
-      
-      // El 'glassmorphism'
-      className="fixed top-0 left-0 w-full z-50 bg-black/20 backdrop-blur-sm border-b border-white/5"
+      animate={hidden ? "hidden" : "visible"}
+      transition={{ duration: 0.35, ease: "easeInOut" }}
+      className="fixed top-0 left-0 w-full z-50 h-18 bg-[#050505]/70 backdrop-blur-xl border-b border-white/10 flex items-center"
     >
-      <div className="w-full px-6 md:px-12">
-        <div className="flex items-center justify-between h-20">
+      <div className="w-full px-6 md:px-16">
+        <div className="flex items-center justify-between w-full">
           
           {/* ----- LOGO ----- */}
           <Link href="/" legacyBehavior>
-            <a className="flex-shrink-0">
+            <a className="flex-shrink-0 relative group">
               <motion.div
-                whileHover={{ scale: 1.05, rotate: -3 }}
+                whileHover={{ scale: 1.05, rotate: -2 }}
                 transition={{ type: 'spring', stiffness: 300 }}
               >
                 <Image
                   src="/logo-efemaq.png"
                   alt="Logo EFEMAQ"
-                  width={140}
-                  height={40}
+                  width={165}
+                  height={50}
+                  className="w-[140px] md:w-[165px] h-auto opacity-90 group-hover:opacity-100 transition-opacity"
                   priority
                 />
               </motion.div>
             </a>
           </Link>
 
-          {/* ----- LINKS DE NAVEGACIÓN (CON ANIMACIÓN DOBLE) ----- */}
-          <div className="hidden md:flex md:items-center md:space-x-8">
+          {/* ----- LINKS ----- */}
+          <div className="hidden md:flex md:items-center md:space-x-10">
             
-            {/* Link 1: Servicios */}
-            <Link href="/servicios" legacyBehavior>
-              <motion.a 
-                className="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors"
-                initial="rest"
-                whileHover="hover"
-                animate="rest" 
-              >
-                <motion.span 
-                  className="relative inline-block" 
-                  variants={textVariants} 
-                >
-                  Servicios
-                  <motion.div 
-                    className="absolute bottom-[-4px] left-0 right-0 h-0.5 bg-[#006262]"
-                    variants={underlineVariants} 
-                  />
-                </motion.span>
-              </motion.a>
-            </Link>
-
-            {/* Link 2: Quiénes Somos */}
-            <Link href="/quienes-somos" legacyBehavior>
-              <motion.a 
-                className="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors"
-                initial="rest"
-                whileHover="hover"
-                animate="rest"
-              >
-                <motion.span 
-                  className="relative inline-block"
-                  variants={textVariants}
-                >
-                  Quiénes Somos
-                  <motion.div 
-                    className="absolute bottom-[-4px] left-0 right-0 h-0.5 bg-[#006262]"
-                    variants={underlineVariants}
-                  />
-                </motion.span>
-              </motion.a>
-            </Link>
-
-            {/* Link 3: Admins */}
-            <Link href="/para-administradores" legacyBehavior>
-              <motion.a 
-                className="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors"
-                initial="rest"
-                whileHover="hover"
-                animate="rest"
-              >
-                <motion.span 
-                  className="relative inline-block"
-                  variants={textVariants}
-                >
-                  Admins
-                  <motion.div 
-                    className="absolute bottom-[-4px] left-0 right-0 h-0.5 bg-[#006262]"
-                    variants={underlineVariants}
-                  />
-                </motion.span>
-              </motion.a>
-            </Link>
-
-            {/* Link 4: Particulares */}
-            <Link href="/para-particulares" legacyBehavior>
-              <motion.a 
-                className="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors"
-                initial="rest"
-                whileHover="hover"
-                animate="rest"
-              >
-                <motion.span 
-                  className="relative inline-block"
-                  variants={textVariants}
-                >
-                  Particulares
-                  <motion.div 
-                    className="absolute bottom-[-4px] left-0 right-0 h-0.5 bg-[#006262]"
-                    variants={underlineVariants}
-                  />
-                </motion.span>
-              </motion.a>
-            </Link>
+            {['Servicios', 'Quiénes Somos', 'Admins', 'Particulares'].map((label, i) => {
+               // Mapeo simple de rutas
+               const routes = ['/servicios', '/quienes-somos', '/para-administradores', '/para-particulares'];
+               return (
+                <Link key={label} href={routes[i]} legacyBehavior>
+                  <motion.a 
+                    className="text-gray-200 hover:text-white px-2 py-2 rounded-md text-base font-medium transition-colors cursor-pointer relative"
+                    initial="rest"
+                    whileHover="hover"
+                    animate="rest"
+                  >
+                    <motion.span 
+                      className="relative inline-block" 
+                      variants={textVariants} 
+                    >
+                      {label}
+                      <motion.div 
+                        className="absolute bottom-[-2px] left-0 right-0 h-[2px] bg-[#006262]"
+                        variants={underlineVariants} 
+                      />
+                    </motion.span>
+                  </motion.a>
+                </Link>
+               )
+            })}
           </div>
 
-          {/* ----- BOTÓN DE CONTACTO ----- */}
+          {/* ----- BOTÓN CORREGIDO (DESPEGADO) ----- */}
           <div className="hidden md:block">
             <Button 
-              className="bg-[#006262] text-white hover:bg-[#004a4a] transition-all duration-300"
+              // Cambio Clave: h-12 (48px) asegura que sea más bajo que el navbar (96px), creando el aire.
+              // Ya no tiene padding exagerado en Y.
+              className="h-12 px-8 bg-[#006262] text-white text-base font-semibold rounded-md hover:bg-[#004a4a] transition-all duration-300 shadow-[0_4px_14px_0_rgba(0,98,98,0.39)] hover:shadow-[0_6px_20px_rgba(0,98,98,0.23)] hover:-translate-y-0.5"
             >
               Contacto
             </Button>

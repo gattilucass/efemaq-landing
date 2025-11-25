@@ -2,21 +2,23 @@
 
 import { useRef } from "react"
 import { motion, useScroll, useTransform, useSpring } from "framer-motion"
+import Image from "next/image"
 import { 
   Award, 
   ShieldCheck, 
-  Users, 
-  ChevronRight, 
-  PenTool
+  ArrowRight, 
+  PenTool,
+  HardHat    
 } from 'lucide-react'
+import { Button } from "@/components/ui/button"
 
 export default function AboutUs() {
   const containerRef = useRef<HTMLElement>(null)
 
-  // --- 1. CONFIG SCROLL COMPACTO ---
+  // --- CONFIG SCROLL ---
   const { scrollYProgress } = useScroll({
     target: containerRef,
-    offset: ["start center", "end center"],
+    offset: ["start center", "end end"],
   })
 
   const smoothScroll = useSpring(scrollYProgress, {
@@ -25,31 +27,34 @@ export default function AboutUs() {
     restDelta: 0.001
   })
 
-  // --- 2. PARALLAX ---
+  // --- ANIMACIONES SINCRONIZADAS ---
+  const parallaxImg = useTransform(smoothScroll, [0, 1], [0, 60])
   
-  // Parallax Imagen (Solo vertical, sin deformar)
-  const parallaxY = useTransform(smoothScroll, [0, 1], [0, 40])
+  // Elementos de texto entrando flotando (Staggered)
+  const titleY = useTransform(smoothScroll, [0, 0.2], [40, 0])
+  const titleOp = useTransform(smoothScroll, [0, 0.25], [0, 1])
   
-  // Textos
-  const textY = useTransform(smoothScroll, [0.1, 0.4], [50, 0])
-  const textOp = useTransform(smoothScroll, [0.1, 0.3], [0, 1])
+  const textY = useTransform(smoothScroll, [0.1, 0.3], [40, 0])
+  const textOp = useTransform(smoothScroll, [0.1, 0.35], [0, 1])
+  
+  const statsY = useTransform(smoothScroll, [0.2, 0.4], [40, 0])
+  const statsOp = useTransform(smoothScroll, [0.2, 0.45], [0, 1])
+  
+  const ctaY = useTransform(smoothScroll, [0.3, 0.5], [40, 0])
+  const ctaOp = useTransform(smoothScroll, [0.3, 0.55], [0, 1])
 
-  const statsY = useTransform(smoothScroll, [0.3, 0.6], [50, 0])
-  const statsOp = useTransform(smoothScroll, [0.3, 0.5], [0, 1])
+  const quoteY = useTransform(smoothScroll, [0.45, 0.65], [40, 0]) 
+  const quoteOp = useTransform(smoothScroll, [0.45, 0.7], [0, 1])
 
-  const quoteY = useTransform(smoothScroll, [0.6, 0.8], [30, 0])
-  const quoteOp = useTransform(smoothScroll, [0.6, 0.75], [0, 1])
-
-  // Linea "Parches"
-  const lineDraw = useTransform(smoothScroll, [0.2, 0.35], [0, 1])
+  // Subrayado técnico (Línea recta progresiva)
+  const lineDraw = useTransform(smoothScroll, [0.15, 0.35], [0, 1])
 
   return (
     <section 
         ref={containerRef} 
-        className="relative w-full py-24 lg:py-32 px-4 overflow-hidden bg-[#0a0a0a]"
+        className="relative w-full py-24 lg:py-32 px-6 overflow-hidden bg-[#0a0a0a]"
     >
-        
-        {/* FONDO */}
+        {/* FONDO SUTIL */}
         <div className="absolute inset-0 z-0 pointer-events-none">
             <div 
                className="absolute inset-0 opacity-[0.1]" 
@@ -58,200 +63,165 @@ export default function AboutUs() {
                    backgroundSize: '40px 40px' 
                }} 
             />
-            <div className="absolute top-1/4 right-0 w-[500px] h-[600px] bg-[#006262] opacity-10 blur-[120px] rounded-full" />
+            <div className="absolute top-1/4 right-[-5%] w-[500px] h-[500px] bg-[#006262] opacity-[0.06] blur-[100px] rounded-full" />
         </div>
 
-
-        <div className="relative z-10 max-w-7xl mx-auto">
+        <div className="relative z-10 max-w-6xl mx-auto">
             
-            {/* HEADER */}
-            <motion.div 
-                className="flex flex-col items-start mb-16 lg:mb-20 pl-2 md:pl-8"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.8 }}
-            >
-                 <div className="flex items-center gap-3 mb-4">
-                     <div className="flex h-2.5 w-2.5">
-                        <span className="animate-ping absolute inline-flex h-2.5 w-2.5 rounded-full bg-[#00dfdf] opacity-75"></span>
-                        <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-[#00dfdf]"></span>
-                     </div>
-                     <span className="text-xs font-manrope font-bold text-[#00dfdf] tracking-widest uppercase">
-                         ADN EFEMAQ
-                     </span>
-                 </div>
-
-                 <h2 className="font-manrope text-5xl md:text-6xl lg:text-7xl font-bold text-white tracking-tight leading-[0.95]">
-                     No es magia.<br/>
-                     <span className="text-transparent bg-clip-text bg-gradient-to-r from-gray-200 via-white to-gray-400">Es ingeniería.</span>
-                 </h2>
-            </motion.div>
-
-
-            {/* GRID */}
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+            {/* GRID SIMÉTRICO */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-start">
                 
-                {/* [COLUMNA IZQ - IMAGEN] */}
-                <div className="lg:col-span-5 lg:sticky lg:top-32 h-fit mb-12 lg:mb-0 pl-2 md:pl-8 z-20">
-                    
-                    {/* Wrapper del Parallax Scroll */}
-                    <motion.div style={{ y: parallaxY }}>
+                {/* [COLUMNA IZQ - IMAGEN PARALLAX] */}
+                <div className="relative lg:sticky lg:top-32 h-fit w-full">
+                    <motion.div style={{ y: parallaxImg }} className="relative">
                         
-                        {/* Wrapper de Flotación Infinita */}
-                        <motion.div 
-                            animate={{ y: [0, -12, 0] }} 
-                            transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-                            className="relative p-2"
-                        >
-                            {/* EL COMPONENTE DE IMAGEN ("Group" padre para hover) */}
-                            <div className="relative w-full aspect-[3/4] rounded-2xl overflow-hidden border border-white/10 bg-[#101010] shadow-2xl group cursor-default">
-                                 
-                                 {/* Esquinas Decorativas */}
-                                 <div className="absolute top-4 left-4 w-4 h-4 border-t-2 border-l-2 border-[#00dfdf]/30 transition-colors group-hover:border-[#00dfdf]" />
-                                 <div className="absolute top-4 right-4 w-4 h-4 border-t-2 border-r-2 border-[#00dfdf]/30 transition-colors group-hover:border-[#00dfdf]" />
-                                 <div className="absolute bottom-4 left-4 w-4 h-4 border-b-2 border-l-2 border-[#00dfdf]/30 transition-colors group-hover:border-[#00dfdf]" />
-                                 <div className="absolute bottom-4 right-4 w-4 h-4 border-b-2 border-r-2 border-[#00dfdf]/30 transition-colors group-hover:border-[#00dfdf]" />
+                        <div className="relative w-full aspect-[4/5] rounded-2xl overflow-hidden border border-white/10 bg-[#101010] shadow-2xl group">
+                             {/* Esquinas Técnicas */}
+                             <div className="absolute top-0 left-0 w-16 h-16 border-t-2 border-l-2 border-[#00dfdf]/30 rounded-tl-xl z-20" />
+                             <div className="absolute bottom-0 right-0 w-16 h-16 border-b-2 border-r-2 border-[#00dfdf]/30 rounded-br-xl z-20" />
 
-                                 {/* FOTO: Solo Grayscale/Opacity, SIN Scale, SIN Transform */}
-                                 <img
-                                   src="/efemaq-team-professional-office.jpg"
-                                   alt="Equipo EFEMAQ"
-                                   className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-all duration-700 grayscale-[0.2] group-hover:grayscale-0"
-                                 />
-                                 
-                                 {/* Gradiente de texto */}
-                                 <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent" />
-                                 
-                                 {/* TEXTO FLOTANTE */}
-                                 <div className="absolute bottom-6 left-6 right-6">
-                                     <div className="bg-black/40 backdrop-blur-lg border border-white/10 p-4 rounded-xl flex items-center justify-between transition-all group-hover:bg-black/60 group-hover:border-white/20">
-                                         <div>
-                                             <p className="text-white font-manrope font-bold text-sm mb-0.5">Fernando & Equipo</p>
-                                             {/* CORRECCIÓN: group-hover (del padre imagen) activa el color verde aqui */}
-                                             <p className="text-gray-400 text-[10px] font-manrope font-bold tracking-widest uppercase group-hover:text-[#00dfdf] transition-colors">
-                                                Dirección Técnica
-                                             </p>
-                                         </div>
-                                         {/* Icono tambien se prende */}
-                                         <div className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-[#00dfdf]/20 transition-colors">
-                                            <PenTool className="text-white/70 w-4 h-4 group-hover:text-[#00dfdf] transition-colors" />
-                                         </div>
+                             <Image
+                               src="/efemaq-team-professional-office.jpg"
+                               alt="Equipo Técnico EFEMAQ"
+                               fill
+                               className="object-cover opacity-70 group-hover:opacity-90 group-hover:scale-105 transition-all duration-1000 ease-out"
+                             />
+                             
+                             {/* Gradiente */}
+                             <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-transparent to-transparent opacity-90" />
+                             
+                             {/* Badge Flotante */}
+                             <div className="absolute bottom-8 left-8 right-8">
+                                 <div className="bg-[#0a0a0a]/60 backdrop-blur-lg border border-white/10 p-5 rounded-xl flex items-center justify-between">
+                                     <div>
+                                         <p className="text-white font-manrope font-bold text-base">Departamento Técnico</p>
+                                         <p className="text-[#00dfdf] text-[10px] font-manrope font-bold tracking-[0.2em] uppercase mt-1">
+                                            Calidad Garantizada
+                                         </p>
+                                     </div>
+                                     <div className="w-10 h-10 rounded-full bg-[#00dfdf] flex items-center justify-center text-black shadow-[0_0_15px_rgba(0,223,223,0.4)]">
+                                        <PenTool size={18} strokeWidth={2.5} />
                                      </div>
                                  </div>
-                            </div>
-                        </motion.div>
+                             </div>
+                        </div>
                     </motion.div>
                 </div>
 
-
-                {/* [COLUMNA DER - TEXTO] */}
-                <div className="lg:col-span-7 flex flex-col space-y-16 pt-4 lg:pl-8">
+                {/* [COLUMNA DER - RELATO] */}
+                <div className="flex flex-col space-y-12 pt-4">
                     
-                    {/* TEXTO PRINCIPAL */}
-                    <motion.div 
-                        style={{ y: textY, opacity: textOp }}
-                        className="space-y-6"
-                    >
-                        <h3 className="text-3xl font-manrope font-bold text-white leading-snug">
-                            Terminando con la era de los{' '}
-                            <span className="relative inline-block text-[#00dfdf]">
-                                parches
-                                <svg className="absolute w-full h-2 bottom-0 left-0 overflow-visible" viewBox="0 0 100 10" preserveAspectRatio="none">
+                    {/* 1. HEADER (Tamaño Ajustado + Animación Viva) */}
+                    <motion.div style={{ y: titleY, opacity: titleOp }}>
+                        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 mb-6">
+                             <div className="w-1.5 h-1.5 rounded-full bg-[#00dfdf] animate-pulse" />
+                             <span className="text-[10px] font-manrope font-bold text-gray-300 tracking-widest uppercase">
+                                 ADN EFEMAQ
+                             </span>
+                        </div>
+                        
+                        {/* Texto reducido de 7xl a 6xl y md:5xl */}
+                        <h2 className="font-manrope text-4xl md:text-5xl lg:text-6xl font-extrabold text-white leading-[1.05] tracking-tight">
+                            No es improvisación.<br />
+                            <motion.span 
+                                className="text-transparent bg-clip-text bg-gradient-to-r from-[#006262] via-[#00dfdf] to-[#006262] bg-[length:200%_auto]"
+                                animate={{ backgroundPosition: ["0% center", "200% center"] }}
+                                transition={{ duration: 6, repeat: Infinity, ease: "linear" }}
+                            >
+                                Es ingeniería.
+                            </motion.span>
+                        </h2>
+                    </motion.div>
+
+                    {/* 2. TEXTO + SUBRAYADO ELEGANTE */}
+                    <motion.div style={{ y: textY, opacity: textOp }} className="space-y-6">
+                        <h3 className="text-2xl md:text-3xl font-manrope font-medium text-gray-200 leading-snug">
+                            Transformamos el mantenimiento en una{' '}
+                            <span className="relative inline-block text-white font-bold">
+                                ciencia exacta
+                                {/* Línea Recta y Precisa */}
+                                <svg className="absolute w-full h-2 -bottom-1 left-0 overflow-visible" viewBox="0 0 100 10" preserveAspectRatio="none">
                                     <motion.path 
-                                        d="M0 5 Q 50 10 100 5" 
+                                        d="M 0 5 L 100 5" 
                                         fill="none" 
                                         stroke="#00dfdf" 
-                                        strokeWidth="3"
-                                        strokeLinecap="round"
+                                        strokeWidth="2"
+                                        strokeLinecap="square"
                                         style={{ pathLength: lineDraw }}
                                     />
                                 </svg>
                             </span>
                             .
                         </h3>
-                        
-                        <div className="space-y-4">
-                            <p className="font-inter text-lg text-gray-400 leading-relaxed text-left">
-                                EFEMAQ nace de una frustración compartida: llamar a tres "especialistas" distintos para el mismo problema y que, a los dos meses, vuelva a fallar.
-                            </p>
-                            <p className="font-inter text-lg text-gray-400 leading-relaxed text-left border-l-2 border-[#00dfdf]/30 pl-5">
-                                Creamos un sistema donde <strong>la tecnología de seguimiento</strong> se une a la <strong>experiencia en obra</strong>. No solo arreglamos; auditamos, registramos y garantizamos el resultado final.
+                        <div className="pl-6 border-l-2 border-[#00dfdf]/20 space-y-4">
+                            <p className="font-inter text-lg text-gray-400 leading-relaxed">
+                                Terminando con la era de los "parches" y soluciones temporales. En EFEMAQ, cada intervención sigue un protocolo estricto de diagnóstico y ejecución.
                             </p>
                         </div>
                     </motion.div>
 
-
-                    {/* BENTO GRID STATS */}
+                    {/* 3. STATS */}
                     <motion.div 
                         style={{ y: statsY, opacity: statsOp }}
-                        className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full"
+                        className="grid grid-cols-2 gap-4"
                     >
-                        {/* Stat 1 */}
-                        <div className="p-6 rounded-2xl bg-[#111] border border-white/10 hover:border-[#00dfdf]/40 transition-all group">
-                            <div className="flex items-start justify-between mb-4">
-                                <Award size={28} className="text-gray-600 group-hover:text-[#00dfdf] transition-colors" />
-                                <span className="text-xs font-manrope font-bold text-gray-500 uppercase tracking-widest group-hover:text-[#00dfdf] transition-colors">
-                                    Experiencia
-                                </span>
-                            </div>
-                            <div className="flex items-baseline gap-1">
-                               <span className="text-4xl font-manrope font-extrabold text-white">+15</span>
-                               <span className="text-sm text-[#00dfdf] font-bold">Años</span>
-                            </div>
-                            <p className="text-gray-500 text-sm mt-2 leading-tight font-inter">Trayectoria combinada en obras y mantenimiento integral.</p>
+                        <div className="p-5 rounded-xl bg-[#151515] border border-white/5 hover:border-[#00dfdf]/30 transition-all group">
+                            <Award className="w-6 h-6 text-gray-500 mb-3 group-hover:text-[#00dfdf] transition-colors" />
+                            <div className="text-3xl font-manrope font-bold text-white">+15</div>
+                            <p className="text-gray-500 text-xs font-inter mt-1">Años de trayectoria.</p>
                         </div>
-
-                        {/* Stat 2 */}
-                        <div className="p-6 rounded-2xl bg-[#111] border border-white/10 hover:border-[#00dfdf]/40 transition-all group">
-                             <div className="flex items-start justify-between mb-4">
-                                <ShieldCheck size={28} className="text-gray-600 group-hover:text-[#00dfdf] transition-colors" />
-                                <span className="text-xs font-manrope font-bold text-gray-500 uppercase tracking-widest group-hover:text-[#00dfdf] transition-colors">
-                                    Soporte
-                                </span>
-                            </div>
-                            <div className="flex items-baseline gap-1">
-                               <span className="text-4xl font-manrope font-extrabold text-white">24/7</span>
-                               <span className="text-sm text-[#00dfdf] font-bold">Guardia</span>
-                            </div>
-                            <p className="text-gray-500 text-sm mt-2 leading-tight font-inter">Sistema de tickets automatizado para urgencias reales.</p>
-                        </div>
-
-                         {/* Talent CTA */}
-                        <div className="sm:col-span-2 p-6 rounded-2xl bg-[#151515] border border-white/10 flex items-center justify-between group cursor-pointer hover:bg-[#1a1a1a] transition-colors shadow-lg">
-                            <div className="flex items-center gap-4">
-                                <div className="w-10 h-10 rounded-full bg-[#00dfdf]/10 flex items-center justify-center text-[#00dfdf]">
-                                    <Users size={20} />
-                                </div>
-                                <div>
-                                    <h4 className="text-white font-bold text-base font-manrope group-hover:text-[#00dfdf] transition-colors">¿Querés sumarte al equipo?</h4>
-                                    <p className="text-gray-500 text-xs font-inter">Buscamos técnicos certificados.</p>
-                                </div>
-                            </div>
-                            <div className="w-8 h-8 rounded-full bg-[#222] flex items-center justify-center text-white group-hover:bg-[#00dfdf] group-hover:text-black transition-all">
-                                <ChevronRight size={18} />
-                            </div>
+                        <div className="p-5 rounded-xl bg-[#151515] border border-white/5 hover:border-[#00dfdf]/30 transition-all group">
+                            <ShieldCheck className="w-6 h-6 text-gray-500 mb-3 group-hover:text-[#00dfdf] transition-colors" />
+                            <div className="text-3xl font-manrope font-bold text-white">100%</div>
+                            <p className="text-gray-500 text-xs font-inter mt-1">Trabajos con garantía.</p>
                         </div>
                     </motion.div>
 
+                    {/* 4. CTA TALENTO (Inclusivo) */}
+                    <motion.div style={{ y: ctaY, opacity: ctaOp }} className="pt-2">
+                        <div className="p-1 rounded-xl bg-gradient-to-r from-[#00dfdf]/20 to-transparent">
+                            <Button 
+                                className="w-full h-20 bg-[#0a0a0a] hover:bg-[#111] border border-[#00dfdf]/30 hover:border-[#00dfdf] text-white group relative overflow-hidden rounded-lg transition-all duration-300"
+                            >
+                                <div className="absolute inset-0 bg-[#00dfdf]/5 group-hover:bg-[#00dfdf]/10 transition-colors" />
+                                <div className="relative flex items-center justify-between w-full px-4 md:px-6">
+                                    <div className="flex items-center gap-4">
+                                        <div className="w-12 h-12 rounded-full bg-[#00dfdf] flex items-center justify-center text-black shrink-0">
+                                            <HardHat size={22} strokeWidth={2.5} />
+                                        </div>
+                                        <div className="text-left">
+                                            <span className="block font-manrope font-bold text-lg leading-tight group-hover:text-[#00dfdf] transition-colors">
+                                                Sumate al equipo de expertos
+                                            </span>
+                                            <span className="block text-xs text-gray-400 mt-1 font-inter text-wrap max-w-[200px] md:max-w-none">
+                                                Queremos conocer tu talento.
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <ArrowRight className="text-gray-500 group-hover:text-[#00dfdf] group-hover:translate-x-1 transition-all shrink-0" />
+                                </div>
+                            </Button>
+                        </div>
+                    </motion.div>
 
-                    {/* QUOTE FINAL */}
+                    {/* 5. FRASE FERNANDO (Al final) */}
                     <motion.div 
                         style={{ y: quoteY, opacity: quoteOp }}
-                        className="pt-4"
+                        className="border-t border-white/10 pt-8 mt-4"
                     >
-                        <blockquote className="relative pl-6 border-l-2 border-gray-700">
-                            <p className="font-inter text-lg text-gray-300 italic leading-relaxed">
-                             "La tranquilidad no se logra con un mensaje de 'ya voy', se logra con un sistema que te dice quién va, cuándo llega y te muestra cómo quedó."
-                            </p>
-                            <footer className="mt-4 flex items-center gap-3">
-                                <div className="h-px w-8 bg-[#00dfdf]" />
-                                <cite className="font-manrope font-bold text-white text-sm uppercase tracking-widest not-italic">
-                                    Fernando
-                                </cite>
-                                <span className="text-xs text-gray-500 font-inter">Director General</span>
-                            </footer>
+                        <blockquote className="font-inter text-lg text-gray-300 italic leading-relaxed">
+                            "La tranquilidad se logra con un sistema que te dice quién va, cuándo llega y te muestra cómo quedó." 
                         </blockquote>
+                        <div className="mt-4 flex items-center gap-3">
+                            <div className="h-10 w-10 rounded-full bg-white/10 overflow-hidden relative">
+                                {/* Placeholder para foto de Fernando si existiera, sino inicial */}
+                                <div className="absolute inset-0 flex items-center justify-center font-manrope font-bold text-gray-500">F</div>
+                            </div>
+                            <div>
+                                <div className="font-manrope font-bold text-white text-sm uppercase tracking-wider">Fernando</div>
+                                <div className="text-xs text-[#00dfdf] font-inter">Director General</div>
+                            </div>
+                        </div>
                     </motion.div>
 
                 </div>
