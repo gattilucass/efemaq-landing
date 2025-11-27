@@ -5,24 +5,26 @@ import { motion, useScroll, useTransform, useSpring } from "framer-motion"
 import Image from "next/image"
 import { 
   ArrowRight, 
+  ArrowDown, // Nuevo icono para móvil
   CheckCircle2, 
   Zap, 
   Hammer, 
   FileSearch, 
   ShieldAlert,
   Briefcase,
-  Home
+  ThermometerSnowflake // Nuevo icono para Refrigeración
 } from 'lucide-react'
 import { Button } from "@/components/ui/button"
+import { useIsMobile } from "@/hooks/use-mobile"
 
-// --- DATA DE SERVICIOS ---
+// --- DATA DE SERVICIOS (SEO OPTIMIZED) ---
 const SERVICES = [
   {
     id: "01",
     title: "Auditoría & Diagnóstico",
-    subtitle: "El primer paso real.",
-    description: "Antes de tocar un ladrillo, entendemos la patología. Utilizamos termografía e inspección técnica para atacar la causa raíz.",
-    features: ["Informes Técnicos", "Termografía Infrarroja", "Detección de Fugas", "Plan de Inversión"],
+    subtitle: "Ingeniería Forense",
+    description: "No adivinamos, medimos. Análisis de carga térmica para refrigeración, termografía de tableros eléctricos y detección de fugas invisibles.",
+    features: ["Informes Técnicos Certificados", "Termografía Infrarroja", "Análisis de Carga Eléctrica", "Plan de Inversión"],
     icon: FileSearch,
     color: "#00dfdf", // Teal
     image: "/efemaq-team-professional-office.jpg" 
@@ -30,9 +32,9 @@ const SERVICES = [
   {
     id: "02",
     title: "Mantenimiento Preventivo",
-    subtitle: "Evitar es mejor que arreglar.",
-    description: "Un plan sistemático para bombas, tableros y estructuras. Mantenemos tu edificio operativo y seguro.",
-    features: ["Abonos Mensuales", "Rutinas de Control", "Limpieza de Tanques", "Pruebas de Sistemas"],
+    subtitle: "Electricidad y Refrigeración",
+    description: "El corazón de tu edificio. Rutinas estrictas para grupos electrógenos, sistemas de aire acondicionado central y bombas de agua.",
+    features: ["Control de Aires Acondicionados", "Tableros Eléctricos Normativa AEA", "Limpieza de Tanques", "Pruebas de Sistemas"],
     icon: ShieldAlert,
     color: "#10b981", // Emerald
     image: "/modern-office-building-maintenance.jpg" 
@@ -40,8 +42,8 @@ const SERVICES = [
   {
     id: "03",
     title: "Obras y Reformas",
-    subtitle: "Soluciones definitivas.",
-    description: "Ejecución de obras de envergadura con personal propio. Desde impermeabilizaciones hasta refacciones estéticas.",
+    subtitle: "Ejecución de Calidad",
+    description: "Desde la refundación de una sala de máquinas hasta la refacción estética del hall. Personal propio, seguro y materiales de primera.",
     features: ["Impermeabilización", "Albañilería General", "Pintura de Altura", "Instalaciones Sanitarias"],
     icon: Hammer,
     color: "#f59e0b", // Amber
@@ -50,9 +52,9 @@ const SERVICES = [
   {
     id: "04",
     title: "Urgencias 24/7",
-    subtitle: "Respuesta inmediata.",
-    description: "Cuando pasa algo grave, no hay burocracia. Nuestro sistema de guardia garantiza presencia técnica récord.",
-    features: ["Guardia Eléctrica", "Plomería de Urgencia", "Destapaciones", "Riesgo Estructural"],
+    subtitle: "Respuesta Inmediata",
+    description: "Cortes de luz, fallas en refrigeración crítica o inundaciones. Nuestro sistema de guardia garantiza presencia técnica récord.",
+    features: ["Guardia Eléctrica", "Reparación de Aires", "Plomería de Urgencia", "Riesgo Estructural"],
     icon: Zap,
     color: "#ef4444", // Red
     image: "/efemaq-team-professional-office.jpg"
@@ -61,9 +63,9 @@ const SERVICES = [
 
 export default function HorizontalServices() {
   const targetRef = useRef<HTMLDivElement>(null)
+  const isMobile = useIsMobile()
   
   // --- SCROLL PHYSICS ---
-  // Altura reducida a 300vh para un scroll más ágil
   const { scrollYProgress } = useScroll({
     target: targetRef,
     offset: ["start start", "end end"],
@@ -75,17 +77,20 @@ export default function HorizontalServices() {
     restDelta: 0.001
   })
 
-  // --- TRANSFORMACIÓN HORIZONTAL (LÓGICA LOCK) ---
-  // Mapeamos el scroll vertical [0 -> 0.85] al movimiento horizontal ["0%" -> "-55%"]
-  // Del 0.85 al 1.0, el valor se queda en "-55%", creando el efecto de "fijado" en el centro.
-  // El valor -55% está calculado aprox para centrar la última card ancha.
-  const x = useTransform(smoothProgress, [0, 0.85], ["0%", "-55%"])
+  // --- TRANSFORMACIÓN HORIZONTAL (LÓGICA ADAPTATIVA) ---
+  // Desktop: -55% es suficiente para centrar el final.
+  // Móvil: El carril es mucho más largo en relación a la pantalla (items de 85vw).
+  // Ajustamos a -88% para asegurar que la tarjeta "A Medida" llegue al centro.
+  const xRange = isMobile ? ["0%", "-88%"] : ["0%", "-55%"]
   
-  // Barra de Progreso (Sigue llenándose hasta el final)
+  const x = useTransform(smoothProgress, [0, 1], xRange)
   const progressWidth = useTransform(smoothProgress, [0, 1], ["0%", "100%"])
 
+  // Animación del indicador de scroll
+  const indicatorOp = useTransform(smoothProgress, [0, 0.1], [1, 0])
+
   return (
-    <section ref={targetRef} className="relative h-[350vh] bg-[#0a0a0a]">
+    <section ref={targetRef} className="relative h-[400vh] bg-[#0a0a0a]">
       
       {/* STICKY CONTAINER */}
       <div className="sticky top-0 flex h-screen items-center overflow-hidden">
@@ -105,10 +110,10 @@ export default function HorizontalServices() {
         </div>
 
         {/* --- HORIZONTAL TRACK --- */}
-        <motion.div style={{ x }} className="flex gap-12 px-8 md:px-20 relative z-10 items-center h-full">
+        <motion.div style={{ x }} className="flex gap-8 md:gap-12 px-6 md:px-20 relative z-10 items-center h-full will-change-transform">
             
             {/* HEADER INTEGRADO (Inicio del carril) */}
-            <div className="w-[85vw] md:w-[500px] shrink-0 h-[70vh] flex flex-col justify-center pr-12 pl-4">
+            <div className="w-[85vw] md:w-[500px] shrink-0 h-[70vh] flex flex-col justify-center pr-4 md:pr-12 pl-2 md:pl-4">
                  <div className="mb-8">
                     <div className="flex items-center gap-3 mb-4">
                         <div className="flex h-2 w-2">
@@ -119,7 +124,7 @@ export default function HorizontalServices() {
                             Nuestros Servicios
                         </span>
                     </div>
-                    <h2 className="text-5xl md:text-6xl font-manrope font-extrabold text-white leading-[0.95] tracking-tight">
+                    <h2 className="text-4xl md:text-6xl font-manrope font-extrabold text-white leading-[1] md:leading-[0.95] tracking-tight">
                         Soluciones <br/>
                         <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-gray-200 to-gray-500">
                             punta a punta.
@@ -127,14 +132,24 @@ export default function HorizontalServices() {
                     </h2>
                  </div>
 
-                 <p className="font-inter text-xl text-gray-400 leading-relaxed max-w-sm">
+                 <p className="font-inter text-lg md:text-xl text-gray-400 leading-relaxed max-w-sm">
                     Un ecosistema de mantenimiento diseñado para cubrir cada etapa de la vida útil de tu propiedad.
                  </p>
                  
-                 <div className="mt-12 flex items-center gap-3 text-[#00dfdf] animate-pulse">
-                    <ArrowRight className="w-5 h-5" />
-                    <span className="text-xs font-manrope font-bold uppercase tracking-[0.3em]">Desliza</span>
-                 </div>
+                 {/* INDICADOR DE SCROLL ADAPTATIVO */}
+                 <motion.div style={{ opacity: indicatorOp }} className="mt-12 flex items-center gap-3 text-[#00dfdf] animate-pulse">
+                    {isMobile ? (
+                        <>
+                            <ArrowDown className="w-5 h-5" />
+                            <span className="text-xs font-manrope font-bold uppercase tracking-[0.2em]">Desliza hacia abajo</span>
+                        </>
+                    ) : (
+                        <>
+                            <ArrowRight className="w-5 h-5" />
+                            <span className="text-xs font-manrope font-bold uppercase tracking-[0.3em]">Desliza</span>
+                        </>
+                    )}
+                 </motion.div>
             </div>
 
             {/* CARDS DE SERVICIOS */}
@@ -142,7 +157,7 @@ export default function HorizontalServices() {
                 <ServiceCard key={service.id} data={service} index={index} />
             ))}
 
-            {/* FINAL CARD "A MEDIDA" (Se detiene en el centro) */}
+            {/* FINAL CARD "A MEDIDA" (CTA) */}
             <div className="w-[90vw] md:w-[50vw] shrink-0 h-[65vh] flex items-center justify-center relative">
                 {/* Floating Wrapper */}
                 <motion.div 
@@ -150,7 +165,7 @@ export default function HorizontalServices() {
                     transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
                     className="w-full h-full"
                 >
-                    <div className="w-full h-full rounded-[2.5rem] bg-gradient-to-br from-[#1a1a1a] to-[#050505] border border-white/10 shadow-2xl flex flex-col items-center justify-center p-12 text-center relative overflow-hidden group">
+                    <div className="w-full h-full rounded-[2.5rem] bg-gradient-to-br from-[#1a1a1a] to-[#050505] border border-white/10 shadow-2xl flex flex-col items-center justify-center p-8 md:p-12 text-center relative overflow-hidden group">
                         
                         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(0,223,223,0.05),transparent_60%)]" />
                         <div className="absolute bottom-0 left-0 w-full h-1/2 bg-gradient-to-t from-[#00dfdf]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
@@ -163,12 +178,12 @@ export default function HorizontalServices() {
                             <h3 className="text-3xl md:text-5xl font-manrope font-extrabold text-white mb-4 tracking-tight">
                                 ¿Necesitás algo a medida?
                             </h3>
-                            <p className="text-gray-400 text-lg mb-8 font-inter leading-relaxed">
+                            <p className="text-gray-400 text-base md:text-lg mb-8 font-inter leading-relaxed">
                                 Diseñamos planes específicos para <span className="text-white font-medium">consorcios</span>, <span className="text-white font-medium">casas particulares</span> y <span className="text-white font-medium">negocios</span>.
                             </p>
                             
                             <div className="flex justify-center">
-                                <Button className="h-14 px-12 bg-[#00dfdf] hover:bg-[#00bkbk] text-black font-manrope font-bold text-lg rounded-full shadow-[0_0_30px_rgba(0,223,223,0.3)] transition-all hover:scale-105">
+                                <Button className="h-14 px-10 md:px-12 bg-[#00dfdf] hover:bg-[#00bkbk] text-black font-manrope font-bold text-lg rounded-full shadow-[0_0_30px_rgba(0,223,223,0.3)] transition-all hover:scale-105">
                                     Pedir Presupuesto
                                 </Button>
                             </div>
@@ -177,9 +192,8 @@ export default function HorizontalServices() {
                 </motion.div>
             </div>
 
-            {/* ESPACIADOR FINAL INVISIBLE (Buffer) */}
-            {/* Un pequeño margen extra a la derecha para asegurar que el centrado no se corte en pantallas muy anchas */}
-            <div className="w-[10vw] shrink-0" />
+            {/* ESPACIADOR FINAL (BUFFER) */}
+            <div className="w-[5vw] shrink-0" />
 
         </motion.div>
 
@@ -223,14 +237,14 @@ function ServiceCard({ data, index }: { data: any, index: number }) {
                             className="object-cover transition-transform duration-700 group-hover:scale-110 grayscale group-hover:grayscale-0 opacity-80 group-hover:opacity-100" 
                         />
                         
-                        {/* Icono Flotante (Sin número) */}
+                        {/* Icono Flotante */}
                         <div className="absolute top-6 right-6 z-20 w-12 h-12 rounded-full bg-[#0a0a0a]/90 backdrop-blur-xl border border-white/20 flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
                             <data.icon size={20} color={data.color} />
                         </div>
                     </div>
 
                     {/* 2. CONTENIDO */}
-                    <div className="flex-1 p-8 flex flex-col relative z-20 bg-[#121212]">
+                    <div className="flex-1 p-6 md:p-8 flex flex-col relative z-20 bg-[#121212]">
                         
                         <div className="mb-auto">
                             <h4 
@@ -240,7 +254,7 @@ function ServiceCard({ data, index }: { data: any, index: number }) {
                                 {data.subtitle}
                             </h4>
                             
-                            <h3 className="text-3xl font-manrope font-bold text-white mb-4 leading-tight group-hover:text-[#00dfdf] transition-colors duration-300">
+                            <h3 className="text-2xl md:text-3xl font-manrope font-bold text-white mb-4 leading-tight group-hover:text-[#00dfdf] transition-colors duration-300">
                                 {data.title}
                             </h3>
                             

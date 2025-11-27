@@ -2,7 +2,8 @@
 
 import { useRef } from "react"
 import { motion, useScroll, useTransform, useSpring } from "framer-motion"
-import { Building2, Home, Store, ArrowRight, ChevronDown } from 'lucide-react'
+import { Building2, Home, ArrowRight, ChevronDown, Store } from 'lucide-react'
+import Link from "next/link" // IMPORTANTE
 
 export default function AudienceFunnel() {
   const containerRef = useRef<HTMLElement>(null)
@@ -20,23 +21,23 @@ export default function AudienceFunnel() {
   })
 
   // --- TRANSFORMACIONES ---
-  // 1. HEADER
   const titleY = useTransform(smoothScroll, [0.2, 1], [0, -100])
   const titleOpacity = useTransform(smoothScroll, [0.6, 0.9], [1, 0])
-
-  // 2. CARDS (Parallax)
   const cardsY = useTransform(smoothScroll, [0, 1], [100, -100])
-
-  // 3. CONECTOR FINAL (Ajustado: Aparece MUCHO ANTES)
-  // Antes era [0.6, 0.85]. Ahora es [0.25, 0.5]. 
-  // Esto significa que apenas scrolleas un 25% de la sección (después de ver cards), ya empieza a subir.
+  
+  // Conector final
   const bridgeOpacity = useTransform(smoothScroll, [0.25, 0.5], [0, 1]) 
   const bridgeY = useTransform(smoothScroll, [0.25, 0.5], [100, 0]) 
-  // La línea crece apenas aparece el texto
   const lineGrow = useTransform(smoothScroll, [0.4, 0.8], ["0%", "100%"]) 
 
-  // --- ANIMACIONES ---
-  // Fix TypeScript: 'as const' en eases
+  // Función scroll para el conector invisible (Bot Section)
+  const scrollToBot = () => {
+    const element = document.getElementById("bot-section");
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
   const floatingTransition = { 
     duration: 6, 
     repeat: Number.POSITIVE_INFINITY, 
@@ -50,6 +51,7 @@ export default function AudienceFunnel() {
 
   return (
     <section 
+        id="audience-funnel"
         ref={containerRef} 
         className="relative w-full pt-24 pb-64 md:pt-32 md:pb-72 px-4 overflow-hidden bg-[#0a0a0a]"
     >
@@ -103,97 +105,91 @@ export default function AudienceFunnel() {
         </motion.div>
 
 
-        {/* --- CARDS --- */}
+        {/* --- CARDS (LINKS A PAGINAS) --- */}
         <motion.div 
             className="grid grid-cols-1 lg:grid-cols-2 gap-8 w-full px-2 lg:px-8 items-stretch"
             style={{ y: cardsY }}
         >
             
             {/* CARD 1 (ADMINS) */}
-            <motion.div animate={{ y: [0, -10, 0] }} transition={floatingTransition}>
-                <motion.a
-                    href="#admin-section"
-                    initial={{ opacity: 0, y: 80 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true, margin: "-100px" }}
-                    transition={loadTransition}
-                    className="group h-full relative flex flex-col overflow-hidden rounded-2xl bg-[#121212] border border-white/10 hover:border-[#00dfdf]/60 transition-all duration-500 shadow-2xl hover:shadow-[#00dfdf]/10"
-                >
-                     <div className="p-8 md:p-10 flex flex-col h-full relative z-10">
-                        <div className="mb-6 w-16 h-16 flex items-center justify-center rounded-xl bg-[#006262]/20 border border-[#006262]/40 group-hover:scale-105 transition-transform duration-300">
-                           <Building2 size={32} className="text-[#00dfdf]" />
-                        </div>
-                        
-                        <h3 className="font-manrope text-3xl md:text-4xl font-bold text-white mb-3 group-hover:text-[#00dfdf] transition-colors">
-                            Administrador
-                        </h3>
-                        <p className="font-inter text-lg text-gray-400 leading-relaxed mb-8 flex-1 border-l-2 border-[#006262]/30 pl-4">
-                           Gestión automatizada para consorcios. Centralizá tickets, historial y proveedores.
-                        </p>
+            <motion.div animate={{ y: [0, -10, 0] }} transition={floatingTransition} className="h-full">
+                <Link href="/para-administradores" className="block h-full">
+                    <div
+                        className="group h-full relative flex flex-col overflow-hidden rounded-2xl bg-[#121212] border border-white/10 hover:border-[#00dfdf]/60 transition-all duration-500 shadow-2xl hover:shadow-[#00dfdf]/10 cursor-pointer"
+                    >
+                        <div className="p-8 md:p-10 flex flex-col h-full relative z-10">
+                            <div className="mb-6 w-16 h-16 flex items-center justify-center rounded-xl bg-[#006262]/20 border border-[#006262]/40 group-hover:scale-105 transition-transform duration-300">
+                            <Building2 size={32} className="text-[#00dfdf]" />
+                            </div>
+                            
+                            <h3 className="font-manrope text-3xl md:text-4xl font-bold text-white mb-3 group-hover:text-[#00dfdf] transition-colors">
+                                Administrador
+                            </h3>
+                            <p className="font-inter text-lg text-gray-400 leading-relaxed mb-8 flex-1 border-l-2 border-[#006262]/30 pl-4">
+                            Gestión automatizada para consorcios. Centralizá tickets, historial y proveedores.
+                            </p>
 
-                        <div className="mt-auto w-full">
-                           <div className="flex items-center justify-between py-5 px-6 rounded-lg bg-white/5 border border-white/10 group-hover:bg-[#00dfdf] group-hover:border-[#00dfdf] transition-all duration-300">
-                               <span className="font-manrope font-bold text-white group-hover:text-black text-base tracking-wide">
-                                   Portal Consorcios
-                               </span>
-                               <div className="bg-white/10 rounded-full p-1 group-hover:bg-black/20">
-                                  <ArrowRight size={18} className="text-white group-hover:text-black" />
-                               </div>
-                           </div>
+                            <div className="mt-auto w-full">
+                            <div className="flex items-center justify-between py-5 px-6 rounded-lg bg-white/5 border border-white/10 group-hover:bg-[#00dfdf] group-hover:border-[#00dfdf] transition-all duration-300">
+                                <span className="font-manrope font-bold text-white group-hover:text-black text-base tracking-wide">
+                                    Ver Soluciones Consorcio
+                                </span>
+                                <div className="bg-white/10 rounded-full p-1 group-hover:bg-black/20">
+                                    <ArrowRight size={18} className="text-white group-hover:text-black" />
+                                </div>
+                            </div>
+                            </div>
                         </div>
-                     </div>
-                     <div className="absolute inset-0 bg-gradient-to-b from-[#00dfdf]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
-                </motion.a>
+                        <div className="absolute inset-0 bg-gradient-to-b from-[#00dfdf]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+                    </div>
+                </Link>
             </motion.div>
 
 
             {/* CARD 2 (PARTICULAR) */}
-            <motion.div animate={{ y: [0, -12, 0] }} transition={{ ...floatingTransition, delay: 0.8 }}>
-                <motion.a
-                    href="#particular-section"
-                    initial={{ opacity: 0, y: 80 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true, margin: "-100px" }}
-                    transition={{ ...loadTransition, delay: 0.15 }} 
-                    className="group h-full relative flex flex-col overflow-hidden rounded-2xl bg-[#121212] border border-white/10 hover:border-[#00dfdf]/60 transition-all duration-500 shadow-2xl hover:shadow-[#00dfdf]/10"
-                >
-                     <div className="p-8 md:p-10 flex flex-col h-full relative z-10">
-                        <div className="mb-6 flex gap-4">
-                            <div className="w-16 h-16 flex items-center justify-center rounded-xl bg-[#006262]/20 border border-[#006262]/40 group-hover:scale-105 transition-transform duration-300">
-                                <Home size={28} className="text-[#00dfdf]" />
+            <motion.div animate={{ y: [0, -12, 0] }} transition={{ ...floatingTransition, delay: 0.8 }} className="h-full">
+                <Link href="/para-particulares" className="block h-full">
+                    <div
+                        className="group h-full relative flex flex-col overflow-hidden rounded-2xl bg-[#121212] border border-white/10 hover:border-[#00dfdf]/60 transition-all duration-500 shadow-2xl hover:shadow-[#00dfdf]/10 cursor-pointer"
+                    >
+                        <div className="p-8 md:p-10 flex flex-col h-full relative z-10">
+                            <div className="mb-6 flex gap-4">
+                                <div className="w-16 h-16 flex items-center justify-center rounded-xl bg-[#006262]/20 border border-[#006262]/40 group-hover:scale-105 transition-transform duration-300">
+                                    <Home size={28} className="text-[#00dfdf]" />
+                                </div>
+                                <div className="w-16 h-16 flex items-center justify-center rounded-xl bg-[#006262]/10 border border-[#006262]/30 group-hover:scale-105 transition-transform duration-300 delay-75">
+                                    <Store size={28} className="text-[#00dfdf]/70 group-hover:text-[#00dfdf] transition-colors" />
+                                </div>
                             </div>
-                            <div className="w-16 h-16 flex items-center justify-center rounded-xl bg-[#006262]/10 border border-[#006262]/30 group-hover:scale-105 transition-transform duration-300 delay-75">
-                                <Store size={28} className="text-[#00dfdf]/70 group-hover:text-[#00dfdf] transition-colors" />
+
+                            <h3 className="font-manrope text-3xl md:text-4xl font-bold text-white mb-3 group-hover:text-[#00dfdf] transition-colors">
+                                Hogar y Negocio
+                            </h3>
+                            <p className="font-inter text-lg text-gray-400 leading-relaxed mb-8 flex-1 border-l-2 border-[#006262]/30 pl-4">
+                            Diagnóstico preciso, presupuesto claro y garantía de obra escrita.
+                            </p>
+
+                            <div className="mt-auto w-full">
+                            <div className="flex items-center justify-between py-5 px-6 rounded-lg bg-white/5 border border-white/10 group-hover:bg-[#00dfdf] group-hover:border-[#00dfdf] transition-all duration-300">
+                                <span className="font-manrope font-bold text-white group-hover:text-black text-base tracking-wide">
+                                    Ver Soluciones Hogar
+                                </span>
+                                <div className="bg-white/10 rounded-full p-1 group-hover:bg-black/20">
+                                    <ArrowRight size={18} className="text-white group-hover:text-black" />
+                                </div>
+                            </div>
                             </div>
                         </div>
-
-                        <h3 className="font-manrope text-3xl md:text-4xl font-bold text-white mb-3 group-hover:text-[#00dfdf] transition-colors">
-                            Particular & Negocio
-                        </h3>
-                        <p className="font-inter text-lg text-gray-400 leading-relaxed mb-8 flex-1 border-l-2 border-[#006262]/30 pl-4">
-                           Diagnóstico preciso, presupuesto claro y garantía de obra escrita.
-                        </p>
-
-                         <div className="mt-auto w-full">
-                           <div className="flex items-center justify-between py-5 px-6 rounded-lg bg-white/5 border border-white/10 group-hover:bg-[#00dfdf] group-hover:border-[#00dfdf] transition-all duration-300">
-                               <span className="font-manrope font-bold text-white group-hover:text-black text-base tracking-wide">
-                                   Ver Servicios
-                               </span>
-                               <div className="bg-white/10 rounded-full p-1 group-hover:bg-black/20">
-                                  <ArrowRight size={18} className="text-white group-hover:text-black" />
-                               </div>
-                           </div>
-                        </div>
-                     </div>
-                     <div className="absolute inset-0 bg-gradient-to-b from-[#00dfdf]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
-                </motion.a>
+                        <div className="absolute inset-0 bg-gradient-to-b from-[#00dfdf]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+                    </div>
+                </Link>
             </motion.div>
 
         </motion.div>
 
       </div>
 
-      {/* --- CONNECTOR AL BOT (Trigger acelerado) --- */}
+      {/* --- CONNECTOR AL BOT --- */}
       <motion.div 
           className="absolute bottom-0 left-0 w-full flex flex-col items-center justify-end z-0 pointer-events-none"
           style={{ opacity: bridgeOpacity, y: bridgeY }}
