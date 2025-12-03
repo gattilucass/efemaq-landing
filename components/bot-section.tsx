@@ -62,6 +62,7 @@ export default function BotSection() {
 
   // --- 3. ANIMACIONES UI ---
   
+  // Texto Principal
   const textOpacity = useTransform(
     smoothScroll, 
     isMobile ? [0, 0.05] : [0, 0.08], 
@@ -74,29 +75,22 @@ export default function BotSection() {
     isMobile ? [0, -50] : [50, 0]
   )
 
+  // Teléfono
   const phoneOpacity = useTransform(smoothScroll, isMobile ? [0.02, 0.1] : [0, 0.1], [0, 1])
   const phoneY = useTransform(smoothScroll, isMobile ? [0.02, 0.15] : [0, 0.1], [100, 0])
   const phoneScale = useTransform(smoothScroll, isMobile ? [0.02, 0.15] : [0, 0.1], isMobile ? [0.95, 1] : [0.95, 1])
 
   // Flecha Scroll Driven
- // --- FLECHA SCROLL DRIVEN ---
-  // 1. Cuerpo: Se dibuja del 5% al 20%
   const arrowBodyDraw = useTransform(smoothScroll, [0.05, 0.20], [0, 1])
-  
-  // 2. Punta: Se dibuja del 20% al 25% (Secuencial perfecto)
   const arrowTipDraw = useTransform(smoothScroll, [0.20, 0.25], [0, 1])
-  
-  // 3. Opacidad Cuerpo
   const arrowBodyOp = useTransform(smoothScroll, [0.05, 0.1], [0, 1])
-
-  // 4. Opacidad Punta (Invisible hasta que termina el cuerpo)
   const arrowTipOp = useTransform(smoothScroll, [0.19, 0.20], [0, 1])
 
   const floatingTextVariants: Variants = {
     float: {
-        y: [0, -5, 0],
+        y: [0, -10, 0],
         transition: {
-            duration: 4,
+            duration: 6,
             repeat: Infinity,
             ease: "easeInOut"
         }
@@ -145,9 +139,11 @@ export default function BotSection() {
                 whileInView={!isMobile ? "visible" : undefined}
                 viewport={{ once: true, margin: "-10%" }} 
                 variants={!isMobile ? textEntryVariants : undefined}
-                className="flex flex-col justify-center h-full lg:h-auto absolute lg:relative inset-0 lg:inset-auto z-20 pointer-events-none lg:pointer-events-auto"
+                className={`flex flex-col h-full lg:h-auto absolute lg:relative inset-0 lg:inset-auto z-20 pointer-events-none lg:pointer-events-auto
+                    ${isMobile ? "justify-start pt-24 items-center text-center" : "justify-center items-start text-left"}
+                `}
             >
-                 <div className="flex flex-col items-center lg:items-start text-center lg:text-left pt-20 lg:pt-0">
+                 <div className="flex flex-col items-center lg:items-start w-full">
                      
                      <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 backdrop-blur-md mb-6">
                          <div className="relative flex h-2 w-2">
@@ -157,7 +153,6 @@ export default function BotSection() {
                          <span className="text-[10px] md:text-xs font-manrope font-bold text-emerald-400 tracking-widest uppercase">Sistema Live</span>
                      </div>
 
-                     {/* TITULO RE-BALANCEADO */}
                      <h2 className="font-manrope text-4xl md:text-6xl font-extrabold text-white leading-[1.1] tracking-tight mb-6">
                         Reportar un incidente <br/>
                         <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#00dfdf] to-emerald-400">
@@ -165,12 +160,11 @@ export default function BotSection() {
                         </span>
                      </h2>
 
-                     {/* COPY RE-BALANCEADO */}
                      <p className="font-inter text-lg md:text-xl text-gray-300 leading-relaxed mb-8 max-w-lg lg:border-l-2 lg:border-[#00dfdf]/30 lg:pl-6">
                         Olvidate de mails que nadie lee. Nuestro <strong>Bot Maqui</strong> gestiona reclamos, identifica tu unidad y asigna prioridades en tiempo real.
                      </p>
 
-                     {/* FEATURES RE-BALANCEADOS */}
+                     {/* Features */}
                      <div className="space-y-5 mb-8 w-full max-w-md hidden sm:block">
                         {[
                             { icon: Zap, title: "Respuesta Inmediata", text: "Sin esperas, disponible 24/7" },
@@ -189,11 +183,11 @@ export default function BotSection() {
                         ))}
                      </div>
 
-                     {/* CTA BUTTON RE-BALANCEADO */}
+                     {/* CTA BUTTON CORREGIDO (Glass White) */}
                      <div className="hidden sm:block mb-8 lg:mb-0 pt-2 lg:pl-2">
                         <Button 
                             onClick={scrollToCTA}
-                            className="h-14 px-8 bg-[#00dfdf] hover:bg-[#00c4c4] text-black font-manrope font-bold text-lg rounded-full shadow-[0_0_20px_rgba(0,223,223,0.3)] group transition-all hover:scale-105 pointer-events-auto"
+                            className="h-14 px-8 bg-white/5 hover:bg-white/10 border border-white/20 text-white hover:text-[#00dfdf] font-manrope font-bold text-lg rounded-full backdrop-blur-md transition-all hover:scale-105 pointer-events-auto group"
                         >
                             Quiero probarlo
                             <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
@@ -201,45 +195,29 @@ export default function BotSection() {
                      </div>
 
                      {/* Scroll Hint Móvil */}
-                     <div className="lg:hidden flex flex-col items-center gap-2 mt-4 animate-pulse">
+                     <div className="lg:hidden flex flex-col items-center gap-2 mt-8 animate-pulse">
                         <span className="text-[#00dfdf] text-xs font-bold uppercase tracking-widest">Desliza para probar</span>
                         <ArrowDown className="text-[#00dfdf]" size={20} />
                      </div>
 
-                     {/* FLECHA Y TEXTO PC (REDISEÑO GEOMÉTRICO FINAL) */}
-                     <div className="relative hidden lg:flex flex-col items-end self-end mr-4 z-30 mt-6 translate-x-16">
+                 {/* TEXTO PC (POSICIÓN FINAL: DERECHA EXTREMA + BAJO) */}
+                     <div className="absolute hidden lg:flex flex-col items-end z-30 pointer-events-none w-[300px]" 
+                          style={{ 
+                              right: '-130px', // Empujado FUERTE a la derecha (superpuesto al contenedor del cel)
+                              top: '65%',      // Un poco más abajo para centrar
+                              transform: 'translateY(-50%)' 
+                          }}>
                         <motion.span 
                             variants={floatingTextVariants}
                             animate="float"
-                            className="text-white font-manrope font-extrabold text-3xl md:text-4xl tracking-tight text-right leading-[1] mb-1"
+                            // Agregamos will-change-transform para forzar aceleración de hardware y suavidad
+                            className="text-white font-manrope font-extrabold text-3xl md:text-4xl tracking-tight text-right leading-[1] will-change-transform"
                         > 
                             Mirá cómo <br/>
                             <span className="text-[#00dfdf]">funciona</span>
                         </motion.span>
-                        
-                        {/* SVG Flecha: Curva orgánica ascendente */}
-                        <svg width="150" height="90" viewBox="0 0 150 90" fill="none" className="overflow-visible translate-x-2">
-                            {/* Cuerpo: Nace abajo a la izquierda y sube hacia la derecha */}
-                            <motion.path 
-                                d="M 20 80 Q 80 90 135 25" 
-                                stroke="#00dfdf" 
-                                strokeWidth="4" 
-                                fill="none"
-                                strokeLinecap="round"
-                                style={{ pathLength: arrowBodyDraw, opacity: arrowBodyOp }}
-                            />
-                            {/* Punta: Simétrica y alineada con la trayectoria */}
-                            <motion.path 
-                                d="M 115 30 L 135 25 L 130 45" 
-                                stroke="#00dfdf" 
-                                strokeWidth="4" 
-                                fill="none"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                style={{ pathLength: arrowTipDraw, opacity: arrowTipOp }}
-                            />
-                        </svg>
                      </div>
+
                  </div>
             </motion.div>
 

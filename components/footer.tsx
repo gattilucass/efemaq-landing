@@ -9,11 +9,20 @@ import {
   Linkedin, 
   Facebook, 
   Instagram,
-  MapPin
+  MapPin,
+  ChevronDown
 } from 'lucide-react'
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion"
+import { useIsMobile } from "@/hooks/use-mobile"
 
 export default function Footer() {
-  // Tipado estricto para evitar errores de TS
+  const isMobile = useIsMobile()
+
   const containerVariants: Variants = {
     hidden: { opacity: 0 },
     visible: {
@@ -40,8 +49,63 @@ export default function Footer() {
     { icon: Linkedin, href: "https://www.instagram.com/efemaq.ar/", label: "LinkedIn" },
   ]
 
+  // Contenido de las columnas para reutilizar
+  const exploreLinks = (
+    <ul className="space-y-3 pl-1 md:pl-0">
+      {['Inicio', 'Administradores', 'Particulares', 'Nosotros'].map((item) => (
+        <li key={item}>
+          <Link 
+            href={item === 'Inicio' ? '/' : item === 'Administradores' ? '/para-administradores' : item === 'Particulares' ? '/para-particulares' : '#'} 
+            className="font-inter text-sm text-gray-400 hover:text-[#00dfdf] transition-colors flex items-center gap-2 group w-fit"
+          >
+            <span className="w-1 h-1 rounded-full bg-[#00dfdf] opacity-0 group-hover:opacity-100 transition-opacity" />
+            {item}
+          </Link>
+        </li>
+      ))}
+    </ul>
+  )
+
+  const servicesLinks = (
+    <ul className="space-y-3 pl-1 md:pl-0">
+      {['Mantenimiento Preventivo', 'Electricidad & Iluminación', 'Refrigeración & Climatización', 'Plomería & Gas', 'Obras Civiles', 'Impermeabilización'].map((item) => (
+        <li key={item}>
+          <span className="font-inter text-sm text-gray-400 hover:text-[#00dfdf] transition-colors cursor-default block w-fit">
+            {item}
+          </span>
+        </li>
+      ))}
+    </ul>
+  )
+
+  const contactContent = (
+    <div className="space-y-4 pl-1 md:pl-0">
+      <a href="mailto:info@efemaq.com.ar" className="flex items-start gap-3 group">
+        <div className="mt-0.5 text-[#00dfdf] opacity-80 group-hover:opacity-100 transition-opacity"><Mail size={18} /></div>
+        <div>
+           <span className="block font-inter text-sm text-gray-300 group-hover:text-white transition-colors">info@efemaq.com.ar</span>
+           <span className="text-xs text-gray-500">Área Comercial</span>
+        </div>
+      </a>
+      
+      <a href="https://wa.me/5491126547271" target="_blank" rel="noopener noreferrer" className="flex items-start gap-3 group">
+        <div className="mt-0.5 text-[#00dfdf] opacity-80 group-hover:opacity-100 transition-opacity"><Phone size={18} /></div>
+         <div>
+           <span className="block font-inter text-sm text-gray-300 group-hover:text-white transition-colors">+54 9 11 2654-7271</span>
+        </div>
+      </a>
+
+      <div className="flex items-start gap-3">
+         <div className="mt-0.5 text-[#00dfdf] opacity-80"><MapPin size={18} /></div>
+         <div>
+           <span className="block font-inter text-sm text-gray-400">Buenos Aires, Argentina</span>
+        </div>
+      </div>
+    </div>
+  )
+
   return (
-    <footer className="relative w-full bg-[#050505] border-t border-white/10 pt-16 pb-8 overflow-hidden font-sans">
+    <footer className="relative w-full bg-[#050505] border-t border-white/10 pt-12 md:pt-16 pb-8 overflow-hidden font-sans">
       
       {/* Glow Ambiental Inferior */}
       <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-[#00dfdf] opacity-[0.02] blur-[150px] rounded-full pointer-events-none" />
@@ -54,10 +118,10 @@ export default function Footer() {
         viewport={{ once: true }}
       >
         
-        {/* --- GRID PRINCIPAL (Horizontal en PC) --- */}
+        {/* --- GRID PRINCIPAL --- */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-10 md:gap-8 mb-12 text-left">
           
-          {/* COL 1: MARCA */}
+          {/* COL 1: MARCA (Siempre visible) */}
           <motion.div variants={itemVariants} className="flex flex-col items-start">
             <div className="mb-5">
               <Image 
@@ -93,66 +157,55 @@ export default function Footer() {
             </div>
           </motion.div>
 
-          {/* COL 2: EXPLORAR */}
-          <motion.div variants={itemVariants}>
-            <h4 className="font-manrope font-bold text-white mb-5 text-lg">Explorar</h4>
-            <ul className="space-y-3">
-              {['Inicio', 'Administradores', 'Particulares', 'Nosotros'].map((item) => (
-                <li key={item}>
-                  <Link 
-                    href={item === 'Inicio' ? '/' : item === 'Administradores' ? '/para-administradores' : item === 'Particulares' ? '/para-particulares' : '#'} 
-                    className="font-inter text-sm text-gray-400 hover:text-[#00dfdf] transition-colors flex items-center gap-2 group w-fit"
-                  >
-                    <span className="w-1 h-1 rounded-full bg-[#00dfdf] opacity-0 group-hover:opacity-100 transition-opacity" />
-                    {item}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </motion.div>
+          {/* COLUMNAS COLAPSABLES EN MÓVIL / VISIBLES EN PC */}
+          {isMobile ? (
+            <div className="col-span-1 w-full">
+              <Accordion type="single" collapsible className="w-full border-none">
+                
+                <AccordionItem value="explore" className="border-b border-white/10">
+                  <AccordionTrigger className="font-manrope font-bold text-white text-base py-4 hover:no-underline">
+                    Explorar
+                  </AccordionTrigger>
+                  <AccordionContent>{exploreLinks}</AccordionContent>
+                </AccordionItem>
 
-          {/* COL 3: SERVICIOS */}
-          <motion.div variants={itemVariants}>
-            <h4 className="font-manrope font-bold text-white mb-5 text-lg">Servicios</h4>
-            <ul className="space-y-3">
-              {['Mantenimiento Preventivo', 'Auditoría Técnica', 'Urgencias 24hs', 'Obras y Reformas'].map((item) => (
-                <li key={item}>
-                  <span className="font-inter text-sm text-gray-400 hover:text-[#00dfdf] transition-colors cursor-default block w-fit">
-                    {item}
-                  </span>
-                </li>
-              ))}
-            </ul>
-          </motion.div>
+                <AccordionItem value="services" className="border-b border-white/10">
+                  <AccordionTrigger className="font-manrope font-bold text-white text-base py-4 hover:no-underline">
+                    Servicios
+                  </AccordionTrigger>
+                  <AccordionContent>{servicesLinks}</AccordionContent>
+                </AccordionItem>
 
-          {/* COL 4: CONTACTO */}
-          <motion.div variants={itemVariants}>
-            <h4 className="font-manrope font-bold text-white mb-5 text-lg">Contacto</h4>
-            <div className="space-y-4">
-              <a href="mailto:hola@efemaq.com.ar" className="flex items-start gap-3 group">
-                <div className="mt-0.5 text-[#00dfdf] opacity-80 group-hover:opacity-100 transition-opacity"><Mail size={18} /></div>
-                <div>
-                   <span className="block font-inter text-sm text-gray-300 group-hover:text-white transition-colors">hola@efemaq.com.ar</span>
-                   <span className="text-xs text-gray-500">Área Comercial</span>
-                </div>
-              </a>
-              
-              <a href="https://wa.me/5491126547271" target="_blank" rel="noopener noreferrer" className="flex items-start gap-3 group">
-                <div className="mt-0.5 text-[#00dfdf] opacity-80 group-hover:opacity-100 transition-opacity"><Phone size={18} /></div>
-                 <div>
-                   <span className="block font-inter text-sm text-gray-300 group-hover:text-white transition-colors">+54 9 11 2654-7271</span>
-                   <span className="text-xs text-gray-500">Guardia 24hs</span>
-                </div>
-              </a>
+                <AccordionItem value="contact" className="border-none">
+                  <AccordionTrigger className="font-manrope font-bold text-white text-base py-4 hover:no-underline">
+                    Contacto
+                  </AccordionTrigger>
+                  <AccordionContent>{contactContent}</AccordionContent>
+                </AccordionItem>
 
-              <div className="flex items-start gap-3">
-                 <div className="mt-0.5 text-[#00dfdf] opacity-80"><MapPin size={18} /></div>
-                 <div>
-                   <span className="block font-inter text-sm text-gray-400">Buenos Aires, Argentina</span>
-                </div>
-              </div>
+              </Accordion>
             </div>
-          </motion.div>
+          ) : (
+            <>
+              {/* PC: COL 2 EXPLORAR */}
+              <motion.div variants={itemVariants}>
+                <h4 className="font-manrope font-bold text-white mb-5 text-lg">Explorar</h4>
+                {exploreLinks}
+              </motion.div>
+
+              {/* PC: COL 3 SERVICIOS */}
+              <motion.div variants={itemVariants}>
+                <h4 className="font-manrope font-bold text-white mb-5 text-lg">Servicios</h4>
+                {servicesLinks}
+              </motion.div>
+
+              {/* PC: COL 4 CONTACTO */}
+              <motion.div variants={itemVariants}>
+                <h4 className="font-manrope font-bold text-white mb-5 text-lg">Contacto</h4>
+                {contactContent}
+              </motion.div>
+            </>
+          )}
 
         </div>
 
@@ -166,8 +219,12 @@ export default function Footer() {
             </p>
             
             <div className="flex items-center gap-6">
-               <a href="#" className="font-inter text-xs text-gray-500 hover:text-white transition-colors">Términos y Condiciones</a>
-               <a href="#" className="font-inter text-xs text-gray-500 hover:text-white transition-colors">Política de Privacidad</a>
+               <Link href="/terminos" className="font-inter text-xs text-gray-500 hover:text-white transition-colors">
+                 Términos y Condiciones
+               </Link>
+               <Link href="/privacidad" className="font-inter text-xs text-gray-500 hover:text-white transition-colors">
+                 Política de Privacidad
+               </Link>
             </div>
         </motion.div>
 

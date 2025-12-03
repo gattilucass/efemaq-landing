@@ -54,6 +54,7 @@ export default function AboutUs() {
 
   return (
     <section 
+    id="about-us"
         ref={containerRef} 
         className="relative w-full py-24 lg:py-32 px-6 overflow-hidden bg-[#0a0a0a]"
     >

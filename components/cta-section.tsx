@@ -130,7 +130,7 @@ export default function CTASection() {
                             className="h-14 px-8 bg-[#00dfdf] hover:bg-[#00c4c4] text-black font-manrope font-extrabold text-lg rounded-xl shadow-[0_0_20px_rgba(0,223,223,0.2)] hover:shadow-[0_0_40px_rgba(0,223,223,0.3)] hover:-translate-y-1 transition-all duration-300 w-full flex items-center justify-center gap-3 group"
                         >
                             <MessageSquare className="w-5 h-5 transition-transform group-hover:-rotate-12 fill-black" />
-                            <span>Charlemos</span>
+                            <span>Hablemos</span>
                             <ArrowRight className="w-5 h-5 opacity-60 group-hover:translate-x-1 transition-transform" />
                         </Button>
                     </a>

@@ -6,11 +6,11 @@ import {
   Search, 
   FileSearch, 
   UserCheck, 
-  ShieldCheck, 
   ArrowRight, 
-  MousePointer2,
+  MessageSquare,
   Activity,
-  CheckCircle2
+  CheckCircle2,
+  Wrench 
 } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
 
@@ -54,34 +54,27 @@ export default function HeroSection() {
   );
 
   // --- 3. ANIMACIONES DE CARDS ---
-  
-  // CARD 1: SOLICITUD
   const c1Op = useTransform(smoothY, [0.05, 0.1, 0.18, 0.22], [0, 1, 1, 0]);
   const c1Y  = useTransform(smoothY, [0.05, 0.22], [100, -100]); 
   const c1Scale = useTransform(smoothY, [0.1, 0.18], [0.95, 1]); 
 
-  // CARD 2: DIAGNÓSTICO
   const c2Op = useTransform(smoothY, [0.22, 0.27, 0.38, 0.43], [0, 1, 1, 0]);
   const c2Y  = useTransform(smoothY, [0.22, 0.43], [100, -100]);
   const c2Scale = useTransform(smoothY, [0.27, 0.38], [0.95, 1]);
 
-  // CARD 3: TÉCNICO
   const c3Op = useTransform(smoothY, [0.43, 0.48, 0.60, 0.65], [0, 1, 1, 0]);
   const c3Y  = useTransform(smoothY, [0.43, 0.65], [100, -100]);
   const c3Scale = useTransform(smoothY, [0.48, 0.60], [0.95, 1]);
 
-  // CARD 4: SOLUCIONADO
   const entryStart = 0.70;
   const entrySettle = 0.85;
 
   const c4Op = useTransform(smoothY, [entryStart, entryStart + 0.1], [0, 1]);
   const c4Y  = useTransform(smoothY, [entryStart, entrySettle], [150, 0]); 
-  const c4X = useTransform(smoothY, [entryStart, entrySettle], [0, isMobile ? 0 : "-35vw"]); 
   const c4Scale = useTransform(smoothY, [entryStart, entrySettle], [0.9, 1.05]); 
 
-  // SVG CHECK
   const circleDraw = useTransform(smoothY, [0.70, 0.80], [0, 1]);
-  const checkDraw = useTransform(smoothY, [0.75, 0.85], [0, 1]); 
+  const checkDraw = useTransform(smoothY, [0.72, 0.85], [0, 1]); 
 
   // --- ENTRADA INICIAL ---
   const entryContainer: Variants = {
@@ -93,9 +86,9 @@ export default function HeroSection() {
     visible: { opacity: 1, y: 0, filter: "blur(0px)", transition: { duration: 0.8, ease: [0.2, 0.65, 0.3, 0.9] } }
   };
 
-  // --- HANDLER DE SCROLL SUAVE (FIX BOTONES) ---
+  // Scroll Handler
   const handleScrollTo = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
-    e.preventDefault(); // Evita que cambie la URL (#hash)
+    e.preventDefault();
     const element = document.getElementById(id);
     if (element) {
       element.scrollIntoView({ behavior: "smooth" });
@@ -120,16 +113,19 @@ export default function HeroSection() {
                             loop 
                             playsInline 
                             preload="none"
+                            key={isMobile ? "mobile-v" : "desktop-v"}
                         >
-                            <source src="/hero-video.mp4" type="video/mp4" />
+                            <source src={isMobile ? "/hero-video-cel.mp4" : "/hero-video.mp4"} type="video/mp4" />
                         </video>
                     </motion.div>
                  </motion.div>
              )}
              
+             {/* Degradados */}
              <div className="absolute inset-0 bg-gradient-to-r from-[#050505] via-[#050505]/60 to-transparent" />
              <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,#050505_130%)]" />
              
+             {/* Grid */}
              <div 
                 className="absolute inset-0 opacity-[0.1]" 
                 style={{ 
@@ -225,7 +221,7 @@ export default function HeroSection() {
 
         </div>
 
-        {/* --- GRUPO 2: CARD CENTRAL (SOLUCIONADO) --- */}
+        {/* --- CARD 4: SOLUCIONADO --- */}
         <div className="absolute z-30 pointer-events-none flex items-center justify-center
                 w-full md:w-[620px]
                 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2
@@ -273,63 +269,70 @@ export default function HeroSection() {
         </div>
 
 
-        {/* --- ZÓCALO IZQUIERDO --- */}
+        {/* --- ZÓCALO IZQUIERDO (TEXTOS & BOTONES) --- */}
         <motion.div 
-             className="absolute top-0 md:top-auto md:bottom-24 left-0 z-20 w-full max-w-full md:max-w-3xl px-6 md:px-16 pt-32 md:pt-0 pointer-events-auto h-full flex flex-col justify-start md:justify-end"
+             className="absolute left-0 z-30 w-full max-w-full md:max-w-3xl px-6 md:px-16 pointer-events-auto h-full flex flex-col justify-center
+             /* MÓVIL: Centrado absoluto total (top-0 + h-full + justify-center) */
+             md:top-auto md:bottom-24 md:justify-end md:items-start items-center text-center md:text-left
+             "
              style={{ 
                 opacity: finalContentOp, 
                 filter: contentBlur,
                 scale: contentScale
              }}
         >
-            <motion.div initial="hidden" animate="visible" variants={entryContainer} className="mb-8 origin-bottom-left">
+            <motion.div initial="hidden" animate="visible" variants={entryContainer} className="mb-8 origin-bottom-left w-full flex flex-col items-center md:items-start">
                 
+                {/* Badge */}
                 <motion.div variants={entryItem} className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-md mb-6 shadow-lg">
                     <span className="relative flex h-2.5 w-2.5">
                       <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#00dfdf] opacity-75"></span>
                       <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-[#00dfdf]"></span>
                     </span>
                     <span className="text-xs font-manrope font-bold text-gray-200 tracking-widest uppercase">
-                      Mantenimiento Inteligente
+                      Mantenimiento Integral
                     </span>
                 </motion.div>
 
-                <motion.h1 variants={entryItem} className="font-manrope font-extrabold text-4xl sm:text-5xl md:text-7xl text-white leading-[1.05] tracking-tighter mb-6 drop-shadow-2xl">
-                    Fin de la improvisación.<br />
+                {/* H1 NUEVO COPY (Aumentado en Móvil) */}
+                <motion.h1 variants={entryItem} className="font-manrope font-extrabold text-4xl md:text-5xl lg:text-7xl text-white leading-[1.05] tracking-tighter mb-6 drop-shadow-2xl">
+                    Soluciones integrales<br />
                     <motion.span 
                         className="text-transparent bg-clip-text bg-gradient-to-r from-[#006262] via-[#00dfdf] to-[#006262] bg-[length:200%_auto]"
                         animate={{ backgroundPosition: ["0% center", "200% center"] }}
                         transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
                     >
-                        Sistema 360°
+                        para tu activo.
                     </motion.span>
                 </motion.h1>
 
-                <motion.p variants={entryItem} className="font-inter text-base sm:text-lg md:text-xl text-gray-300 leading-relaxed max-w-xl md:max-w-2xl border-l-4 border-[#00dfdf]/30 pl-6 mb-10">
-                    Combinamos <strong className="text-white font-semibold">ingeniería experta</strong> con <strong className="text-white font-semibold">trazabilidad digital</strong>. Transformamos la gestión de tus bienes.
+                {/* Subtitle NUEVO COPY (Aumentado en Móvil) */}
+                <motion.p variants={entryItem} className="font-inter text-lg md:text-xl text-gray-300 leading-relaxed max-w-xl md:max-w-2xl md:border-l-4 border-[#00dfdf]/30 md:pl-6 mb-10 mx-auto md:mx-0 drop-shadow-lg">
+                    Mantenimiento técnico unificado. <strong className="text-white font-semibold">Electricidad, refrigeración, obra civil y plomería</strong> en un solo lugar.
                 </motion.p>
 
-                <motion.div variants={entryItem} className="flex flex-col sm:flex-row gap-4 pt-2 w-full sm:w-auto pb-8 md:pb-0">
-                     {/* BOTONES CON FUNCIONALIDAD DE SCROLL REPARADA */}
+                {/* CTA Buttons NUEVO DISEÑO (Blanco & Outline) */}
+                <motion.div variants={entryItem} className="flex flex-col sm:flex-row gap-4 pt-2 w-full sm:w-auto pb-8 md:pb-0 items-center md:items-start justify-center md:justify-start">
+                     {/* Botón Principal: BLANCO SÓLIDO (Máximo contraste) */}
                      <a 
-                        href="#cta-section" 
-                        onClick={(e) => handleScrollTo(e, "cta-section")}
-                        className="group relative inline-flex h-14 md:h-16 items-center justify-center px-8 md:px-10 bg-[#00dfdf] overflow-hidden rounded-lg shadow-[0_0_30px_-10px_rgba(0,223,223,0.5)] transition-all hover:scale-[1.02] active:scale-95 cursor-pointer"
+                        href="#horizontal-services" 
+                        onClick={(e) => handleScrollTo(e, "horizontal-services")}
+                        className="group relative inline-flex h-16 md:h-16 items-center justify-center px-10 md:px-10 bg-white hover:bg-gray-200 rounded-lg shadow-[0_0_40px_-10px_rgba(255,255,255,0.2)] transition-all hover:scale-[1.02] active:scale-95 w-full sm:w-auto z-40"
                      >
-                        <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
-                        <span className="relative z-10 font-manrope font-bold text-[#050505] text-base md:text-lg tracking-wide flex items-center gap-3">
-                            Coordinar Visita <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                        <span className="relative z-10 font-manrope font-extrabold text-black text-lg md:text-lg tracking-wide flex items-center gap-3">
+                            Ver Servicios <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                         </span>
                      </a>
                      
+                     {/* Botón Secundario: GLASS OUTLINE */}
                      <a 
-                        href="#bot-section" 
-                        onClick={(e) => handleScrollTo(e, "bot-section")}
-                        className="group inline-flex h-14 md:h-16 items-center justify-center px-8 md:px-10 bg-white/5 border border-white/10 text-white font-manrope font-bold text-base md:text-lg rounded-lg backdrop-blur-md transition-all hover:bg-white/10 hover:border-white/30 cursor-pointer"
+                        href="#cta-section" 
+                        onClick={(e) => handleScrollTo(e, "cta-section")}
+                        className="group inline-flex h-16 md:h-16 items-center justify-center px-10 md:px-10 bg-black/30 border border-white/20 hover:border-white/50 text-white font-manrope font-bold text-lg md:text-lg rounded-lg backdrop-blur-md transition-all hover:bg-white/5 hover:shadow-[0_0_20px_-5px_rgba(255,255,255,0.1)] w-full sm:w-auto z-40"
                      >
                         <span className="flex items-center gap-2">
-                            <MousePointer2 size={18} className="text-[#00dfdf] group-hover:-rotate-12 transition-transform" /> 
-                            Ver Demo
+                            <Wrench size={20} className="text-[#00dfdf] group-hover:rotate-12 transition-transform" /> 
+                            Hablar con un técnico
                         </span>
                      </a>
                 </motion.div>

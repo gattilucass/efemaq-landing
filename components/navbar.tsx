@@ -1,124 +1,210 @@
 "use client"
 
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
+import { usePathname } from 'next/navigation'
+import { motion, useScroll, useMotionValueEvent, AnimatePresence } from 'framer-motion'
+import { Menu, X, ArrowRight, ChevronRight } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { motion, useScroll, useMotionValueEvent } from 'framer-motion'
-
-// Variantes para el SUBRAYADO
-const underlineVariants = {
-  rest: { 
-    scaleX: 0, 
-    opacity: 0 
-  },
-  hover: { 
-    scaleX: 1, 
-    opacity: 1,
-    transition: { duration: 0.3 }
-  }
-};
-
-// Variantes para el TEXTO
-const textVariants = {
-  rest: { 
-    scale: 1 
-  },
-  hover: { 
-    scale: 1.05,
-    transition: { duration: 0.2 }
-  }
-};
+import { cn } from '@/lib/utils'
 
 export default function Navbar() {
-  const [hidden, setHidden] = useState(false);
-  const { scrollY } = useScroll();
+  const [hidden, setHidden] = useState(false)
+  const [scrolled, setScrolled] = useState(false)
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const { scrollY } = useScroll()
+  const pathname = usePathname()
 
+  // --- LÓGICA DE SCROLL ---
   useMotionValueEvent(scrollY, "change", (latest) => {
-    const previous = scrollY.getPrevious();
-    if (previous !== undefined && latest > previous && latest > 150) {
-      setHidden(true);
-    } 
-    else {
-      setHidden(false);
+    const previous = scrollY.getPrevious() ?? 0
+    
+    // Detectar si se scrolleó para cambiar el fondo
+    if (latest > 50) {
+        setScrolled(true)
+    } else {
+        setScrolled(false)
     }
-  });
+
+    // Ocultar navbar al bajar, mostrar al subir (Solo en Desktop)
+    // En móvil a veces es mejor dejarlo fijo o manejarlo con cuidado
+    if (latest > previous && latest > 150 && !mobileMenuOpen) {
+      setHidden(true)
+    } else {
+      setHidden(false)
+    }
+  })
+
+  // Bloquear scroll del body cuando el menú móvil está abierto
+  useEffect(() => {
+    if (mobileMenuOpen) {
+      document.body.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = 'unset'
+    }
+    return () => { document.body.style.overflow = 'unset' }
+  }, [mobileMenuOpen])
+
+  // Links de Navegación
+  const navLinks = [
+    { name: "Servicios", href: "/#horizontal-services" }, // Asumiendo que la sección tiene id="horizontal-services"
+    { name: "Nosotros", href: "/#about-us" },             // Asumiendo que tiene id="about-us"
+    { name: "Administradores", href: "/para-administradores" },
+    { name: "Particulares", href: "/para-particulares" },
+  ]
+
+  const handleScrollTo = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    // Si es un ancla (#), manejar scroll suave
+    if (href.includes('#')) {
+        const targetId = href.split('#')[1]
+        const element = document.getElementById(targetId)
+        
+        if (element) {
+            e.preventDefault()
+            setMobileMenuOpen(false)
+            element.scrollIntoView({ behavior: 'smooth' })
+        } else if (pathname !== '/') {
+            // Si no estamos en home, dejamos que el link navegue a /#id
+            setMobileMenuOpen(false)
+        }
+    } else {
+        setMobileMenuOpen(false)
+    }
+  }
 
   return (
-    <motion.nav
-      variants={{
-        visible: { y: 0 },
-        hidden: { y: "-100%" }
-      }}
-      animate={hidden ? "hidden" : "visible"}
-      transition={{ duration: 0.35, ease: "easeInOut" }}
-      className="fixed top-0 left-0 w-full z-50 h-18 bg-[#050505]/70 backdrop-blur-xl border-b border-white/10 flex items-center"
-    >
-      <div className="w-full px-6 md:px-16">
-        <div className="flex items-center justify-between w-full">
-          
-          {/* ----- LOGO ----- */}
-          <Link href="/" legacyBehavior>
-            <a className="flex-shrink-0 relative group">
-              <motion.div
-                whileHover={{ scale: 1.05, rotate: -2 }}
-                transition={{ type: 'spring', stiffness: 300 }}
-              >
-                <Image
-                  src="/logo-efemaq.png"
-                  alt="Logo EFEMAQ"
-                  width={165}
-                  height={50}
-                  className="w-[140px] md:w-[165px] h-auto opacity-90 group-hover:opacity-100 transition-opacity"
-                  priority
-                />
-              </motion.div>
-            </a>
-          </Link>
-
-          {/* ----- LINKS ----- */}
-          <div className="hidden md:flex md:items-center md:space-x-10">
+    <>
+      <motion.nav
+        variants={{
+          visible: { y: 0 },
+          hidden: { y: "-100%" }
+        }}
+        animate={hidden ? "hidden" : "visible"}
+        transition={{ duration: 0.35, ease: "easeInOut" }}
+        className={cn(
+            "fixed top-0 left-0 w-full z-50 transition-all duration-300 border-b",
+            scrolled || mobileMenuOpen 
+                ? "bg-[#050505]/80 backdrop-blur-xl border-white/10 py-3" 
+                : "bg-transparent border-transparent py-5"
+        )}
+      >
+        <div className="w-full px-6 md:px-12 max-w-8xl mx-auto">
+          <div className="flex items-center justify-between w-full">
             
-            {['Servicios', 'Quiénes Somos', 'Admins', 'Particulares'].map((label, i) => {
-               // Mapeo simple de rutas
-               const routes = ['/servicios', '/quienes-somos', '/para-administradores', '/para-particulares'];
-               return (
-                <Link key={label} href={routes[i]} legacyBehavior>
-                  <motion.a 
-                    className="text-gray-200 hover:text-white px-2 py-2 rounded-md text-base font-medium transition-colors cursor-pointer relative"
-                    initial="rest"
-                    whileHover="hover"
-                    animate="rest"
-                  >
-                    <motion.span 
-                      className="relative inline-block" 
-                      variants={textVariants} 
-                    >
-                      {label}
-                      <motion.div 
-                        className="absolute bottom-[-2px] left-0 right-0 h-[2px] bg-[#006262]"
-                        variants={underlineVariants} 
-                      />
-                    </motion.span>
-                  </motion.a>
-                </Link>
-               )
-            })}
-          </div>
+            {/* ----- LOGO ----- */}
+            <Link href="/" className="relative z-50 group" onClick={() => setMobileMenuOpen(false)}>
+                <div className="relative w-[140px] h-[40px] md:w-[160px] md:h-[45px]">
+                    <Image
+                        src="/logo-efemaq.png"
+                        alt="EFEMAQ"
+                        fill
+                        className="object-contain brightness-200 contrast-100 transition-opacity opacity-90 group-hover:opacity-100"
+                        priority
+                    />
+                </div>
+            </Link>
 
-          {/* ----- BOTÓN CORREGIDO (DESPEGADO) ----- */}
-          <div className="hidden md:block">
-            <Button 
-              // Cambio Clave: h-12 (48px) asegura que sea más bajo que el navbar (96px), creando el aire.
-              // Ya no tiene padding exagerado en Y.
-              className="h-12 px-8 bg-[#006262] text-white text-base font-semibold rounded-md hover:bg-[#004a4a] transition-all duration-300 shadow-[0_4px_14px_0_rgba(0,98,98,0.39)] hover:shadow-[0_6px_20px_rgba(0,98,98,0.23)] hover:-translate-y-0.5"
+            {/* ----- DESKTOP MENU ----- */}
+            <div className="hidden md:flex items-center gap-8">
+                <ul className="flex items-center gap-6">
+                    {navLinks.map((link) => (
+                        <li key={link.name}>
+                            <Link 
+                                href={link.href}
+                                onClick={(e) => handleScrollTo(e, link.href)}
+                                className="text-sm font-manrope font-medium text-gray-300 hover:text-[#00dfdf] transition-colors relative group"
+                            >
+                                {link.name}
+                                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#00dfdf] transition-all group-hover:w-full" />
+                            </Link>
+                        </li>
+                    ))}
+                </ul>
+
+                <div className="h-6 w-px bg-white/10" />
+
+                <Button 
+                    onClick={(e) => {
+                        // Simular click en link de contacto
+                        const element = document.getElementById('cta-section')
+                        if (element) element.scrollIntoView({ behavior: 'smooth' })
+                    }}
+                    className="bg-[#00dfdf] hover:bg-[#00c4c4] text-black font-manrope font-bold text-sm px-6 rounded-full transition-all hover:scale-105 shadow-[0_0_15px_rgba(0,223,223,0.3)]"
+                >
+                    Contacto
+                </Button>
+            </div>
+
+            {/* ----- MOBILE TOGGLE ----- */}
+            <button 
+                className="md:hidden relative z-50 p-2 text-white hover:text-[#00dfdf] transition-colors"
+                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             >
-              Contacto
-            </Button>
-          </div>
+                {mobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
+            </button>
 
+          </div>
         </div>
-      </div>
-    </motion.nav>
+      </motion.nav>
+
+      {/* ----- MOBILE MENU OVERLAY ----- */}
+      <AnimatePresence>
+        {mobileMenuOpen && (
+            <motion.div
+                initial={{ opacity: 0, y: -20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.3 }}
+                className="fixed inset-0 z-40 bg-[#050505] pt-24 px-6 flex flex-col md:hidden"
+            >
+                {/* Background Elements */}
+                <div className="absolute top-0 right-0 w-[300px] h-[300px] bg-[#00dfdf] opacity-[0.05] blur-[100px] rounded-full pointer-events-none" />
+                
+                <div className="flex flex-col gap-2 mt-4">
+                    {navLinks.map((link, i) => (
+                        <motion.div
+                            key={link.name}
+                            initial={{ opacity: 0, x: -20 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            transition={{ delay: 0.1 + (i * 0.05) }}
+                        >
+                            <Link
+                                href={link.href}
+                                onClick={(e) => handleScrollTo(e, link.href)}
+                                className="flex items-center justify-between py-4 border-b border-white/5 text-xl font-manrope font-semibold text-gray-200 active:text-[#00dfdf]"
+                            >
+                                {link.name}
+                                <ChevronRight size={16} className="text-[#00dfdf] opacity-50" />
+                            </Link>
+                        </motion.div>
+                    ))}
+                </div>
+
+                <motion.div 
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.4 }}
+                    className="mt-auto mb-10"
+                >
+                    <Button 
+                        onClick={() => {
+                            setMobileMenuOpen(false)
+                            const element = document.getElementById('cta-section')
+                            if (element) setTimeout(() => element.scrollIntoView({ behavior: 'smooth' }), 300)
+                        }}
+                        className="w-full h-14 bg-[#00dfdf] hover:bg-[#00c4c4] text-black font-manrope font-bold text-lg rounded-xl shadow-[0_0_20px_rgba(0,223,223,0.2)]"
+                    >
+                        Hablar con un Experto <ArrowRight className="ml-2 w-5 h-5" />
+                    </Button>
+                    
+                    <div className="mt-6 text-center">
+                        <p className="text-xs text-gray-500 font-inter uppercase tracking-widest">EFEMAQ Mantenimiento Integral</p>
+                    </div>
+                </motion.div>
+            </motion.div>
+        )}
+      </AnimatePresence>
+    </>
   )
 }

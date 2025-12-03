@@ -1,6 +1,6 @@
 "use client"
 
-import { useRef } from "react"
+import { useRef, useEffect, useState } from "react"
 import { motion, useScroll, useTransform, useSpring } from "framer-motion"
 import { 
   Home, 
@@ -12,76 +12,51 @@ import {
   Wrench,
   ArrowUp,
   ArrowRight,
-  CheckCircle2
+  CheckCircle2,
+  Store
 } from 'lucide-react'
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
 
-// ... [DATA PARTICULAR_PAIN_POINTS sigue igual] ...
+// --- DATA ---
 const PARTICULAR_PAIN_POINTS = [
   {
     id: 1,
-    pain: {
-      title: "Incertidumbre Total",
-      desc: "¿Quién entra a mi casa? ¿Tendrá antecedentes? El riesgo de abrirle la puerta a un desconocido.",
-      icon: ShieldX,
-      color: "#ef4444"
-    },
-    solution: {
-      title: "Personal Verificado",
-      desc: "Técnicos matriculados con chequeo de antecedentes penales y seguro de accidentes al día.",
-      icon: UserCheck,
-      color: "#10b981"
-    }
+    pain: { title: "Incertidumbre Total", desc: "¿Quién entra a mi casa o local? ¿Tendrá antecedentes? El riesgo de abrirle la puerta a un desconocido.", icon: ShieldX, color: "#ef4444" },
+    solution: { title: "Personal Verificado", desc: "Técnicos matriculados, uniformados y con chequeo de antecedentes penales riguroso. Tu seguridad es prioridad.", icon: UserCheck, color: "#10b981" }
   },
   {
     id: 2,
-    pain: {
-      title: "Diagnóstico Ciego",
-      desc: "El famoso 'hay que romper para ver'. Arreglos que duran dos días y vuelven a fallar.",
-      icon: SearchX,
-      color: "#f59e0b"
-    },
-    solution: {
-      title: "Tecnología Forense",
-      desc: "Usamos cámaras térmicas y geófonos para encontrar la falla exacta sin romper media casa.",
-      icon: Wrench,
-      color: "#10b981"
-    }
+    pain: { title: "Diagnóstico Ciego", desc: "El famoso 'hay que romper para ver'. Arreglos que duran dos días, vuelven a fallar y generan suciedad.", icon: SearchX, color: "#f59e0b" },
+    solution: { title: "Tecnología Forense", desc: "Usamos cámaras térmicas y geófonos para encontrar la falla exacta sin romper media pared. Limpieza garantizada.", icon: Wrench, color: "#10b981" }
   },
   {
     id: 3,
-    pain: {
-      title: "Esperas Eternas",
-      desc: "Pedís un plomero hoy y te da turno para la semana que viene (si es que aparece).",
-      icon: Clock,
-      color: "#ef4444"
-    },
-    solution: {
-      title: "Respuesta Inmediata",
-      desc: "Guardia activa 24/7. Si es una urgencia real, estamos ahí en tiempo récord.",
-      icon: ShieldCheck,
-      color: "#10b981"
-    }
+    pain: { title: "Esperas Eternas", desc: "Pedís un plomero hoy y te da turno para la semana que viene. Mientras tanto, tu negocio pierde plata.", icon: Clock, color: "#ef4444" },
+    solution: { title: "Respuesta Inmediata", desc: "Guardia activa 24/7. Si es una urgencia real (corte de luz, inundación), estamos ahí en tiempo récord.", icon: ShieldCheck, color: "#10b981" }
   }
 ]
 
 export default function ParticularSection() {
   const containerRef = useRef<HTMLDivElement>(null)
+  const [isReady, setIsReady] = useState(false)
 
-  // --- SCROLL PHYSICS ---
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start center", "end end"],
-  })
+  // --- SCROLL RESET NUCLEAR ---
+  useEffect(() => {
+    if ('scrollRestoration' in window.history) {
+      window.history.scrollRestoration = 'manual';
+    }
+    window.scrollTo(0, 0);
+    const timer = setTimeout(() => {
+      window.scrollTo(0, 0);
+      setIsReady(true);
+    }, 100);
+    return () => clearTimeout(timer);
+  }, []);
 
-  const smoothProgress = useSpring(scrollYProgress, {
-    stiffness: 60,
-    damping: 20,
-    restDelta: 0.001
-  })
+  const { scrollYProgress } = useScroll({ target: containerRef, offset: ["start center", "end end"] })
+  const smoothProgress = useSpring(scrollYProgress, { stiffness: 60, damping: 20, restDelta: 0.001 })
 
-  // --- ANIMACIONES ---
   const headerY = useTransform(smoothProgress, [0, 0.1], [30, 0])
   const headerOp = useTransform(smoothProgress, [0, 0.1], [0, 1])
   const lineDraw = useTransform(smoothProgress, [0.1, 0.85], ["0%", "100%"])
@@ -91,102 +66,80 @@ export default function ParticularSection() {
 
   const scrollToCTA = () => {
     const element = document.getElementById("cta-section");
-    if (element) {
-        element.scrollIntoView({ behavior: 'smooth' });
-    }
+    if (element) element.scrollIntoView({ behavior: 'smooth' });
   };
 
   return (
-    <section id="particular-section" ref={containerRef} className="relative w-full pt-24 pb-32 overflow-hidden bg-[#0a0a0a]">
-      {/* ... [FONDO Y HEADER IGUAL AL ANTERIOR] ... */}
-      <div className="absolute inset-0 z-0 pointer-events-none">
-          <div 
-             className="absolute inset-0 opacity-[0.05]" 
-             style={{ 
-                 backgroundImage: 'linear-gradient(rgba(16,185,129,0.1) 1px, transparent 0), linear-gradient(90deg, rgba(16,185,129,0.1) 1px, transparent 0)', 
-                 backgroundSize: '60px 60px' 
-             }} 
-          />
-          <div className="absolute top-1/2 left-0 w-[800px] h-[800px] bg-[#10b981] opacity-[0.05] blur-[150px] rounded-full" />
-      </div>
-
-      <div className="relative z-10 max-w-5xl mx-auto px-4">
+    <div className={`transition-opacity duration-500 ${isReady ? 'opacity-100' : 'opacity-0'}`}>
+        <section id="particular-section" ref={containerRef} className="relative w-full pt-32 pb-32 overflow-hidden bg-[#0a0a0a]">
         
-        <motion.div style={{ y: headerY, opacity: headerOp }} className="text-center mb-16 md:mb-20">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#10b981]/10 border border-[#10b981]/20 mb-6 backdrop-blur-md shadow-lg shadow-emerald-900/20">
-                 <Home size={14} className="text-[#10b981]" />
-                 <span className="text-[10px] font-manrope font-bold text-[#10b981] tracking-widest uppercase">
-                     Soluciones para el Hogar
-                 </span>
-            </div>
-            <h2 className="font-manrope text-4xl md:text-6xl font-extrabold text-white leading-tight mb-6">
-                Tu casa es tu santuario, <br className="hidden md:block" />
-                <span className="text-[#10b981]">nosotros lo cuidamos.</span>
-            </h2>
-            <p className="font-inter text-lg md:text-xl text-white max-w-2xl mx-auto leading-relaxed font-medium">
-                Seguridad, limpieza y garantía. El servicio técnico que tu familia merece, 
-                <span className="relative inline-block px-1 text-[#10b981]">
-                     sin sorpresas.
-                    <span className="absolute bottom-0 left-0 w-full h-px bg-[#10b981]/50" />
-                </span>
-            </p>
-        </motion.div>
-
-        {/* --- TIMELINE --- */}
-        <div className="relative flex flex-col items-center">
-            <div className="w-3 h-3 rounded-full bg-[#10b981] shadow-[0_0_10px_#10b981] mb-0 relative z-20 animate-pulse" />
-            <div className="absolute top-3 bottom-24 left-1/2 w-px bg-white/5 -translate-x-1/2 hidden md:block" />
-            <div className="absolute top-3 bottom-[6rem] left-1/2 w-px -translate-x-1/2 hidden md:block overflow-hidden">
-                <motion.div style={{ height: lineDraw }} className="w-full h-full bg-gradient-to-b from-[#10b981] via-[#10b981] to-transparent shadow-[0_0_8px_#10b981] will-change-transform" />
-            </div>
-
-            <div className="space-y-12 md:space-y-20 w-full mb-12 relative z-10 pt-12 md:pt-16">
-                {PARTICULAR_PAIN_POINTS.map((item, index) => (
-                    <ComparisonCard key={item.id} item={item} />
-                ))}
-            </div>
-
-            <div className="relative z-20 mt-4 h-24 w-64 flex items-center justify-center">
-                <svg className="absolute inset-0 w-full h-full overflow-visible">
-                    <motion.rect width="100%" height="100%" rx="12" ry="12" fill="none" stroke="#10b981" strokeWidth="1.5" strokeDasharray="8 4" strokeLinecap="round" style={{ pathLength: boxDraw, opacity: boxDraw }} />
-                </svg>
-                <motion.div style={{ opacity: contentOp }} className="flex flex-col items-center gap-2">
-                    <CheckCircle2 className="text-[#10b981] w-6 h-6" />
-                    <span className="font-manrope font-bold text-white text-sm tracking-widest uppercase">Tranquilidad Asegurada</span>
-                </motion.div>
-                <motion.div style={{ opacity: glowOp }} className="absolute inset-0 bg-[#10b981]/10 blur-xl rounded-xl -z-10" />
-            </div>
+        {/* FONDO */}
+        <div className="absolute inset-0 z-0 pointer-events-none">
+            <div className="absolute inset-0 opacity-[0.05]" style={{ backgroundImage: 'linear-gradient(rgba(16,185,129,0.1) 1px, transparent 0), linear-gradient(90deg, rgba(16,185,129,0.1) 1px, transparent 0)', backgroundSize: '60px 60px' }} />
+            <div className="absolute top-1/2 left-0 w-[800px] h-[800px] bg-[#10b981] opacity-[0.05] blur-[150px] rounded-full" />
         </div>
 
-        {/* --- CTA FINAL --- */}
-        <div className="mt-20 flex flex-col items-center gap-6 border-t border-white/10 pt-16">
-            <h3 className="text-2xl md:text-3xl font-manrope font-bold text-white text-center">
-                ¿Tenés algo para arreglar hoy?
-            </h3>
+        <div className="relative z-10 max-w-5xl mx-auto px-4">
             
-            <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto items-center">
-                <Button 
-                    onClick={scrollToCTA}
-                    className="h-14 px-10 bg-[#10b981] hover:bg-[#0da071] text-black font-manrope font-bold text-lg rounded-full shadow-[0_0_20px_rgba(16,185,129,0.3)] group transition-all hover:scale-105 w-full sm:w-auto"
-                >
-                    Pedir Técnico Ahora
-                    <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                </Button>
-                
-                <Link href="/#audience-funnel" className="w-full sm:w-auto">
-                    <Button 
-                        variant="ghost" 
-                        className="h-14 px-8 text-white border border-white/10 hover:bg-white/10 hover:text-[#10b981] rounded-full font-manrope font-medium transition-all w-full"
-                    >
-                        <ArrowUp className="mr-2 w-4 h-4" />
-                        Volver
-                    </Button>
-                </Link>
-            </div>
-        </div>
+            {/* HEADER */}
+            <motion.div style={{ y: headerY, opacity: headerOp }} className="text-center mb-20">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#10b981]/10 border border-[#10b981]/20 mb-6 backdrop-blur-md shadow-lg shadow-emerald-900/20">
+                    <Store size={14} className="text-[#10b981]" />
+                    <span className="text-[10px] font-manrope font-bold text-[#10b981] tracking-widest uppercase">Hogares & Comercios</span>
+                </div>
+                <h2 className="font-manrope text-4xl md:text-6xl font-extrabold text-white leading-tight mb-6">
+                    Tu casa es tu santuario, <br className="hidden md:block" />
+                    <span className="text-[#10b981]">nosotros lo protegemos.</span>
+                </h2>
+                <p className="font-inter text-lg md:text-xl text-white max-w-3xl mx-auto leading-relaxed font-medium">
+                    Seguridad, limpieza y garantía escrita. El servicio técnico que tu familia o negocio merecen, 
+                    <span className="relative inline-block px-1 text-[#10b981]">sin sorpresas ni costos ocultos.<span className="absolute bottom-0 left-0 w-full h-px bg-[#10b981]/50" /></span>
+                </p>
+            </motion.div>
 
-      </div>
-    </section>
+            {/* TIMELINE */}
+            <div className="relative flex flex-col items-center">
+                <div className="w-3 h-3 rounded-full bg-[#10b981] shadow-[0_0_10px_#10b981] mb-0 relative z-20 animate-pulse" />
+                <div className="absolute top-3 bottom-24 left-1/2 w-px bg-white/5 -translate-x-1/2 hidden md:block" />
+                <div className="absolute top-3 bottom-[6rem] left-1/2 w-px -translate-x-1/2 hidden md:block overflow-hidden">
+                    <motion.div style={{ height: lineDraw }} className="w-full h-full bg-gradient-to-b from-[#10b981] via-[#10b981] to-transparent shadow-[0_0_8px_#10b981] will-change-transform" />
+                </div>
+
+                <div className="space-y-12 md:space-y-20 w-full mb-12 relative z-10 pt-16">
+                    {PARTICULAR_PAIN_POINTS.map((item, index) => (<ComparisonCard key={item.id} item={item} />))}
+                </div>
+
+                {/* SELLO */}
+                <div className="relative z-20 mt-4 h-24 w-64 flex items-center justify-center">
+                    <svg className="absolute inset-0 w-full h-full overflow-visible">
+                        <motion.rect width="100%" height="100%" rx="12" ry="12" fill="none" stroke="#10b981" strokeWidth="1.5" strokeDasharray="8 4" strokeLinecap="round" style={{ pathLength: boxDraw, opacity: boxDraw }} />
+                    </svg>
+                    <motion.div style={{ opacity: contentOp }} className="flex flex-col items-center gap-2">
+                        <CheckCircle2 className="text-[#10b981] w-6 h-6" />
+                        <span className="font-manrope font-bold text-white text-sm tracking-widest uppercase">Tranquilidad Asegurada</span>
+                    </motion.div>
+                    <motion.div style={{ opacity: glowOp }} className="absolute inset-0 bg-[#10b981]/10 blur-xl rounded-xl -z-10" />
+                </div>
+            </div>
+
+            {/* CTA FINAL */}
+            <div className="mt-20 flex flex-col items-center gap-6 border-t border-white/10 pt-16">
+                <h3 className="text-2xl md:text-3xl font-manrope font-bold text-white text-center px-4">¿Tenés algo para arreglar hoy?</h3>
+                <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto items-center px-6">
+                    <Button onClick={scrollToCTA} className="h-14 px-10 bg-[#10b981] hover:bg-[#0da071] text-black font-manrope font-bold text-lg rounded-full shadow-[0_0_20px_rgba(16,185,129,0.3)] group transition-all hover:scale-105 w-full sm:w-auto">
+                        Pedir Técnico Ahora <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                    </Button>
+                    <Link href="/#audience-funnel" className="w-full sm:w-auto">
+                        <Button variant="ghost" className="h-14 px-8 text-white border border-white/10 hover:bg-white/5 hover:text-[#10b981] rounded-full font-manrope font-medium transition-all w-full">
+                            <ArrowUp className="mr-2 w-4 h-4" /> Volver
+                        </Button>
+                    </Link>
+                </div>
+            </div>
+
+        </div>
+        </section>
+    </div>
   )
 }
 

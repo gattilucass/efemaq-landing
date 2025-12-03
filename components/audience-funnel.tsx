@@ -1,12 +1,23 @@
 "use client"
 
-import { useRef } from "react"
+import { useRef, useState } from "react"
+import { useRouter } from "next/navigation"
 import { motion, useScroll, useTransform, useSpring } from "framer-motion"
-import { Building2, Home, ArrowRight, ChevronDown, Store } from 'lucide-react'
-import Link from "next/link" // IMPORTANTE
+import { 
+  Building2, 
+  Home, 
+  ArrowRight, 
+  ChevronDown, 
+  Store, 
+  Loader2 // Icono de carga
+} from 'lucide-react'
 
 export default function AudienceFunnel() {
   const containerRef = useRef<HTMLElement>(null)
+  const router = useRouter()
+  
+  // Estado para manejar cual botón está cargando ("admin" | "particular" | null)
+  const [loadingPath, setLoadingPath] = useState<string | null>(null)
 
   // --- CONFIG SCROLL ---
   const { scrollYProgress } = useScroll({
@@ -25,18 +36,9 @@ export default function AudienceFunnel() {
   const titleOpacity = useTransform(smoothScroll, [0.6, 0.9], [1, 0])
   const cardsY = useTransform(smoothScroll, [0, 1], [100, -100])
   
-  // Conector final
   const bridgeOpacity = useTransform(smoothScroll, [0.25, 0.5], [0, 1]) 
   const bridgeY = useTransform(smoothScroll, [0.25, 0.5], [100, 0]) 
   const lineGrow = useTransform(smoothScroll, [0.4, 0.8], ["0%", "100%"]) 
-
-  // Función scroll para el conector invisible (Bot Section)
-  const scrollToBot = () => {
-    const element = document.getElementById("bot-section");
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth" });
-    }
-  };
 
   const floatingTransition = { 
     duration: 6, 
@@ -48,6 +50,16 @@ export default function AudienceFunnel() {
     duration: 0.8, 
     ease: [0.16, 1, 0.3, 1] 
   } as const
+
+  // --- LÓGICA DE NAVEGACIÓN CON FEEDBACK ---
+  const handleNavigation = (path: string) => {
+    if (loadingPath) return; // Evitar doble click
+    setLoadingPath(path);
+    
+    // Pequeño timeout artificial opcional si carga muy rápido, 
+    // pero Next se encarga. El estado cambia la UI instantáneamente.
+    router.push(path);
+  };
 
   return (
     <section 
@@ -85,13 +97,13 @@ export default function AudienceFunnel() {
                  </span>
             </div>
 
-            <h2 className="font-manrope text-5xl md:text-7xl font-extrabold tracking-tight z-20 leading-tight text-white">
+            <h2 className="font-manrope text-4xl md:text-6xl lg:text-7xl font-extrabold tracking-tight z-20 leading-tight text-white">
                 <motion.span 
                     className="inline-block text-transparent bg-clip-text bg-gradient-to-r from-[#00dfdf] via-white to-[#00dfdf] bg-[length:200%_auto]"
                     animate={{ backgroundPosition: ["0% center", "200% center"] }}
                     transition={{ duration: 4, repeat: Number.POSITIVE_INFINITY, ease: "linear" }}
                 >
-                    ¿Qué solución necesitás hoy?
+                    ¿Qué solución buscás?
                 </motion.span>
                 
                 <motion.div 
@@ -105,84 +117,94 @@ export default function AudienceFunnel() {
         </motion.div>
 
 
-        {/* --- CARDS (LINKS A PAGINAS) --- */}
+        {/* --- CARDS --- */}
         <motion.div 
             className="grid grid-cols-1 lg:grid-cols-2 gap-8 w-full px-2 lg:px-8 items-stretch"
             style={{ y: cardsY }}
         >
             
-            {/* CARD 1 (ADMINS) */}
+            {/* CARD 1 (ADMINS & EMPRESAS) */}
             <motion.div animate={{ y: [0, -10, 0] }} transition={floatingTransition} className="h-full">
-                <Link href="/para-administradores" className="block h-full">
-                    <div
-                        className="group h-full relative flex flex-col overflow-hidden rounded-2xl bg-[#121212] border border-white/10 hover:border-[#00dfdf]/60 transition-all duration-500 shadow-2xl hover:shadow-[#00dfdf]/10 cursor-pointer"
-                    >
-                        <div className="p-8 md:p-10 flex flex-col h-full relative z-10">
-                            <div className="mb-6 w-16 h-16 flex items-center justify-center rounded-xl bg-[#006262]/20 border border-[#006262]/40 group-hover:scale-105 transition-transform duration-300">
-                            <Building2 size={32} className="text-[#00dfdf]" />
-                            </div>
-                            
-                            <h3 className="font-manrope text-3xl md:text-4xl font-bold text-white mb-3 group-hover:text-[#00dfdf] transition-colors">
-                                Administrador
-                            </h3>
-                            <p className="font-inter text-lg text-gray-400 leading-relaxed mb-8 flex-1 border-l-2 border-[#006262]/30 pl-4">
-                            Gestión automatizada para consorcios. Centralizá tickets, historial y proveedores.
-                            </p>
-
-                            <div className="mt-auto w-full">
-                            <div className="flex items-center justify-between py-5 px-6 rounded-lg bg-white/5 border border-white/10 group-hover:bg-[#00dfdf] group-hover:border-[#00dfdf] transition-all duration-300">
-                                <span className="font-manrope font-bold text-white group-hover:text-black text-base tracking-wide">
-                                    Ver Soluciones Consorcio
-                                </span>
-                                <div className="bg-white/10 rounded-full p-1 group-hover:bg-black/20">
-                                    <ArrowRight size={18} className="text-white group-hover:text-black" />
-                                </div>
-                            </div>
-                            </div>
+                <div
+                    onClick={() => handleNavigation("/para-administradores")}
+                    className={`group h-full relative flex flex-col overflow-hidden rounded-2xl bg-[#121212] border transition-all duration-500 shadow-2xl cursor-pointer
+                        ${loadingPath === "/para-administradores" ? "border-[#00dfdf] scale-[0.98] opacity-80" : "border-white/10 hover:border-[#00dfdf]/60 hover:shadow-[#00dfdf]/10"}
+                    `}
+                >
+                     <div className="p-8 md:p-10 flex flex-col h-full relative z-10">
+                        <div className="mb-6 w-16 h-16 flex items-center justify-center rounded-xl bg-[#006262]/20 border border-[#006262]/40 group-hover:scale-105 transition-transform duration-300">
+                           <Building2 size={32} className="text-[#00dfdf]" />
                         </div>
-                        <div className="absolute inset-0 bg-gradient-to-b from-[#00dfdf]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
-                    </div>
-                </Link>
+                        
+                        <h3 className="font-manrope text-3xl md:text-4xl font-bold text-white mb-3 group-hover:text-[#00dfdf] transition-colors">
+                            Administradores & Empresas
+                        </h3>
+                        <p className="font-inter text-lg text-gray-400 leading-relaxed mb-8 flex-1 border-l-2 border-[#006262]/30 pl-4">
+                           Soluciones de Facility Management. Centralizá tickets, historial técnico y compliance de proveedores.
+                        </p>
+
+                        <div className="mt-auto w-full">
+                           <div className="flex items-center justify-between py-5 px-6 rounded-lg bg-white/5 border border-white/10 group-hover:bg-[#00dfdf] group-hover:border-[#00dfdf] transition-all duration-300">
+                               <span className="font-manrope font-bold text-white group-hover:text-black text-base tracking-wide flex items-center gap-2">
+                                   {loadingPath === "/para-administradores" ? "Iniciando..." : "Soluciones Corporativas"}
+                               </span>
+                               <div className={`bg-white/10 rounded-full p-1 group-hover:bg-black/20 transition-transform ${loadingPath === "/para-administradores" ? "animate-spin" : ""}`}>
+                                  {loadingPath === "/para-administradores" ? (
+                                      <Loader2 size={18} className="text-white group-hover:text-black" />
+                                  ) : (
+                                      <ArrowRight size={18} className="text-white group-hover:text-black" />
+                                  )}
+                               </div>
+                           </div>
+                        </div>
+                     </div>
+                     <div className="absolute inset-0 bg-gradient-to-b from-[#00dfdf]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+                </div>
             </motion.div>
 
 
             {/* CARD 2 (PARTICULAR) */}
             <motion.div animate={{ y: [0, -12, 0] }} transition={{ ...floatingTransition, delay: 0.8 }} className="h-full">
-                <Link href="/para-particulares" className="block h-full">
-                    <div
-                        className="group h-full relative flex flex-col overflow-hidden rounded-2xl bg-[#121212] border border-white/10 hover:border-[#00dfdf]/60 transition-all duration-500 shadow-2xl hover:shadow-[#00dfdf]/10 cursor-pointer"
-                    >
-                        <div className="p-8 md:p-10 flex flex-col h-full relative z-10">
-                            <div className="mb-6 flex gap-4">
-                                <div className="w-16 h-16 flex items-center justify-center rounded-xl bg-[#006262]/20 border border-[#006262]/40 group-hover:scale-105 transition-transform duration-300">
-                                    <Home size={28} className="text-[#00dfdf]" />
-                                </div>
-                                <div className="w-16 h-16 flex items-center justify-center rounded-xl bg-[#006262]/10 border border-[#006262]/30 group-hover:scale-105 transition-transform duration-300 delay-75">
-                                    <Store size={28} className="text-[#00dfdf]/70 group-hover:text-[#00dfdf] transition-colors" />
-                                </div>
+                <div
+                    onClick={() => handleNavigation("/para-particulares")}
+                    className={`group h-full relative flex flex-col overflow-hidden rounded-2xl bg-[#121212] border transition-all duration-500 shadow-2xl cursor-pointer
+                        ${loadingPath === "/para-particulares" ? "border-[#00dfdf] scale-[0.98] opacity-80" : "border-white/10 hover:border-[#00dfdf]/60 hover:shadow-[#00dfdf]/10"}
+                    `}
+                >
+                     <div className="p-8 md:p-10 flex flex-col h-full relative z-10">
+                        <div className="mb-6 flex gap-4">
+                            <div className="w-16 h-16 flex items-center justify-center rounded-xl bg-[#006262]/20 border border-[#006262]/40 group-hover:scale-105 transition-transform duration-300">
+                                <Home size={28} className="text-[#00dfdf]" />
                             </div>
-
-                            <h3 className="font-manrope text-3xl md:text-4xl font-bold text-white mb-3 group-hover:text-[#00dfdf] transition-colors">
-                                Hogar y Negocio
-                            </h3>
-                            <p className="font-inter text-lg text-gray-400 leading-relaxed mb-8 flex-1 border-l-2 border-[#006262]/30 pl-4">
-                            Diagnóstico preciso, presupuesto claro y garantía de obra escrita.
-                            </p>
-
-                            <div className="mt-auto w-full">
-                            <div className="flex items-center justify-between py-5 px-6 rounded-lg bg-white/5 border border-white/10 group-hover:bg-[#00dfdf] group-hover:border-[#00dfdf] transition-all duration-300">
-                                <span className="font-manrope font-bold text-white group-hover:text-black text-base tracking-wide">
-                                    Ver Soluciones Hogar
-                                </span>
-                                <div className="bg-white/10 rounded-full p-1 group-hover:bg-black/20">
-                                    <ArrowRight size={18} className="text-white group-hover:text-black" />
-                                </div>
-                            </div>
+                            <div className="w-16 h-16 flex items-center justify-center rounded-xl bg-[#006262]/10 border border-[#006262]/30 group-hover:scale-105 transition-transform duration-300 delay-75">
+                                <Store size={28} className="text-[#00dfdf]/70 group-hover:text-[#00dfdf] transition-colors" />
                             </div>
                         </div>
-                        <div className="absolute inset-0 bg-gradient-to-b from-[#00dfdf]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
-                    </div>
-                </Link>
+
+                        <h3 className="font-manrope text-3xl md:text-4xl font-bold text-white mb-3 group-hover:text-[#00dfdf] transition-colors">
+                            Hogar & Comercios
+                        </h3>
+                        <p className="font-inter text-lg text-gray-400 leading-relaxed mb-8 flex-1 border-l-2 border-[#006262]/30 pl-4">
+                           Mantenimiento correctivo y preventivo. Diagnóstico certero, garantía escrita y personal verificado.
+                        </p>
+
+                         <div className="mt-auto w-full">
+                           <div className="flex items-center justify-between py-5 px-6 rounded-lg bg-white/5 border border-white/10 group-hover:bg-[#00dfdf] group-hover:border-[#00dfdf] transition-all duration-300">
+                               <span className="font-manrope font-bold text-white group-hover:text-black text-base tracking-wide">
+                                    {loadingPath === "/para-particulares" ? "Iniciando..." : "Soluciones Residenciales"}
+                               </span>
+                               <div className={`bg-white/10 rounded-full p-1 group-hover:bg-black/20 transition-transform ${loadingPath === "/para-particulares" ? "animate-spin" : ""}`}>
+                                  {loadingPath === "/para-particulares" ? (
+                                      <Loader2 size={18} className="text-white group-hover:text-black" />
+                                  ) : (
+                                      <ArrowRight size={18} className="text-white group-hover:text-black" />
+                                  )}
+                               </div>
+                           </div>
+                        </div>
+                     </div>
+                     <div className="absolute inset-0 bg-gradient-to-b from-[#00dfdf]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+                </div>
             </motion.div>
 
         </motion.div>
@@ -196,7 +218,7 @@ export default function AudienceFunnel() {
       >
           <div className="flex flex-col items-center gap-3 mb-2">
                <span className="text-[#00dfdf] text-xs font-mono font-bold tracking-widest uppercase bg-black/50 px-2 py-1 rounded border border-[#00dfdf]/20">
-                  Próximo Paso
+                  Explorar
                </span>
                <h4 className="text-white font-manrope text-xl md:text-2xl font-medium text-center px-4">
                   El motor de todo esto es <span className="text-[#00dfdf] font-bold">invisible</span>.

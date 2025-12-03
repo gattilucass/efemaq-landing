@@ -1,86 +1,66 @@
 "use client"
 
-import { useRef } from "react"
+import { useRef, useEffect, useState } from "react"
 import { motion, useScroll, useTransform, useSpring } from "framer-motion"
 import { 
-  Users, 
+  Building2, 
   FileWarning, 
-  Receipt, 
+  TrendingUp, 
+  Users, 
   Bot, 
   BadgeCheck,
-  Building2,
   ArrowUp,
-  ArrowRight
+  ArrowRight,
+  Briefcase
 } from 'lucide-react'
 import { Button } from "@/components/ui/button"
-import Link from "next/link" // Import Link
+import Link from "next/link"
 
-// ... [DATA ADMIN_PAIN_POINTS sigue igual] ...
-// (Para ahorrar espacio no copio el array de data de nuevo, usá el mismo de la respuesta anterior)
+// --- DATA ---
 const ADMIN_PAIN_POINTS = [
   {
     id: 1,
-    pain: {
-      title: "WhatsApp Estallado",
-      desc: "Reclamos 24/7 de vecinos furiosos. No tenés trazabilidad de quién fue, cuándo y si se arregló.",
-      icon: Users,
-      color: "#ef4444"
-    },
-    solution: {
-      title: "Bot de Autogestión",
-      desc: "Maqui atiende al vecino, clasifica la urgencia y asigna al técnico. Vos ves el estado en tiempo real.",
-      icon: Bot,
-      color: "#00dfdf"
-    }
+    pain: { title: "Gestión Fragmentada", desc: "Lidiar con plomeros, electricistas y albañiles por separado. Tiempos muertos, culpas cruzadas y falta de control.", icon: Users, color: "#ef4444" },
+    solution: { title: "Facility Management", desc: "Unificamos todos los gremios bajo un solo responsable: EFEMAQ. Resolvemos desde el cambio de una lámpara hasta la refacción del lobby.", icon: Briefcase, color: "#00dfdf" }
   },
   {
     id: 2,
-    pain: {
-      title: "Proveedores Informales",
-      desc: "El 'amigo de confianza' que no hace factura, no tiene seguro y pone en riesgo al consorcio.",
-      icon: FileWarning,
-      color: "#f59e0b"
-    },
-    solution: {
-      title: "Compliance Total",
-      desc: "Técnicos matriculados, Factura A, ART al día y seguro de responsabilidad civil. Cero riesgos.",
-      icon: BadgeCheck,
-      color: "#10b981"
-    }
+    pain: { title: "Riesgo & Compliance", desc: "Proveedores sin papeles, seguros vencidos o facturación informal. Un accidente puede ser una demanda millonaria.", icon: FileWarning, color: "#f59e0b" },
+    solution: { title: "Blindaje Legal", desc: "Personal 100% asegurado (ART + Vida), matriculado y con toda la documentación de Higiene y Seguridad al día. Factura A.", icon: BadgeCheck, color: "#10b981" }
   },
   {
     id: 3,
-    pain: {
-      title: "Gastos Imprevisibles",
-      desc: "Presupuestos que cambian a mitad de obra y expensas que se disparan sin aviso.",
-      icon: Receipt,
-      color: "#ef4444"
-    },
-    solution: {
-      title: "Abono Inteligente",
-      desc: "Mantenimiento preventivo real con costos fijos. Previsibilidad financiera para tu gestión.",
-      icon: Building2,
-      color: "#00dfdf"
-    }
+    pain: { title: "Costos Ocultos", desc: "Presupuestos que se inflan, reparaciones mal hechas que se pagan dos veces y falta de previsión.", icon: TrendingUp, color: "#ef4444" },
+    solution: { title: "Eficiencia Operativa", desc: "Abonos de mantenimiento preventivo y obras con precio cerrado. Auditoría técnica para optimizar el gasto del edificio.", icon: Building2, color: "#00dfdf" }
   }
 ]
 
 export default function AdminSection() {
   const containerRef = useRef<HTMLDivElement>(null)
+  const [isReady, setIsReady] = useState(false)
 
-  // --- SCROLL PHYSICS ---
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start center", "end end"],
-  })
+  // --- SCROLL LOCK NUCLEAR ---
+  useEffect(() => {
+    // 1. Desactivar memoria del navegador
+    if ('scrollRestoration' in window.history) {
+      window.history.scrollRestoration = 'manual';
+    }
+    
+    // 2. Forzar subida instantánea
+    window.scrollTo(0, 0);
+    
+    // 3. Mostrar contenido solo cuando estamos seguros que está arriba
+    const timer = setTimeout(() => {
+      window.scrollTo(0, 0);
+      setIsReady(true); // Recién acá mostramos el contenido
+    }, 100);
 
-  const smoothProgress = useSpring(scrollYProgress, {
-    stiffness: 60,
-    damping: 20,
-    restDelta: 0.001
-  })
+    return () => clearTimeout(timer);
+  }, []);
 
-  // --- ANIMACIONES ---
+  const { scrollYProgress } = useScroll({ target: containerRef, offset: ["start center", "end end"] })
+  const smoothProgress = useSpring(scrollYProgress, { stiffness: 60, damping: 20, restDelta: 0.001 })
+
   const headerY = useTransform(smoothProgress, [0, 0.1], [30, 0])
   const headerOp = useTransform(smoothProgress, [0, 0.1], [0, 1])
   const lineDraw = useTransform(smoothProgress, [0.1, 0.85], ["0%", "100%"])
@@ -88,109 +68,83 @@ export default function AdminSection() {
   const contentOp = useTransform(smoothProgress, [0.75, 0.95], [0, 1])
   const glowOp = useTransform(smoothProgress, [0.8, 1], [0, 0.6])
 
-  // Función scroll local para el CTA que está en la misma página (agregado en page.tsx)
   const scrollToCTA = () => {
     const element = document.getElementById("cta-section");
-    if (element) {
-        element.scrollIntoView({ behavior: 'smooth' });
-    }
+    if (element) element.scrollIntoView({ behavior: 'smooth' });
   };
 
   return (
-    <section id="admin-section" ref={containerRef} className="relative w-full pt-24 pb-32 overflow-hidden bg-[#0a0a0a]">
-      
-      {/* ... [FONDO Y HEADER IGUAL AL ANTERIOR] ... */}
-      <div className="absolute inset-0 z-0 pointer-events-none">
-          <div 
-             className="absolute inset-0 opacity-[0.08]" 
-             style={{ 
-                 backgroundImage: 'linear-gradient(rgba(255,255,255,0.1) 1px, transparent 0), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 0)', 
-                 backgroundSize: '40px 40px' 
-             }} 
-          />
-          <div className="absolute top-1/2 right-0 w-[800px] h-[800px] bg-[#006262] opacity-[0.05] blur-[150px] rounded-full" />
-      </div>
-
-      <div className="relative z-10 max-w-5xl mx-auto px-4">
+    // Opacidad 0 inicial para evitar el "flicker" del footer
+    <div className={`transition-opacity duration-500 ${isReady ? 'opacity-100' : 'opacity-0'}`}>
+        <section id="admin-section" ref={containerRef} className="relative w-full pt-32 pb-32 overflow-hidden bg-[#0a0a0a]">
         
-        <motion.div style={{ y: headerY, opacity: headerOp }} className="text-center mb-16 md:mb-20">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 mb-6 backdrop-blur-md shadow-lg shadow-black/20">
-                 <Building2 size={14} className="text-[#00dfdf]" />
-                 <span className="text-[10px] font-manrope font-bold text-gray-300 tracking-widest uppercase">
-                     Soluciones para Consorcios
-                 </span>
-            </div>
-            <h2 className="font-manrope text-4xl md:text-6xl font-extrabold text-white leading-tight mb-6">
-                Delegá el mantenimiento, <br className="hidden md:block" />
-                <span className="text-[#00dfdf]">recuperá tu tiempo.</span>
-            </h2>
-            <p className="font-inter text-lg md:text-xl text-white max-w-2xl mx-auto leading-relaxed font-medium">
-                Transformamos el caos de reclamos diarios en un sistema 
-                <span className="relative inline-block px-1 text-[#00dfdf]">
-                     ordenado y digital.
-                    <span className="absolute bottom-0 left-0 w-full h-px bg-[#00dfdf]/50" />
-                </span>
-            </p>
-        </motion.div>
-
-        {/* --- ESTRUCTURA CENTRAL (TIMELINE) --- */}
-        <div className="relative flex flex-col items-center">
-            <div className="w-3 h-3 rounded-full bg-[#00dfdf] shadow-[0_0_10px_#00dfdf] mb-0 relative z-20 animate-pulse" />
-            <div className="absolute top-3 bottom-24 left-1/2 w-px bg-white/5 -translate-x-1/2 hidden md:block" />
-            <div className="absolute top-3 bottom-[6rem] left-1/2 w-px -translate-x-1/2 hidden md:block overflow-hidden">
-                <motion.div style={{ height: lineDraw }} className="w-full h-full bg-gradient-to-b from-[#00dfdf] via-[#10b981] to-[#00dfdf] shadow-[0_0_8px_#00dfdf] will-change-transform" />
-            </div>
-
-            <div className="space-y-12 md:space-y-20 w-full mb-12 relative z-10 pt-12 md:pt-16">
-                {ADMIN_PAIN_POINTS.map((item, index) => (
-                    <ComparisonCard key={item.id} item={item} />
-                ))}
-            </div>
-
-            {/* SELLO FINAL */}
-            <div className="relative z-20 mt-4 h-24 w-64 flex items-center justify-center">
-                <svg className="absolute inset-0 w-full h-full overflow-visible">
-                    <motion.rect width="100%" height="100%" rx="12" ry="12" fill="none" stroke="#00dfdf" strokeWidth="1.5" strokeDasharray="8 4" strokeLinecap="round" style={{ pathLength: boxDraw, opacity: boxDraw }} />
-                </svg>
-                <motion.div style={{ opacity: contentOp }} className="flex flex-col items-center gap-2">
-                    <BadgeCheck className="text-[#00dfdf] w-6 h-6" />
-                    <span className="font-manrope font-bold text-white text-sm tracking-widest uppercase">Edificio Blindado</span>
-                </motion.div>
-                <motion.div style={{ opacity: glowOp }} className="absolute inset-0 bg-[#00dfdf]/10 blur-xl rounded-xl -z-10" />
-            </div>
+        {/* FONDO */}
+        <div className="absolute inset-0 z-0 pointer-events-none">
+            <div className="absolute inset-0 opacity-[0.08]" style={{ backgroundImage: 'linear-gradient(rgba(255,255,255,0.1) 1px, transparent 0), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 0)', backgroundSize: '40px 40px' }} />
+            <div className="absolute top-1/2 right-0 w-[800px] h-[800px] bg-[#006262] opacity-[0.05] blur-[150px] rounded-full" />
         </div>
 
-        {/* --- CTA FINAL --- */}
-        <div className="mt-20 flex flex-col items-center gap-6 border-t border-white/10 pt-16">
-            <h3 className="text-2xl md:text-3xl font-manrope font-bold text-white text-center">
-                ¿Listo para modernizar tu administración?
-            </h3>
+        <div className="relative z-10 max-w-5xl mx-auto px-4">
             
-            <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto items-center">
-                {/* Scroll local al CTA de esta misma pagina */}
-                <Button 
-                    onClick={scrollToCTA}
-                    className="h-14 px-10 bg-[#00dfdf] hover:bg-[#00c4c4] text-black font-manrope font-bold text-lg rounded-full shadow-[0_0_20px_rgba(0,223,223,0.3)] group transition-all hover:scale-105 w-full sm:w-auto"
-                >
-                    Cotizar tu solución
-                    <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                </Button>
-                
-                {/* VUELVE AL HOME con ancla */}
-                <Link href="/#audience-funnel" className="w-full sm:w-auto">
-                    <Button 
-                        variant="ghost" 
-                        className="h-14 px-8 text-white border border-white/10 hover:bg-white/10 hover:text-[#00dfdf] rounded-full font-manrope font-medium transition-all w-full"
-                    >
-                        <ArrowUp className="mr-2 w-4 h-4" />
-                        Volver
-                    </Button>
-                </Link>
-            </div>
-        </div>
+            {/* HEADER */}
+            <motion.div style={{ y: headerY, opacity: headerOp }} className="text-center mb-20">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 mb-6 backdrop-blur-md shadow-lg shadow-black/20">
+                    <Building2 size={14} className="text-[#00dfdf]" />
+                    <span className="text-[10px] font-manrope font-bold text-gray-300 tracking-widest uppercase">Administradores & Empresas</span>
+                </div>
+                <h2 className="font-manrope text-4xl md:text-6xl font-extrabold text-white leading-tight mb-6">
+                    Centralizá la operación, <br className="hidden md:block" />
+                    <span className="text-[#00dfdf]">eliminá el riesgo.</span>
+                </h2>
+                <p className="font-inter text-lg md:text-xl text-white max-w-3xl mx-auto leading-relaxed font-medium">
+                    Soluciones técnicas integrales para consorcios, oficinas y plantas industriales. <br className="hidden md:block" />
+                    Transformamos el mantenimiento correctivo en una <span className="relative inline-block px-1 text-[#00dfdf]">estrategia de valor.<span className="absolute bottom-0 left-0 w-full h-px bg-[#00dfdf]/50" /></span>
+                </p>
+            </motion.div>
 
-      </div>
-    </section>
+            {/* TIMELINE */}
+            <div className="relative flex flex-col items-center">
+                <div className="w-3 h-3 rounded-full bg-[#00dfdf] shadow-[0_0_10px_#00dfdf] mb-0 relative z-20 animate-pulse" />
+                <div className="absolute top-3 bottom-24 left-1/2 w-px bg-white/5 -translate-x-1/2 hidden md:block" />
+                <div className="absolute top-3 bottom-[6rem] left-1/2 w-px -translate-x-1/2 hidden md:block overflow-hidden">
+                    <motion.div style={{ height: lineDraw }} className="w-full h-full bg-gradient-to-b from-[#00dfdf] via-[#10b981] to-[#00dfdf] shadow-[0_0_8px_#00dfdf] will-change-transform" />
+                </div>
+
+                <div className="space-y-12 md:space-y-20 w-full mb-12 relative z-10 pt-16">
+                    {ADMIN_PAIN_POINTS.map((item, index) => (<ComparisonCard key={item.id} item={item} />))}
+                </div>
+
+                {/* SELLO */}
+                <div className="relative z-20 mt-4 h-24 w-64 flex items-center justify-center">
+                    <svg className="absolute inset-0 w-full h-full overflow-visible">
+                        <motion.rect width="100%" height="100%" rx="12" ry="12" fill="none" stroke="#00dfdf" strokeWidth="1.5" strokeDasharray="8 4" strokeLinecap="round" style={{ pathLength: boxDraw, opacity: boxDraw }} />
+                    </svg>
+                    <motion.div style={{ opacity: contentOp }} className="flex flex-col items-center gap-2">
+                        <BadgeCheck className="text-[#00dfdf] w-6 h-6" />
+                        <span className="font-manrope font-bold text-white text-sm tracking-widest uppercase">Operación Blindada</span>
+                    </motion.div>
+                    <motion.div style={{ opacity: glowOp }} className="absolute inset-0 bg-[#00dfdf]/10 blur-xl rounded-xl -z-10" />
+                </div>
+            </div>
+
+            {/* CTA FINAL */}
+            <div className="mt-20 flex flex-col items-center gap-6 border-t border-white/10 pt-16">
+                <h3 className="text-2xl md:text-3xl font-manrope font-bold text-white text-center px-4">¿Tu edificio o empresa necesita un cambio?</h3>
+                <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto items-center px-6">
+                    <Button onClick={scrollToCTA} className="h-14 px-10 bg-[#00dfdf] hover:bg-[#00c4c4] text-black font-manrope font-bold text-lg rounded-full shadow-[0_0_20px_rgba(0,223,223,0.3)] group transition-all hover:scale-105 w-full sm:w-auto">
+                        Cotizar Solución Corporativa <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                    </Button>
+                    <Link href="/#audience-funnel" className="w-full sm:w-auto">
+                        <Button variant="ghost" className="h-14 px-8 text-white border border-white/10 hover:bg-white/5 hover:text-[#00dfdf] rounded-full font-manrope font-medium transition-all w-full">
+                            <ArrowUp className="mr-2 w-4 h-4" /> Volver
+                        </Button>
+                    </Link>
+                </div>
+            </div>
+
+        </div>
+        </section>
+    </div>
   )
 }
 
@@ -210,7 +164,7 @@ function ComparisonCard({ item }: { item: any }) {
             <motion.div style={{ opacity, x: xLeft }} className="relative flex flex-col items-end text-right">
                 <div className="p-5 rounded-xl bg-[#121212]/80 border border-white/5 w-full md:max-w-md hover:bg-[#161616] hover:border-red-500/20 transition-all duration-500 hover:-translate-y-1 hover:shadow-lg">
                     <div className="flex items-center justify-end gap-2 mb-2 opacity-80">
-                        <span className="text-[10px] font-manrope font-bold text-red-400 uppercase tracking-wider">Problema</span>
+                        <span className="text-[10px] font-manrope font-bold text-red-400 uppercase tracking-wider">El Desafío</span>
                         <item.pain.icon size={14} className="text-red-500" />
                     </div>
                     <h3 className="text-lg font-manrope font-bold text-gray-200 mb-1">{item.pain.title}</h3>
