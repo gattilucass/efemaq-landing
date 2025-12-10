@@ -1,221 +1,191 @@
 "use client"
 
-import { useRef } from "react"
+import { useRef, useState, useEffect } from "react"
 import { motion, useScroll, useTransform, useSpring } from "framer-motion"
 import Image from "next/image"
 import { 
   Award, 
   ShieldCheck, 
   ArrowRight, 
-  PenTool,
   HardHat,
-  Ear
+  Ear,
+  ClipboardList
 } from 'lucide-react'
 import { Button } from "@/components/ui/button"
+import { useIsMobile } from "@/hooks/use-mobile"
 
 export default function AboutUs() {
   const containerRef = useRef<HTMLElement>(null)
+  const isMobile = useIsMobile()
+  const [mounted, setMounted] = useState(false)
 
-  // --- CONFIG SCROLL ---
+  useEffect(() => setMounted(true), [])
+
+  // --- CONFIG SCROLL OPTIMIZADA ---
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start center", "end end"],
   })
 
-  const smoothScroll = useSpring(scrollYProgress, {
-    stiffness: 50,
-    damping: 20,
-    restDelta: 0.001
-  })
+  // Física ligera para móvil
+  const springConfig = isMobile 
+    ? { stiffness: 100, damping: 30, restDelta: 0.01 }
+    : { stiffness: 50, damping: 20, restDelta: 0.001 }
+
+  const smoothScroll = useSpring(scrollYProgress, springConfig)
 
   // --- ANIMACIONES ---
-  const parallaxImg = useTransform(smoothScroll, [0, 1], [0, 80])
+  const parallaxImg = useTransform(smoothScroll, [0, 1], [0, 50]) // Menos recorrido para evitar cortes
   
-  // Textos Columna Derecha
-  const titleY = useTransform(smoothScroll, [0, 0.2], [40, 0])
-  const titleOp = useTransform(smoothScroll, [0, 0.25], [0, 1])
-  
-  const textY = useTransform(smoothScroll, [0.1, 0.3], [40, 0])
-  const textOp = useTransform(smoothScroll, [0.1, 0.35], [0, 1])
-  
-  const statsY = useTransform(smoothScroll, [0.2, 0.4], [40, 0])
-  const statsOp = useTransform(smoothScroll, [0.2, 0.45], [0, 1])
-  
-  const ctaY = useTransform(smoothScroll, [0.3, 0.5], [40, 0])
-  const ctaOp = useTransform(smoothScroll, [0.3, 0.55], [0, 1])
+  // Textos Columna Derecha (Aparición secuencial suave)
+  const fadeUpProps = {
+    initial: { opacity: 0, y: 30 },
+    whileInView: { opacity: 1, y: 0 },
+    viewport: { once: true, margin: "-10%" },
+    transition: { duration: 0.8, ease: "easeOut" }
+  }
 
-  // Subrayado técnico
-  const lineDraw = useTransform(smoothScroll, [0.15, 0.35], [0, 1])
-
-  // --- ANIMACIÓN FRASE CENTRAL Y FIRMA ---
-  const quoteContainerY = useTransform(smoothScroll, [0.6, 0.8], [50, 0])
-  const quoteContainerOp = useTransform(smoothScroll, [0.6, 0.8], [0, 1])
+  // Animación Frase Final
+  const quoteOpacity = useTransform(smoothScroll, [0.6, 0.8], [0, 1])
+  const quoteY = useTransform(smoothScroll, [0.6, 0.8], [40, 0])
   const signatureDraw = useTransform(smoothScroll, [0.75, 0.95], [0, 1])
 
   return (
     <section 
-    id="about-us"
+        id="about-us"
         ref={containerRef} 
-        className="relative w-full py-24 lg:py-32 px-6 overflow-hidden bg-[#0a0a0a]"
+        // Padding ajustado para que no choque con navbar ni corte en laptops
+        className="relative w-full py-20 lg:py-24 px-6 overflow-hidden bg-[#0a0a0a]"
     >
         {/* FONDO SUTIL */}
         <div className="absolute inset-0 z-0 pointer-events-none">
             <div 
-               className="absolute inset-0 opacity-[0.1]" 
+               className="absolute inset-0 opacity-[0.08]" 
                style={{ 
                    backgroundImage: 'linear-gradient(rgba(255,255,255,0.1) 1px, transparent 0), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 0)', 
                    backgroundSize: '40px 40px' 
                }} 
             />
-            {/* Glow ambiental derecho */}
-            <div className="absolute top-1/4 right-[-5%] w-[500px] h-[500px] bg-[#006262] opacity-[0.06] blur-[100px] rounded-full" />
-            {/* Glow ambiental central-abajo para la frase */}
-            <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-[#00dfdf] opacity-[0.03] blur-[150px] rounded-full" />
+            {/* Glows optimizados */}
+            <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-[#006262] opacity-[0.05] blur-[120px] rounded-full pointer-events-none" />
+            <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-[#00dfdf] opacity-[0.02] blur-[150px] rounded-full pointer-events-none" />
         </div>
 
         <div className="relative z-10 max-w-6xl mx-auto">
             
-            {/* GRID PRINCIPAL (IMAGEN + TEXTO) */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-start mb-24">
+            {/* GRID PRINCIPAL */}
+            {/* gap reducido para pantallas chicas (gap-12 en vez de 24) */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center mb-20">
                 
-                {/* [COLUMNA IZQ - IMAGEN PARALLAX] */}
-                <div className="relative lg:sticky lg:top-32 h-fit w-full">
-                    <motion.div style={{ y: parallaxImg }} className="relative">
+                {/* [COLUMNA IZQ - IMAGEN + OVERLAY] */}
+                <div className="relative h-fit w-full">
+                    <motion.div style={{ y: !isMobile ? parallaxImg : 0 }} className="relative">
                         
-                        <div className="relative w-full aspect-[4/5] rounded-2xl overflow-hidden border border-white/10 bg-[#101010] shadow-2xl group">
-                             {/* Esquinas Técnicas */}
-                             <div className="absolute top-0 left-0 w-16 h-16 border-t-2 border-l-2 border-[#00dfdf]/30 rounded-tl-xl z-20" />
-                             <div className="absolute bottom-0 right-0 w-16 h-16 border-b-2 border-r-2 border-[#00dfdf]/30 rounded-br-xl z-20" />
-
+                        {/* Aspect Ratio ajustado para ser más compacto */}
+                        <div className="relative w-full aspect-[4/5] md:aspect-[1/1] lg:aspect-[4/5] rounded-2xl overflow-hidden border border-white/10 bg-[#101010] shadow-2xl group">
+                             
+                             {/* Imagen Técnica */}
                              <Image
-                               src="/efemaq-team-professional-office.jpg"
-                               alt="Ingenieros de EFEMAQ analizando planos"
+                               src="/efemaq-team-professional-office.jpg" // Recomendación: Cambiar por foto de plano/obra/técnico midiendo
+                               alt="Ingeniería y Procesos EFEMAQ"
                                fill
-                               className="object-cover opacity-70 group-hover:opacity-90 group-hover:scale-105 transition-all duration-1000 ease-out"
+                               className="object-cover opacity-80 group-hover:opacity-90 group-hover:scale-105 transition-all duration-1000 ease-out"
                              />
-                             
-                             <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-transparent to-transparent opacity-90" />
-                             
-                             {/* Badge Flotante */}
-                             <div className="absolute bottom-8 left-8 right-8">
-                                 <div className="bg-[#0a0a0a]/80 backdrop-blur-lg border border-white/10 p-5 rounded-xl flex items-center justify-between shadow-lg">
-                                     <div>
-                                         <p className="text-white font-manrope font-bold text-base">Departamento Técnico</p>
-                                         <p className="text-[#00dfdf] text-[10px] font-manrope font-bold tracking-[0.2em] uppercase mt-1">
-                                            Certificación ISO
-                                         </p>
-                                     </div>
-                                     <div className="w-12 h-12 rounded-full bg-[#00dfdf] flex items-center justify-center text-black shadow-[0_0_20px_rgba(0,223,223,0.3)]">
-                                        <PenTool size={20} strokeWidth={2.5} />
-                                     </div>
+                             <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-transparent to-transparent opacity-80" />
+
+                             {/* BADGE SUPERIOR (Protocolos) */}
+                             <div className="absolute top-6 left-6 right-6 flex justify-start">
+                                 <div className="bg-black/60 backdrop-blur-md border border-white/10 px-4 py-2 rounded-lg flex items-center gap-3">
+                                     <ClipboardList size={16} className="text-[#00dfdf]" />
+                                     <span className="text-white font-manrope font-bold text-xs tracking-widest uppercase">
+                                         PROTOCOLOS TÉCNICOS
+                                     </span>
                                  </div>
                              </div>
+                             
+                             {/* CTA "SUMATE" (OVERLAY INFERIOR) */}
+                             <div className="absolute bottom-0 left-0 w-full p-6">
+                                 <div className="bg-[#151515]/90 border border-white/10 p-5 rounded-xl flex items-center justify-between shadow-xl backdrop-blur-md transition-all hover:bg-[#1a1a1a]">
+                                     <div className="flex items-center gap-4">
+                                         <div className="w-10 h-10 rounded-full bg-[#00dfdf] flex items-center justify-center text-black shrink-0 shadow-[0_0_15px_rgba(0,223,223,0.4)]">
+                                            <HardHat size={20} strokeWidth={2.5} />
+                                         </div>
+                                         <div className="text-left">
+                                             <span className="block font-manrope font-bold text-white text-sm md:text-base leading-tight">
+                                                 Sumate al equipo
+                                             </span>
+                                             <span className="block text-[10px] text-gray-400 mt-0.5 font-inter uppercase tracking-wide">
+                                                 Buscamos Expertos
+                                             </span>
+                                         </div>
+                                     </div>
+                                     <Button 
+                                        size="icon"
+                                        className="rounded-full bg-white/10 hover:bg-[#00dfdf] hover:text-black text-white transition-all border border-white/10 w-10 h-10"
+                                     >
+                                        <ArrowRight size={18} />
+                                     </Button>
+                                 </div>
+                             </div>
+
                         </div>
                     </motion.div>
                 </div>
 
-                {/* [COLUMNA DER - RELATO] */}
-                <div className="flex flex-col space-y-12 pt-4">
+                {/* [COLUMNA DER - RELATO TÉCNICO] */}
+                <div className="flex flex-col space-y-10 lg:pl-8">
                     
-                    {/* 1. HEADER */}
-                    <motion.div style={{ y: titleY, opacity: titleOp }}>
+                    {/* 1. HEADER REFINADO */}
+                    <motion.div {...fadeUpProps}>
                         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 mb-6">
                              <div className="w-1.5 h-1.5 rounded-full bg-[#00dfdf] animate-pulse" />
                              <span className="text-[10px] font-manrope font-bold text-gray-300 tracking-widest uppercase">
-                                 ADN EFEMAQ
+                                 TRANSFORMAMOS MANTENIMIENTO EN PRECISIÓN
                              </span>
                         </div>
                         
-                        <h2 className="font-manrope text-4xl md:text-5xl lg:text-6xl font-extrabold text-white leading-[1.05] tracking-tight">
-                            No es improvisación.<br />
-                            <motion.span 
-                                className="text-transparent bg-clip-text bg-gradient-to-r from-[#006262] via-[#00dfdf] to-[#006262] bg-[length:200%_auto]"
-                                animate={{ backgroundPosition: ["0% center", "200% center"] }}
-                                transition={{ duration: 6, repeat: Infinity, ease: "linear" }}
-                            >
-                                Es ingeniería.
-                            </motion.span>
+                        <h2 className="font-manrope text-3xl md:text-5xl font-extrabold text-white leading-[1.1] tracking-tight">
+                            No es improvisación,<br />
+                            <span className="text-[#00dfdf]">
+                                Es profesionalismo.
+                            </span>
                         </h2>
                     </motion.div>
 
-                    {/* 2. TEXTO + SUBRAYADO */}
-                    <motion.div style={{ y: textY, opacity: textOp }} className="space-y-6">
-                        <h3 className="text-2xl md:text-3xl font-manrope font-medium text-gray-200 leading-snug">
-                            Transformamos el mantenimiento en una{' '}
-                            <span className="relative inline-block text-white font-bold">
-                                ciencia exacta
-                                {/* Línea Recta y Precisa */}
-                                <svg className="absolute w-full h-2 -bottom-1 left-0 overflow-visible" viewBox="0 0 100 10" preserveAspectRatio="none">
-                                    <motion.path 
-                                        d="M 0 5 L 100 5" 
-                                        fill="none" 
-                                        stroke="#00dfdf" 
-                                        strokeWidth="2" 
-                                        strokeLinecap="square"
-                                        style={{ pathLength: lineDraw }}
-                                    />
-                                </svg>
-                            </span>
-                            .
-                        </h3>
-                        <div className="pl-6 border-l-2 border-[#00dfdf]/20 space-y-4">
-                            <p className="font-inter text-lg text-gray-400 leading-relaxed">
-                                Terminamos con la era de los "parches" y soluciones temporales. En EFEMAQ, cada intervención sigue un <strong>protocolo estricto</strong> de diagnóstico, ejecución y control de calidad.
+                    {/* 2. TEXTO TÉCNICO */}
+                    <motion.div {...fadeUpProps} transition={{ delay: 0.1, duration: 0.8 }} className="space-y-6">
+                        <div className="pl-6 border-l-2 border-[#00dfdf]/30 space-y-4">
+                            <p className="font-inter text-lg text-gray-300 leading-relaxed">
+                                Dejamos atrás las "improvisaciones". Aplicamos un <strong>proceso claro y estandarizado</strong> que define qué hacer, cómo hacerlo y cómo validar el resultado, asegurando soluciones que perduran.
                             </p>
                         </div>
                     </motion.div>
 
-                    {/* 3. STATS */}
+                    {/* 3. STATS (Compactos) */}
                     <motion.div 
-                        style={{ y: statsY, opacity: statsOp }}
-                        className="grid grid-cols-2 gap-4"
+                        {...fadeUpProps} 
+                        transition={{ delay: 0.2, duration: 0.8 }}
+                        className="grid grid-cols-2 gap-4 pt-2"
                     >
-                        <div className="p-5 rounded-xl bg-[#151515] border border-white/5 hover:border-[#00dfdf]/30 transition-all group">
-                            <Award className="w-6 h-6 text-gray-500 mb-3 group-hover:text-[#00dfdf] transition-colors" />
-                            <div className="text-3xl font-manrope font-bold text-white">+15</div>
-                            <p className="text-gray-500 text-xs font-inter mt-1">Años de trayectoria.</p>
+                        <div className="p-4 rounded-xl bg-[#151515] border border-white/5 hover:border-[#00dfdf]/30 transition-all group">
+                            <Award className="w-5 h-5 text-gray-500 mb-2 group-hover:text-[#00dfdf] transition-colors" />
+                            <div className="text-2xl font-manrope font-bold text-white">+15 Años</div>
+                            <p className="text-gray-500 text-xs font-inter">Trayectoria comprobable</p>
                         </div>
-                        <div className="p-5 rounded-xl bg-[#151515] border border-white/5 hover:border-[#00dfdf]/30 transition-all group">
-                            <ShieldCheck className="w-6 h-6 text-gray-500 mb-3 group-hover:text-[#00dfdf] transition-colors" />
-                            <div className="text-3xl font-manrope font-bold text-white">100%</div>
-                            <p className="text-gray-500 text-xs font-inter mt-1">Trabajos con garantía.</p>
-                        </div>
-                    </motion.div>
-
-                    {/* 4. CTA TALENTO */}
-                    <motion.div style={{ y: ctaY, opacity: ctaOp }} className="pt-2">
-                        <div className="p-1 rounded-xl bg-gradient-to-r from-[#00dfdf]/20 to-transparent">
-                            <Button 
-                                className="w-full h-20 bg-[#0a0a0a] hover:bg-[#111] border border-[#00dfdf]/30 hover:border-[#00dfdf] text-white group relative overflow-hidden rounded-lg transition-all duration-300"
-                            >
-                                <div className="absolute inset-0 bg-[#00dfdf]/5 group-hover:bg-[#00dfdf]/10 transition-colors" />
-                                <div className="relative flex items-center justify-between w-full px-4 md:px-6">
-                                    <div className="flex items-center gap-4">
-                                        <div className="w-12 h-12 rounded-full bg-[#00dfdf] flex items-center justify-center text-black shrink-0">
-                                            <HardHat size={22} strokeWidth={2.5} />
-                                        </div>
-                                        <div className="text-left">
-                                            <span className="block font-manrope font-bold text-lg leading-tight group-hover:text-[#00dfdf] transition-colors">
-                                                Sumate al equipo de expertos
-                                            </span>
-                                            <span className="block text-xs text-gray-400 mt-1 font-inter text-wrap max-w-[200px] md:max-w-none">
-                                                Buscamos técnicos de élite.
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <ArrowRight className="text-gray-500 group-hover:text-[#00dfdf] group-hover:translate-x-1 transition-all shrink-0" />
-                                </div>
-                            </Button>
+                        <div className="p-4 rounded-xl bg-[#151515] border border-white/5 hover:border-[#00dfdf]/30 transition-all group">
+                            <ShieldCheck className="w-5 h-5 text-gray-500 mb-2 group-hover:text-[#00dfdf] transition-colors" />
+                            <div className="text-2xl font-manrope font-bold text-white">100%</div>
+                            <p className="text-gray-500 text-xs font-inter">Garantía escrita</p>
                         </div>
                     </motion.div>
 
                 </div>
             </div>
 
-            {/* --- BLOQUE FRASE CENTRAL + FIRMA REALISTA --- */}
+            {/* --- BLOQUE FRASE CENTRAL (Full Width & Centrado) --- */}
             <motion.div 
-                style={{ y: quoteContainerY, opacity: quoteContainerOp }}
-                className="relative w-full border-t border-white/10 pt-20 flex flex-col items-center text-center"
+                style={{ y: quoteY, opacity: quoteOpacity }}
+                className="relative w-full border-t border-white/10 pt-16 flex flex-col items-center text-center"
             >
                 <div className="mb-6 flex justify-center">
                     <div className="w-12 h-12 rounded-full bg-[#00dfdf]/10 border border-[#00dfdf]/30 flex items-center justify-center text-[#00dfdf]">
@@ -223,20 +193,19 @@ export default function AboutUs() {
                     </div>
                 </div>
 
-                {/* TAMAÑO DE TEXTO REDUCIDO Y OPTIMIZADO */}
-                <blockquote className="font-manrope font-medium text-xl md:text-2xl text-white leading-snug max-w-3xl mx-auto mb-10 px-4">
-                    "La tranquilidad no se logra con un mensaje de 'ya voy'. Se logra con un sistema que te dice quién va, cuándo llega y te muestra cómo quedó. 
-                    <br className="hidden md:block" />
-                    <span className="text-gray-500 mt-2 block text-lg md:text-xl">
-                        Pero sobre todo, se logra <strong className="text-[#00dfdf]">escuchando y entendiendo</strong> tu visión."
+                <blockquote className="font-manrope font-medium text-lg md:text-2xl text-white leading-relaxed max-w-4xl mx-auto mb-10 px-4">
+                    "La tranquilidad aparece cuando alguien entiende lo que necesitás y actúa con criterio y responsabilidad. No es cuestión de decir 'ya voy', sino de un proceso claro que informa, acompaña y demuestra resultados.
+                    <br className="block mt-4" />
+                    <span className="text-gray-400 block text-base md:text-xl">
+                        Ahí se construye la confianza: con <strong className="text-[#00dfdf]">escucha, claridad y profesionalismo.</strong>"
                     </span>
                 </blockquote>
 
-               {/* FIRMA "Fernando" (Rediseño: Realista, trazo continuo y detallado) */}
-                <div className="flex flex-col items-center gap-2 mt-6">
+                {/* FIRMA "Fernando" (Rediseño Realista) */}
+                <div className="flex flex-col items-center gap-2 mt-2">
                     <svg width="240" height="80" viewBox="0 0 240 80" fill="none" className="overflow-visible">
                         
-                        {/* 1. CUERPO DE LA F (Trazo vertical con carácter) */}
+                        {/* 1. CUERPO DE LA F */}
                         <motion.path 
                             d="M 55 10 C 45 8, 35 20, 40 40 C 42 55, 38 65, 35 70" 
                             stroke="#00dfdf" 
@@ -246,8 +215,7 @@ export default function AboutUs() {
                             style={{ pathLength: signatureDraw }}
                         />
                         
-                        {/* 2. NOMBRE COMPLETO (Un solo trazo fluido desde el cruce de la F) */}
-                        {/* Cruza la F -> rulo de la 'e' -> garabatos de 'rnando' más chicos y rápidos */}
+                        {/* 2. NOMBRE COMPLETO FLUIDO */}
                         <motion.path 
                             d="M 20 38 C 35 36, 55 36, 60 38 C 65 30, 72 30, 70 40 C 75 35, 80 42, 85 40 C 90 38, 95 42, 100 40 C 105 35, 110 30, 112 45 C 118 40, 125 40, 130 42 C 135 38, 140 45, 150 40" 
                             stroke="#00dfdf" 
@@ -257,7 +225,7 @@ export default function AboutUs() {
                             style={{ pathLength: signatureDraw }}
                         />
 
-                        {/* 3. RÚBRICA FINAL (Subrayado rápido y corto) */}
+                        {/* 3. RÚBRICA FINAL */}
                         <motion.path 
                             d="M 45 60 Q 100 70, 160 55"
                             stroke="#00dfdf" 

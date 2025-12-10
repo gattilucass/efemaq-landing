@@ -1,35 +1,43 @@
 "use client"
 
-import { useRef, useState } from "react"
+import { useRef, useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
-import { motion, useScroll, useTransform, useSpring } from "framer-motion"
+import { motion, useScroll, useTransform, useSpring, type Variants } from "framer-motion"
 import { 
   Building2, 
   Home, 
   ArrowRight, 
   ChevronDown, 
   Store, 
-  Loader2 // Icono de carga
+  Loader2 
 } from 'lucide-react'
+import { useIsMobile } from "@/hooks/use-mobile"
 
 export default function AudienceFunnel() {
   const containerRef = useRef<HTMLElement>(null)
   const router = useRouter()
+  const isMobile = useIsMobile()
+  const [mounted, setMounted] = useState(false)
   
-  // Estado para manejar cual botón está cargando ("admin" | "particular" | null)
+  // Estado para manejar cual botón está cargando
   const [loadingPath, setLoadingPath] = useState<string | null>(null)
 
-  // --- CONFIG SCROLL ---
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  // --- CONFIG SCROLL OPTIMIZADA ---
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start end", "end start"],
   })
 
-  const smoothScroll = useSpring(scrollYProgress, {
-    stiffness: 40,
-    damping: 20,
-    restDelta: 0.001
-  })
+  // Física ligera para móvil (Linear) vs Pesada para PC (Spring)
+  const springConfig = isMobile 
+    ? { stiffness: 200, damping: 30, restDelta: 0.01 }
+    : { stiffness: 40, damping: 20, restDelta: 0.001 }
+
+  const smoothScroll = useSpring(scrollYProgress, springConfig)
 
   // --- TRANSFORMACIONES ---
   const titleY = useTransform(smoothScroll, [0.2, 1], [0, -100])
@@ -40,24 +48,17 @@ export default function AudienceFunnel() {
   const bridgeY = useTransform(smoothScroll, [0.25, 0.5], [100, 0]) 
   const lineGrow = useTransform(smoothScroll, [0.4, 0.8], ["0%", "100%"]) 
 
+  // Animación de flotación (CSS Keyframes preferible en móvil, pero mantenemos framer optimizado)
   const floatingTransition = { 
     duration: 6, 
     repeat: Number.POSITIVE_INFINITY, 
     ease: "easeInOut" 
   } as const
 
-  const loadTransition = { 
-    duration: 0.8, 
-    ease: [0.16, 1, 0.3, 1] 
-  } as const
-
-  // --- LÓGICA DE NAVEGACIÓN CON FEEDBACK ---
+  // --- LÓGICA DE NAVEGACIÓN ---
   const handleNavigation = (path: string) => {
-    if (loadingPath) return; // Evitar doble click
+    if (loadingPath) return;
     setLoadingPath(path);
-    
-    // Pequeño timeout artificial opcional si carga muy rápido, 
-    // pero Next se encarga. El estado cambia la UI instantáneamente.
     router.push(path);
   };
 
@@ -68,23 +69,24 @@ export default function AudienceFunnel() {
         className="relative w-full pt-24 pb-64 md:pt-32 md:pb-72 px-4 overflow-hidden bg-[#0a0a0a]"
     >
       
-      {/* FONDO */}
-      <div className="absolute inset-0 z-0 pointer-events-none">
+      {/* FONDO OPTIMIZADO */}
+      <div className="absolute inset-0 z-0 pointer-events-none select-none">
          <div 
-            className="absolute inset-0 opacity-[0.1]" 
+            className="absolute inset-0 opacity-[0.05] md:opacity-[0.1]" 
             style={{ 
                 backgroundImage: 'linear-gradient(rgba(255,255,255,0.1) 1px, transparent 0), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 0)', 
                 backgroundSize: '40px 40px' 
             }} 
          />
-         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[400px] bg-[#006262] opacity-10 blur-[150px] rounded-full pointer-events-none" />
+         {/* Glow estático para evitar repaints costosos */}
+         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[400px] bg-[#006262] opacity-10 blur-[100px] md:blur-[150px] rounded-full pointer-events-none will-change-transform" />
       </div>
 
       <div className="relative z-10 max-w-7xl mx-auto flex flex-col items-center">
         
         {/* --- HEADER --- */}
         <motion.div 
-            className="flex flex-col items-center text-center mb-16 relative z-20"
+            className="flex flex-col items-center text-center mb-16 relative z-20 will-change-transform"
             style={{ opacity: titleOpacity, y: titleY }}
         >
             <div className="flex items-center gap-3 px-4 py-1.5 mb-5 rounded-full bg-white/5 border border-white/10 backdrop-blur-sm shadow-lg shadow-[#006262]/10">
@@ -92,8 +94,9 @@ export default function AudienceFunnel() {
                     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#00dfdf] opacity-75"></span>
                     <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-[#00dfdf]"></span>
                  </span>
+                 {/* CAMBIO SOLICITADO: "Acceso al Sistema" -> "Explorar" */}
                  <span className="text-[10px] md:text-xs font-manrope text-white tracking-widest uppercase font-bold">
-                    Acceso al Sistema
+                    Explorar
                  </span>
             </div>
 
@@ -117,17 +120,21 @@ export default function AudienceFunnel() {
         </motion.div>
 
 
-        {/* --- CARDS --- */}
+        {/* --- CARDS (Optimizadas con will-change) --- */}
         <motion.div 
-            className="grid grid-cols-1 lg:grid-cols-2 gap-8 w-full px-2 lg:px-8 items-stretch"
+            className="grid grid-cols-1 lg:grid-cols-2 gap-8 w-full px-2 lg:px-8 items-stretch will-change-transform"
             style={{ y: cardsY }}
         >
             
             {/* CARD 1 (ADMINS & EMPRESAS) */}
-            <motion.div animate={{ y: [0, -10, 0] }} transition={floatingTransition} className="h-full">
+            <motion.div 
+                animate={!isMobile ? { y: [0, -10, 0] } : undefined} // Desactivar flotación en móvil si es muy pesado
+                transition={floatingTransition} 
+                className="h-full"
+            >
                 <div
                     onClick={() => handleNavigation("/para-administradores")}
-                    className={`group h-full relative flex flex-col overflow-hidden rounded-2xl bg-[#121212] border transition-all duration-500 shadow-2xl cursor-pointer
+                    className={`group h-full relative flex flex-col overflow-hidden rounded-2xl bg-[#121212] border transition-all duration-300 shadow-2xl cursor-pointer
                         ${loadingPath === "/para-administradores" ? "border-[#00dfdf] scale-[0.98] opacity-80" : "border-white/10 hover:border-[#00dfdf]/60 hover:shadow-[#00dfdf]/10"}
                     `}
                 >
@@ -158,16 +165,21 @@ export default function AudienceFunnel() {
                            </div>
                         </div>
                      </div>
-                     <div className="absolute inset-0 bg-gradient-to-b from-[#00dfdf]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+                     {/* Gradiente estático en lugar de animado para performance */}
+                     <div className="absolute inset-0 bg-gradient-to-b from-[#00dfdf]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
                 </div>
             </motion.div>
 
 
             {/* CARD 2 (PARTICULAR) */}
-            <motion.div animate={{ y: [0, -12, 0] }} transition={{ ...floatingTransition, delay: 0.8 }} className="h-full">
+            <motion.div 
+                animate={!isMobile ? { y: [0, -12, 0] } : undefined} 
+                transition={{ ...floatingTransition, delay: 0.8 }} 
+                className="h-full"
+            >
                 <div
                     onClick={() => handleNavigation("/para-particulares")}
-                    className={`group h-full relative flex flex-col overflow-hidden rounded-2xl bg-[#121212] border transition-all duration-500 shadow-2xl cursor-pointer
+                    className={`group h-full relative flex flex-col overflow-hidden rounded-2xl bg-[#121212] border transition-all duration-300 shadow-2xl cursor-pointer
                         ${loadingPath === "/para-particulares" ? "border-[#00dfdf] scale-[0.98] opacity-80" : "border-white/10 hover:border-[#00dfdf]/60 hover:shadow-[#00dfdf]/10"}
                     `}
                 >
@@ -203,7 +215,7 @@ export default function AudienceFunnel() {
                            </div>
                         </div>
                      </div>
-                     <div className="absolute inset-0 bg-gradient-to-b from-[#00dfdf]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+                     <div className="absolute inset-0 bg-gradient-to-b from-[#00dfdf]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
                 </div>
             </motion.div>
 
@@ -211,15 +223,14 @@ export default function AudienceFunnel() {
 
       </div>
 
-      {/* --- CONNECTOR AL BOT --- */}
+      {/* --- CONNECTOR AL BOT (LIMPIO) --- */}
       <motion.div 
-          className="absolute bottom-0 left-0 w-full flex flex-col items-center justify-end z-0 pointer-events-none"
+          className="absolute bottom-0 left-0 w-full flex flex-col items-center justify-end z-0 pointer-events-none will-change-transform"
           style={{ opacity: bridgeOpacity, y: bridgeY }}
       >
           <div className="flex flex-col items-center gap-3 mb-2">
-               <span className="text-[#00dfdf] text-xs font-mono font-bold tracking-widest uppercase bg-black/50 px-2 py-1 rounded border border-[#00dfdf]/20">
-                  Explorar
-               </span>
+               {/* ELIMINADO EL BADGE "EXPLORAR/PRÓXIMO PASO" AQUÍ */}
+               
                <h4 className="text-white font-manrope text-xl md:text-2xl font-medium text-center px-4">
                   El motor de todo esto es <span className="text-[#00dfdf] font-bold">invisible</span>.
                </h4>

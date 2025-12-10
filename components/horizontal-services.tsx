@@ -12,12 +12,12 @@ import {
   FileSearch, 
   ShieldAlert,
   Briefcase,
-  ClipboardList // Nuevo icono para el botón
+  ClipboardList 
 } from 'lucide-react'
 import { Button } from "@/components/ui/button"
 import { useIsMobile } from "@/hooks/use-mobile"
 
-// --- DATA DE SERVICIOS (SEO OPTIMIZED) ---
+// --- DATA DE SERVICIOS ---
 const SERVICES = [
   {
     id: "01",
@@ -42,9 +42,9 @@ const SERVICES = [
   {
     id: "03",
     title: "Obras y Reformas",
-    subtitle: "Albañilería y Pintura",
+    subtitle: "Albañilería, Pintura y Gas",
     description: "Renovamos tus espacios con calidad. Desde arreglar una filtración en la terraza hasta pintar el hall de entrada o remodelar una oficina.",
-    features: ["Impermeabilización de Techos", "Pintura de Altura y Fachadas", "Reparaciones de Albañilería", "Instalaciones Sanitarias"],
+    features: ["Impermeabilización de Techos", "Pintura de Altura y Fachadas", "Reparaciones de Albañilería", "Instalaciones Sanitarias y Gas"],
     icon: Hammer,
     color: "#f59e0b", // Amber
     image: "/modern-office-building-maintenance.jpg"
@@ -53,8 +53,8 @@ const SERVICES = [
     id: "04",
     title: "Urgencias 24/7",
     subtitle: "Guardia Técnica Activa",
-    description: "Cuando pasa algo grave, estamos ahí. Cortes de luz totales, caños rotos o fallas críticas que no pueden esperar a mañana.",
-    features: ["Electricistas de Guardia", "Plomería de Urgencia", "Reparación de Aires", "Riesgo Eléctrico/Gas"],
+    description: "Cuando pasa algo grave, estamos ahí. Cortes de luz totales, caños rotos, inundaciones o fallas críticas que no pueden esperar a mañana.",
+    features: ["Electricistas de Guardia", "Plomería de Urgencia", "Reparación de Aires", "Riesgo Eléctrico"],
     icon: Zap,
     color: "#ef4444", // Red
     image: "/efemaq-team-professional-office.jpg"
@@ -77,15 +77,20 @@ export default function HorizontalServices() {
     restDelta: 0.001
   })
 
-  // --- TRANSFORMACIÓN HORIZONTAL (AJUSTE FINO MÓVIL) ---
-  // Móvil: Reducido a -79% para que la última card (90vw) frene exactamente en el centro
-  // en lugar de irse hacia la izquierda.
-  const xRange = isMobile ? ["0%", "-81%"] : ["0%", "-55%"]
+  // --- TRANSFORMACIÓN HORIZONTAL ---
+  const xRange = isMobile ? ["0%", "-84%"] : ["0%", "-55%"]
   
   const x = useTransform(smoothProgress, [0, 1], xRange)
   const progressWidth = useTransform(smoothProgress, [0, 1], ["0%", "100%"])
 
   const indicatorOp = useTransform(smoothProgress, [0, 0.1], [1, 0])
+
+  const scrollToCTA = () => {
+    const element = document.getElementById("cta-section");
+    if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
 
   return (
     <section id="horizontal-services" ref={targetRef} className="relative h-[400vh] bg-[#0a0a0a]">
@@ -108,8 +113,7 @@ export default function HorizontalServices() {
         </div>
 
         {/* --- HORIZONTAL TRACK --- */}
-        {/* Padding derecho ajustado para dar aire al final */}
-        <motion.div style={{ x }} className="flex gap-6 md:gap-12 px-6 md:px-20 relative z-10 items-center h-full will-change-transform pr-4 md:pr-12">
+        <motion.div style={{ x }} className="flex gap-6 md:gap-10 px-6 md:px-20 relative z-10 items-center h-full will-change-transform pr-4 md:pr-12">
             
             {/* HEADER INTEGRADO */}
             <div className="w-[85vw] md:w-[500px] shrink-0 h-[70vh] flex flex-col justify-center pr-4 md:pr-12 pl-2 md:pl-4">
@@ -132,7 +136,7 @@ export default function HorizontalServices() {
                  </div>
 
                  <p className="font-inter text-lg md:text-xl text-gray-400 leading-relaxed max-w-sm">
-                    Un equipo completo de electricistas, plomeros y técnicos en refrigeración listos para cuidar tu propiedad.
+                    Un equipo completo de electricistas, plomeros, albañiles y técnicos en refrigeración listos para cuidar tu propiedad.
                  </p>
                  
                  {/* INDICADOR SCROLL */}
@@ -156,14 +160,14 @@ export default function HorizontalServices() {
                 <ServiceCard key={service.id} data={service} index={index} />
             ))}
 
-            {/* FINAL CARD "A MEDIDA" (CTA CENTRADO) */}
-            <div className="w-[90vw] md:w-[50vw] shrink-0 h-[65vh] flex items-center justify-center relative">
+            {/* FINAL CARD "A MEDIDA" */}
+            <div className="w-[90vw] md:w-[50vw] shrink-0 h-[65vh] md:h-auto md:max-h-[80vh] flex items-center justify-center relative">
                 <motion.div 
                     animate={{ y: [0, -15, 0] }}
                     transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
                     className="w-full h-full"
                 >
-                    <div className="w-full h-full rounded-[2.5rem] bg-gradient-to-br from-[#1a1a1a] to-[#050505] border border-white/10 shadow-2xl flex flex-col items-center justify-center p-8 md:p-12 text-center relative overflow-hidden group">
+                    <div className="w-full h-full rounded-[2.5rem] bg-gradient-to-br from-[#1a1a1a] to-[#050505] border border-white/10 shadow-2xl flex flex-col items-center justify-center p-6 md:p-12 text-center relative overflow-hidden group">
                         
                         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(0,223,223,0.05),transparent_60%)]" />
                         <div className="absolute bottom-0 left-0 w-full h-1/2 bg-gradient-to-t from-[#00dfdf]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
@@ -177,12 +181,14 @@ export default function HorizontalServices() {
                                 ¿Necesitás algo a medida?
                             </h3>
                             <p className="text-gray-400 text-base md:text-lg mb-8 font-inter leading-relaxed">
-                                Diseñamos planes específicos para <span className="text-white font-medium">consorcios grandes</span>, <span className="text-white font-medium">cadenas de locales</span> y <span className="text-white font-medium">casas particulares</span>.
+                                Diseñamos planes a medida para <span className="text-white font-medium">consorcios grandes</span>, <span className="text-white font-medium">cadenas de locales</span> y <span className="text-white font-medium">casas particulares</span>.
                             </p>
                             
                             <div className="flex justify-center">
-                                {/* BOTÓN REDISEÑADO (Blanco Sólido) */}
-                                <Button className="h-16 px-10 bg-white hover:bg-gray-200 text-[#050505] font-manrope font-extrabold text-lg rounded-full shadow-[0_0_40px_-10px_rgba(255,255,255,0.3)] transition-all hover:scale-105 group flex items-center gap-3">
+                                <Button 
+                                    onClick={scrollToCTA}
+                                    className="h-16 px-10 bg-white hover:bg-gray-200 text-[#050505] font-manrope font-extrabold text-lg rounded-full shadow-[0_0_40px_-10px_rgba(255,255,255,0.3)] transition-all hover:scale-105 group flex items-center gap-3"
+                                >
                                     <ClipboardList className="w-5 h-5 text-[#00dfdf]" />
                                     Pedir Presupuesto
                                     <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
@@ -211,19 +217,20 @@ export default function HorizontalServices() {
   )
 }
 
+// --- SUB-COMPONENTE: CARD FLOTANTE (ESTRUCTURA CORREGIDA) ---
 function ServiceCard({ data, index }: { data: any, index: number }) {
     const floatDuration = 6 + index
     
     return (
         <motion.div 
-            className="group relative w-[85vw] md:w-[500px] h-[65vh] shrink-0 perspective-1000"
+            className="group relative w-[80vw] md:w-[450px] h-auto max-h-[85vh] shrink-0 perspective-1000 flex flex-col"
             animate={{ y: [0, -20, 0] }}
             transition={{ duration: floatDuration, repeat: Infinity, ease: "easeInOut" }}
         >
-            <div className="relative w-full h-full rounded-[2rem] bg-[#121212] border border-white/10 overflow-hidden transition-all duration-500 group-hover:border-[#00dfdf]/40 group-hover:shadow-[0_20px_80px_-20px_rgba(0,0,0,0.7)]">
+            <div className="relative w-full h-full rounded-[2rem] bg-[#121212] border border-white/10 overflow-hidden transition-all duration-500 group-hover:border-[#00dfdf]/40 group-hover:shadow-[0_20px_80px_-20px_rgba(0,0,0,0.7)] flex flex-col">
                 
-                {/* 1. IMAGEN */}
-                <div className="relative h-[45%] overflow-hidden">
+                {/* 1. IMAGEN (Altura controlada) */}
+                <div className="relative h-[250px] shrink-0 overflow-hidden">
                     <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#121212] z-10" />
                     
                     <Image 
@@ -233,41 +240,46 @@ function ServiceCard({ data, index }: { data: any, index: number }) {
                         className="object-cover transition-transform duration-700 group-hover:scale-110 grayscale group-hover:grayscale-0 opacity-80 group-hover:opacity-100" 
                     />
                     
-                    <div className="absolute top-6 right-6 z-20 w-12 h-12 rounded-full bg-[#0a0a0a]/90 backdrop-blur-xl border border-white/20 flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
-                        <data.icon size={20} color={data.color} />
+                    <div className="absolute top-4 right-4 z-20 w-10 h-10 md:w-12 md:h-12 rounded-full bg-[#0a0a0a]/90 backdrop-blur-xl border border-white/20 flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
+                        <data.icon size={18} color={data.color} />
                     </div>
                 </div>
 
-                {/* 2. CONTENIDO */}
-                <div className="flex-1 p-6 md:p-8 flex flex-col relative z-20 bg-[#121212]">
+                {/* 2. CONTENIDO (Scroll interno "Lindo" + Gap corregido) */}
+                <div className="flex-1 p-6 flex flex-col relative z-20 bg-[#121212] overflow-y-auto scrollbar-thin scrollbar-thumb-emerald-500/20 scrollbar-track-transparent hover:scrollbar-thumb-emerald-500/50">
                     
-                    <div className="mb-auto">
+                    {/* Header pegado arriba */}
+                    <div className="shrink-0">
                         <h4 
-                            className="text-xs font-manrope font-bold uppercase tracking-widest mb-3" 
+                            className="text-[10px] md:text-xs font-manrope font-bold uppercase tracking-widest mb-2" 
                             style={{ color: data.color }}
                         >
                             {data.subtitle}
                         </h4>
                         
-                        <h3 className="text-2xl md:text-3xl font-manrope font-bold text-white mb-4 leading-tight group-hover:text-[#00dfdf] transition-colors duration-300">
+                        <h3 className="text-xl md:text-2xl font-manrope font-bold text-white mb-3 leading-tight group-hover:text-[#00dfdf] transition-colors duration-300">
                             {data.title}
                         </h3>
                         
-                        <p className="text-gray-400 font-inter text-sm md:text-base leading-relaxed">
+                        <p className="text-gray-400 font-inter text-xs md:text-sm leading-relaxed">
                             {data.description}
                         </p>
                     </div>
 
-                    <div className="mt-6 pt-6 border-t border-white/5">
+                    {/* Separador y Checks (Pegados a la descripción) */}
+                    <div className="mt-6 pt-4 border-t border-white/5 shrink-0">
                         <div className="grid grid-cols-1 gap-2">
-                            {data.features.slice(0, 3).map((feat: string, i: number) => (
-                                <div key={i} className="flex items-center gap-3 text-sm text-gray-500 group-hover:text-gray-300 transition-colors">
-                                    <CheckCircle2 size={14} className="text-[#00dfdf] shrink-0" />
+                            {data.features.slice(0, 4).map((feat: string, i: number) => (
+                                <div key={i} className="flex items-center gap-2 text-xs md:text-sm text-gray-500 group-hover:text-gray-300 transition-colors">
+                                    <CheckCircle2 size={12} className="text-[#00dfdf] shrink-0" />
                                     {feat}
                                 </div>
                             ))}
                         </div>
                     </div>
+                    
+                    {/* Espacio final flexible (Relleno) */}
+                    <div className="h-1 shrink-0" />
 
                 </div>
             </div>

@@ -17,7 +17,7 @@ export default function FloatingWhatsApp() {
     }
   })
 
-  const whatsappUrl = "https://wa.me/5491123456789?text=Hola%20EFEMAQ%20vengo%20de%20la%20web"
+  const whatsappUrl = "https://wa.me/5491126547271?text=Hola%20EFEMAQ,%20quiero%20asesoramiento%20sobre%20mantenimiento."
 
   return (
     <AnimatePresence>

@@ -20,13 +20,13 @@ import Link from "next/link"
 const ADMIN_PAIN_POINTS = [
   {
     id: 1,
-    pain: { title: "Gestión Fragmentada", desc: "Lidiar con plomeros, electricistas y albañiles por separado. Tiempos muertos, culpas cruzadas y falta de control.", icon: Users, color: "#ef4444" },
-    solution: { title: "Facility Management", desc: "Unificamos todos los gremios bajo un solo responsable: EFEMAQ. Resolvemos desde el cambio de una lámpara hasta la refacción del lobby.", icon: Briefcase, color: "#00dfdf" }
+    pain: { title: "Gestión Fragmentada", desc: "Lidiar con plomeros, electricistas y albañiles por separado. Tiempos muertos, responsabilidades cruzadas y falta de control.", icon: Users, color: "#ef4444" },
+    solution: { title: "Facility Management", desc: "Unificamos todos los gremios bajo una sola coordinación: EFEMAQ. Resolvemos desde un cambio de luces hasta refacciones profundas de fachadas y lobbys.", icon: Briefcase, color: "#00dfdf" }
   },
   {
     id: 2,
-    pain: { title: "Riesgo & Compliance", desc: "Proveedores sin papeles, seguros vencidos o facturación informal. Un accidente puede ser una demanda millonaria.", icon: FileWarning, color: "#f59e0b" },
-    solution: { title: "Blindaje Legal", desc: "Personal 100% asegurado (ART + Vida), matriculado y con toda la documentación de Higiene y Seguridad al día. Factura A.", icon: BadgeCheck, color: "#10b981" }
+    pain: { title: "Riesgo & Compliance", desc: "Proveedores sin papeles, seguros vencidos o facturación informal. Un accidente puede convertirse en un problema serio.", icon: FileWarning, color: "#f59e0b" },
+    solution: { title: "Blindaje Legal", desc: "Personal idóneo y asegurado, matriculado y con cumplimiento de normas de HyS. Presupuesto y Factura detallados en cada trabajo.", icon: BadgeCheck, color: "#10b981" }
   },
   {
     id: 3,
@@ -97,7 +97,7 @@ export default function AdminSection() {
                     <span className="text-[#00dfdf]">eliminá el riesgo.</span>
                 </h2>
                 <p className="font-inter text-lg md:text-xl text-white max-w-3xl mx-auto leading-relaxed font-medium">
-                    Soluciones técnicas integrales para consorcios, oficinas y plantas industriales. <br className="hidden md:block" />
+                    Soluciones técnicas integrales para consorcios, oficinas y cadenas de locales. <br className="hidden md:block" />
                     Transformamos el mantenimiento correctivo en una <span className="relative inline-block px-1 text-[#00dfdf]">estrategia de valor.<span className="absolute bottom-0 left-0 w-full h-px bg-[#00dfdf]/50" /></span>
                 </p>
             </motion.div>
@@ -121,7 +121,7 @@ export default function AdminSection() {
                     </svg>
                     <motion.div style={{ opacity: contentOp }} className="flex flex-col items-center gap-2">
                         <BadgeCheck className="text-[#00dfdf] w-6 h-6" />
-                        <span className="font-manrope font-bold text-white text-sm tracking-widest uppercase">Operación Blindada</span>
+                        <span className="font-manrope font-bold text-white text-sm tracking-widest uppercase">Tranquilidad Asegurada</span>
                     </motion.div>
                     <motion.div style={{ opacity: glowOp }} className="absolute inset-0 bg-[#00dfdf]/10 blur-xl rounded-xl -z-10" />
                 </div>

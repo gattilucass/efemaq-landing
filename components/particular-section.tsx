@@ -22,18 +22,18 @@ import Link from "next/link"
 const PARTICULAR_PAIN_POINTS = [
   {
     id: 1,
-    pain: { title: "Incertidumbre Total", desc: "¿Quién entra a mi casa o local? ¿Tendrá antecedentes? El riesgo de abrirle la puerta a un desconocido.", icon: ShieldX, color: "#ef4444" },
-    solution: { title: "Personal Verificado", desc: "Técnicos matriculados, uniformados y con chequeo de antecedentes penales riguroso. Tu seguridad es prioridad.", icon: UserCheck, color: "#10b981" }
+    pain: { title: "Incertidumbre Total", desc: "Técnicos desconocidos. ¿Quien entra a mi casa o local? ¿Será de confianza? ¿Si algo falla lo voy a encontrar luego de que ya le pagué?", icon: ShieldX, color: "#ef4444" },
+    solution: { title: "Personal Verificado", desc: "Equipo certificado y de confianza, más la garantía Efemaq para un mantenimiento seguro y bien hecho.", icon: UserCheck, color: "#10b981" }
   },
   {
     id: 2,
     pain: { title: "Diagnóstico Ciego", desc: "El famoso 'hay que romper para ver'. Arreglos que duran dos días, vuelven a fallar y generan suciedad.", icon: SearchX, color: "#f59e0b" },
-    solution: { title: "Tecnología Forense", desc: "Usamos cámaras térmicas y geófonos para encontrar la falla exacta sin romper media pared. Limpieza garantizada.", icon: Wrench, color: "#10b981" }
+    solution: { title: "Tecnología Aplicada", desc: "Usamos equipos de tecnología avanzada para diagnosticar y trabajar por lo que la prolijidad y la limpieza estan aseguradas.", icon: Wrench, color: "#10b981" }
   },
   {
     id: 3,
-    pain: { title: "Esperas Eternas", desc: "Pedís un plomero hoy y te da turno para la semana que viene. Mientras tanto, tu negocio pierde plata.", icon: Clock, color: "#ef4444" },
-    solution: { title: "Respuesta Inmediata", desc: "Guardia activa 24/7. Si es una urgencia real (corte de luz, inundación), estamos ahí en tiempo récord.", icon: ShieldCheck, color: "#10b981" }
+    pain: { title: "Esperas Innecesarias", desc: "Llamas a un plomero hoy y te da un turno con suerte para el mes que viene. Mientras tanto tu casa o tu negocio se transforman en un caos.", icon: Clock, color: "#ef4444" },
+    solution: { title: "Respuesta Inmediata", desc: "Guardia activa 24/7. ¿No baja la persiana del local? ¿Brota agua del piso? Resolvemos urgencias como estas y más en tiempo récord.", icon: ShieldCheck, color: "#10b981" }
   }
 ]
 
@@ -88,11 +88,11 @@ export default function ParticularSection() {
                     <span className="text-[10px] font-manrope font-bold text-[#10b981] tracking-widest uppercase">Hogares & Comercios</span>
                 </div>
                 <h2 className="font-manrope text-4xl md:text-6xl font-extrabold text-white leading-tight mb-6">
-                    Tu casa es tu santuario, <br className="hidden md:block" />
-                    <span className="text-[#10b981]">nosotros lo protegemos.</span>
+                    Tu casa es tu espacio, <br className="hidden md:block" />
+                    <span className="text-[#10b981]">nosotros lo cuidamos.</span>
                 </h2>
                 <p className="font-inter text-lg md:text-xl text-white max-w-3xl mx-auto leading-relaxed font-medium">
-                    Seguridad, limpieza y garantía escrita. El servicio técnico que tu familia o negocio merecen, 
+                    Seguridad, compromiso, limpieza y garantía. El servicio técnico que tu familia o negocio merecen, 
                     <span className="relative inline-block px-1 text-[#10b981]">sin sorpresas ni costos ocultos.<span className="absolute bottom-0 left-0 w-full h-px bg-[#10b981]/50" /></span>
                 </p>
             </motion.div>

@@ -68,7 +68,7 @@ export default function Footer() {
 
   const servicesLinks = (
     <ul className="space-y-3 pl-1 md:pl-0">
-      {['Mantenimiento Preventivo', 'Electricidad & Iluminación', 'Refrigeración & Climatización', 'Plomería & Gas', 'Obras Civiles', 'Impermeabilización'].map((item) => (
+      {['Mantenimiento Preventivo', 'Electricidad & Iluminación', 'Refrigeración & Climatización', 'Pintura e impermeabilización', 'Obra seca y remodelaciones', 'Plomería & Gas'].map((item) => (
         <li key={item}>
           <span className="font-inter text-sm text-gray-400 hover:text-[#00dfdf] transition-colors cursor-default block w-fit">
             {item}
@@ -84,7 +84,6 @@ export default function Footer() {
         <div className="mt-0.5 text-[#00dfdf] opacity-80 group-hover:opacity-100 transition-opacity"><Mail size={18} /></div>
         <div>
            <span className="block font-inter text-sm text-gray-300 group-hover:text-white transition-colors">info@efemaq.com.ar</span>
-           <span className="text-xs text-gray-500">Área Comercial</span>
         </div>
       </a>
       
@@ -137,7 +136,7 @@ export default function Footer() {
               El trabajo bien hecho, <span className="text-[#00dfdf]">siempre.</span>
             </p>
             <p className="font-inter text-sm text-gray-400 leading-relaxed mb-6 max-w-xs">
-              Soluciones integrales de mantenimiento técnico. Ingeniería aplicada a tu tranquilidad.
+              Soluciones integrales de mantenimiento técnico. Sistema total aplicado a tu tranquilidad.
             </p>
 
             {/* REDES SOCIALES */}

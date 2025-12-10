@@ -37,8 +37,8 @@ export default function CTASection() {
   const glowOp = useTransform(smoothProgress, [0.5, 1], [0.2, 0.6])
 
   // Links funcionales
-  const whatsappLink = "https://wa.me/5491112345678?text=Hola%20EFEMAQ,%20quisiera%20asesoramiento%20sobre%20mantenimiento.";
-  const mailLink = "mailto:contacto@efemaq.com.ar?subject=Solicitud%20de%20Presupuesto";
+  const whatsappLink = "https://wa.me/5491126547271?text=Hola%20EFEMAQ,%20quiero%20asesoramiento%20sobre%20mantenimiento.";
+  const mailLink = "mailto:info@efemaq.com.ar?subject=Solicitud%20de%20Presupuesto";
 
   return (
     <section 
