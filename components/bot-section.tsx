@@ -45,7 +45,7 @@ export default function BotSection() {
   // El valor 330px es la altura aproximada de los mensajes "nuevos" (Gotera + Foto + Ticket)
   // Al inicio (0), bajamos todo 330px para ocultarlos.
   // Al final (1), subimos a 0 para mostrarlos.
-  const chatScrollY = useTransform(smoothScroll, [0, 0.85], [330, 0]) 
+  const chatScrollY = useTransform(smoothScroll, [0, 0.95], [280, 0]) 
   
   // Opacidad progresiva para suavizar la entrada y que no se vea el "corte" duro
   const opacityGotera = useTransform(smoothScroll, [0.05, 0.2], [0, 1])
@@ -53,17 +53,18 @@ export default function BotSection() {
   const opacityFinal = useTransform(smoothScroll, [0.55, 0.7], [0, 1])
 
   // --- 3. ANIMACIONES UI ---
- // Texto Principal (Móvil se va ANTES de que entre el celular)
+  // Texto Principal (Móvil se va ANTES de que entre el celular)
   // [0, 0.08] -> Desaparece al 8% del scroll (el celular entra al 10%)
   const textOpacity = useTransform(smoothScroll, isMobile ? [0, 0.08] : [0, 1], isMobile ? [1, 0] : [1, 1])
   const textY = useTransform(smoothScroll, isMobile ? [0, 0.1] : [0, 1], isMobile ? [0, -50] : [0, 0])
   const textScale = useTransform(smoothScroll, isMobile ? [0, 0.1] : [0, 1], isMobile ? [1, 0.95] : [1, 1])
 
-  // Celular (Entrada simple en móvil)
-  const phoneOpacity = useTransform(smoothScroll, isMobile ? [0.1, 0.16] : [0, 0.1], [0, 1])
-  // CORRECCIÓN: Rango [0, 1] -> [0, 0] para Desktop (Evita división por cero)
-const phoneY = useTransform(smoothScroll, isMobile ? [0.1, 0.2] : [0, 1], isMobile ? [50, 0] : [0, 0])
-
+  // Celular (Entrada simple en móvil / INMEDIATA en Desktop)
+  // SOLUCIÓN: En desktop el output es [1, 1], asegurando visibilidad total desde el inicio.
+  const phoneOpacity = useTransform(smoothScroll, isMobile ? [0.1, 0.16] : [0, 1], isMobile ? [0, 1] : [1, 1])
+  
+  // SOLUCIÓN: En desktop el output es [0, 0], asegurando posición fija desde el inicio.
+  const phoneY = useTransform(smoothScroll, isMobile ? [0.1, 0.2] : [0, 1], isMobile ? [50, 0] : [0, 0])
   // Flecha Desktop
   const arrowOpacity = useTransform(smoothScroll, [0, 0.1], [0, 1])
 
@@ -78,7 +79,7 @@ const phoneY = useTransform(smoothScroll, isMobile ? [0.1, 0.2] : [0, 1], isMobi
     <section 
         id="bot-section" 
         ref={containerRef} 
-        className="relative w-full h-[290vh] bg-[#0a0a0a]"
+        className="relative w-full h-[240vh] bg-[#0a0a0a]"
     >
       
       {/* FONDO */}
@@ -134,7 +135,7 @@ const phoneY = useTransform(smoothScroll, isMobile ? [0.1, 0.2] : [0, 1], isMobi
                             { icon: Check, title: "Número de Ticket", text: "Seguimiento automático por WhatsApp" }
                         ].map((feature, i) => (
                             <div key={i} className="flex items-start gap-4 group">
-                                 <div className="mt-0.5 w-8 h-8 flex items-center justify-center rounded-lg bg-white/5 border border-white/10 group-hover:bg-[#00dfdf]/20 group-hover:border-[#00dfdf]/40 transition-colors shrink-0">
+                                 <div className="mt-0.5 w-9 h-9 flex items-center justify-center rounded-lg bg-white/5 border border-white/10 group-hover:bg-[#00dfdf]/20 group-hover:border-[#00dfdf]/40 transition-colors shrink-0">
                                      <feature.icon size={16} className="text-gray-300 group-hover:text-[#00dfdf]" />
                                  </div>
                                  <div className="text-left">
@@ -146,13 +147,13 @@ const phoneY = useTransform(smoothScroll, isMobile ? [0.1, 0.2] : [0, 1], isMobi
                      </div>
 
                      {/* CTA BUTTON */}
-                     <div className="mb-4 lg:mb-0 pt-2 lg:pl-2 pointer-events-auto shrink-0 z-30 relative">
+                     <div className="mb-4 lg:mb-0 pt-1 lg:pl- pointer-events-auto shrink-0 z-30 relative">
                         <Button 
                             onClick={scrollToCTA}
-                            className="h-14 px-8 bg-white/5 hover:bg-white/10 border border-white/20 text-white hover:text-[#00dfdf] font-manrope font-bold text-lg rounded-full backdrop-blur-md transition-all hover:scale-105 group"
+                            className="h-15 px-8 bg-white/5 hover:bg-white/10 border border-white/10 text-white hover:text-[#00dfdf] font-manrope font-bold text-lg rounded-full backdrop-blur-md transition-all hover:scale-105 group"
                         >
                             Quiero probarlo
-                            <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                            <ArrowRight className="ml2 w-9 h-9 group-hover:translate-x-1 transition-transform" />
                         </Button>
                      </div>
 
@@ -187,7 +188,7 @@ const phoneY = useTransform(smoothScroll, isMobile ? [0.1, 0.2] : [0, 1], isMobi
             <motion.div 
                 style={{ opacity: phoneOpacity, y: phoneY }}
                 // CORRECCIÓN: 
-                // 1. lg:justify-center -> Centra el celular verticalmente (soluciona lo de "tirado arriba")
+                // 1. lg:justify-center -> Centra el celular verticalmente
                 // 2. lg:items-start -> Lo tira a la izquierda (cerca del texto) en PC
                 // 3. lg:pl-10 -> Le devuelve el aire lateral
                 className="relative w-full h-full flex flex-col items-center justify-center lg:justify-center lg:items-start lg:pl-10 z-10 pointer-events-none lg:pointer-events-auto"
@@ -300,7 +301,7 @@ const phoneY = useTransform(smoothScroll, isMobile ? [0.1, 0.2] : [0, 1], isMobi
                                  <div className="w-40 h-28 rounded-xl bg-[#1a1a1a] border-2 border-white/10 flex items-center justify-center relative overflow-hidden shadow-md">
                                      <div className="relative w-full h-full">
                                         <Image 
-                                            src="/gotera.jpg" 
+                                            src="/filtracion.png" 
                                             alt="Gotera"
                                             fill
                                             className="object-cover opacity-80"

@@ -218,13 +218,13 @@ export default function ProcessSection() {
             </div>
         </div>
         
-        {/* --- INDICADOR FINAL "SIGUIENTE PASO" --- */}
+        {/* --- INDICADOR FINAL" --- */}
         <motion.div 
             style={{ opacity: nextSectionHintOp }}
             className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 z-30 pointer-events-none"
         >
             <span className="text-[#00dfdf] text-[10px] font-manrope font-bold uppercase tracking-widest whitespace-nowrap animate-pulse">
-                Siguiente Paso
+                Conocé Más
             </span>
             <div className="w-px h-16 bg-white/10 relative overflow-hidden">
                 <motion.div 

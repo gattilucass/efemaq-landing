@@ -21,7 +21,7 @@ const ADMIN_PAIN_POINTS = [
   {
     id: 1,
     pain: { title: "Gestión Fragmentada", desc: "Lidiar con plomeros, electricistas y albañiles por separado. Tiempos muertos, responsabilidades cruzadas y falta de control.", icon: Users, color: "#ef4444" },
-    solution: { title: "Facility Management", desc: "Unificamos todos los gremios bajo una sola coordinación: EFEMAQ. Resolvemos desde un cambio de luces hasta refacciones profundas de fachadas y lobbys.", icon: Briefcase, color: "#00dfdf" }
+    solution: { title: "Facility Management", desc: "Unificamos todos los gremios bajo una sola coordinación: Efemaq. Resolvemos desde un cambio de luces hasta refacciones profundas de fachadas y lobbys.", icon: Briefcase, color: "#00dfdf" }
   },
   {
     id: 2,
@@ -76,7 +76,7 @@ export default function AdminSection() {
   return (
     // Opacidad 0 inicial para evitar el "flicker" del footer
     <div className={`transition-opacity duration-500 ${isReady ? 'opacity-100' : 'opacity-0'}`}>
-        <section id="admin-section" ref={containerRef} className="relative w-full pt-32 pb-32 overflow-hidden bg-[#0a0a0a]">
+        <section id="admin-section" ref={containerRef} className="relative w-full pt-32 pb-12 overflow-hidden bg-[#0a0a0a]">
         
         {/* FONDO */}
         <div className="absolute inset-0 z-0 pointer-events-none">
@@ -98,7 +98,7 @@ export default function AdminSection() {
                 </h2>
                 <p className="font-inter text-lg md:text-xl text-white max-w-3xl mx-auto leading-relaxed font-medium">
                     Soluciones técnicas integrales para consorcios, oficinas y cadenas de locales. <br className="hidden md:block" />
-                    Transformamos el mantenimiento correctivo en una <span className="relative inline-block px-1 text-[#00dfdf]">estrategia de valor.<span className="absolute bottom-0 left-0 w-full h-px bg-[#00dfdf]/50" /></span>
+                    Transformamos el mantenimiento en una <span className="relative inline-block px-1 text-[#00dfdf]">estrategia de valor.<span className="absolute bottom-0 left-0 w-full h-px bg-[#00dfdf]/50" /></span>
                 </p>
             </motion.div>
 
@@ -127,15 +127,25 @@ export default function AdminSection() {
                 </div>
             </div>
 
-            {/* CTA FINAL */}
-            <div className="mt-20 flex flex-col items-center gap-6 border-t border-white/10 pt-16">
+         {/* CTA FINAL */}
+            <div className="mt-10 flex flex-col items-center gap-6 border-t border-white/10 pt-12">
                 <h3 className="text-2xl md:text-3xl font-manrope font-bold text-white text-center px-4">¿Tu edificio o empresa necesita un cambio?</h3>
                 <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto items-center px-6">
-                    <Button onClick={scrollToCTA} className="h-14 px-10 bg-[#00dfdf] hover:bg-[#00c4c4] text-black font-manrope font-bold text-lg rounded-full shadow-[0_0_20px_rgba(0,223,223,0.3)] group transition-all hover:scale-105 w-full sm:w-auto">
+                    
+                    {/* Botón Principal: Forzamos !px-12 para despegar el texto de los bordes */}
+                    <Button 
+                        onClick={scrollToCTA} 
+                        className="h-14 !px-8 bg-[#00dfdf] hover:bg-[#00c4c4] text-black font-manrope font-bold text-lg rounded-full shadow-[0_0_20px_rgba(0,223,223,0.3)] group transition-all hover:scale-105 w-full sm:w-auto"
+                    >
                         Cotizar Solución Corporativa <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
                     </Button>
+                    
                     <Link href="/#audience-funnel" className="w-full sm:w-auto">
-                        <Button variant="ghost" className="h-14 px-8 text-white border border-white/10 hover:bg-white/5 hover:text-[#00dfdf] rounded-full font-manrope font-medium transition-all w-full">
+                        {/* Botón Volver: Forzamos !px-10 */}
+                        <Button 
+                            variant="ghost" 
+                            className="h-14 !px-8 text-white border border-white/10 hover:bg-white/5 hover:text-[#00dfdf] rounded-full font-manrope font-medium transition-all w-full"
+                        >
                             <ArrowUp className="mr-2 w-4 h-4" /> Volver
                         </Button>
                     </Link>
@@ -168,7 +178,7 @@ function ComparisonCard({ item }: { item: any }) {
                         <item.pain.icon size={14} className="text-red-500" />
                     </div>
                     <h3 className="text-lg font-manrope font-bold text-gray-200 mb-1">{item.pain.title}</h3>
-                    <p className="text-sm font-inter text-gray-500 leading-snug">{item.pain.desc}</p>
+                    <p className="text-sm font-inter text-balance text-gray-500 leading-snug">{item.pain.desc}</p>
                 </div>
             </motion.div>
             <motion.div style={{ opacity, x: xRight }} className="relative flex flex-col items-start text-left md:pl-8">
@@ -178,10 +188,10 @@ function ComparisonCard({ item }: { item: any }) {
                         <div className="absolute top-0 right-0 w-24 h-24 bg-[#00dfdf]/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 pointer-events-none" />
                         <div className="flex items-center gap-2 mb-3">
                             <div className="w-7 h-7 rounded-lg bg-[#00dfdf]/10 flex items-center justify-center border border-[#00dfdf]/20 shadow-inner"><item.solution.icon size={14} className="text-[#00dfdf]" /></div>
-                            <span className="text-[10px] font-manrope font-bold text-[#00dfdf] uppercase tracking-wider">Solución EFEMAQ</span>
+                            <span className="text-[10px] font-manrope font-bold text-[#00dfdf] uppercase tracking-wider">Solución Efemaq</span>
                         </div>
                         <h3 className="text-xl font-manrope font-extrabold text-white mb-2">{item.solution.title}</h3>
-                        <p className="text-sm font-inter text-gray-300 leading-snug">{item.solution.desc}</p>
+                        <p className="text-sm font-inter text-balance text-gray-300 leading-snug">{item.solution.desc}</p>
                     </div>
                 </div>
             </motion.div>

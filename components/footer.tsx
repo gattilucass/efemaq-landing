@@ -1,11 +1,11 @@
 "use client"
 
+import { useState, useEffect } from "react"
 import { motion, Variants } from "framer-motion"
 import Image from "next/image"
 import Link from "next/link"
 import { 
   Mail, 
-  Phone, 
   Linkedin, 
   Facebook, 
   Instagram,
@@ -20,8 +20,39 @@ import {
 } from "@/components/ui/accordion"
 import { useIsMobile } from "@/hooks/use-mobile"
 
+// --- ICONO WHATSAPP CUSTOM (Ajustado: Burbuja +Grande, Teléfono +Chico y Centrado) ---
+const WhatsAppIcon = ({ size = 18, className = "" }: { size?: number, className?: string }) => (
+  <svg 
+    width={size} 
+    height={size} 
+    viewBox="0 0 24 24" 
+    fill="none" 
+    stroke="currentColor" 
+    strokeWidth="2" 
+    strokeLinecap="round" 
+    strokeLinejoin="round" 
+    className={className}
+  >
+    {/* Burbuja: Radio aumentado levemente (de 9 a 9.5) para dar más aire */}
+    <path d="M3 21l1.9-4.4a9.5 10 0 1 1 3.4 2.9L3 21" />
+    
+    {/* Auricular: Reducido al 90% (scale 0.9) y movido a la derecha (1.2) para centrar exacto */}
+    <path 
+      d="M16.5 14.5c-.5-.5-1.5-.5-2 0l-.5.5c-.3.3-.8.4-1.2.1-1.2-.8-2.2-1.8-3-3-.3-.4-.2-.9.1-1.2l.5-.5c.5-.5.5-1.5 0-2l-1-1c-.5-.5-1.5-.5-2 0l-.5.5c-1 1-1 3 .5 5.5 1.5 2.5 4 5 6.5 6.5 2.5 1.5 4.5 1.5 5.5.5l.5-.5c.5-.5.5-1.5 0-2l-1-1z" 
+      transform="scale(0.8) translate(1.4, 0.3)" 
+    />
+  </svg>
+)
+
 export default function Footer() {
   const isMobile = useIsMobile()
+  const [mounted, setMounted] = useState(false)
+
+  // SOLUCIÓN ESTABILIDAD: Esperamos a que el componente esté montado en el cliente
+  // para evitar conflictos de hidratación que hacen desaparecer el contenido.
+  useEffect(() => {
+    setMounted(true)
+  }, [])
 
   const containerVariants: Variants = {
     hidden: { opacity: 0 },
@@ -46,19 +77,20 @@ export default function Footer() {
   const socialLinks = [
     { icon: Facebook, href: "https://www.facebook.com/profile.php?id=61581694802296", label: "Facebook" },
     { icon: Instagram, href: "https://www.instagram.com/efemaq.ar/", label: "Instagram" },
-    { icon: Linkedin, href: "https://www.instagram.com/efemaq.ar/", label: "LinkedIn" },
+    { icon: Linkedin, href: "https://www.linkedin.com/company/efemaq-soluciones/", label: "LinkedIn" },
   ]
 
-  // Contenido de las columnas para reutilizar
+  // Contenido de las columnas
   const exploreLinks = (
     <ul className="space-y-3 pl-1 md:pl-0">
       {['Inicio', 'Administradores', 'Particulares', 'Nosotros'].map((item) => (
         <li key={item}>
           <Link 
             href={item === 'Inicio' ? '/' : item === 'Administradores' ? '/para-administradores' : item === 'Particulares' ? '/para-particulares' : '#'} 
-            className="font-inter text-sm text-gray-400 hover:text-[#00dfdf] transition-colors flex items-center gap-2 group w-fit"
+            // En móvil centramos los links, en desktop a la izquierda
+            className="font-inter text-sm text-gray-400 hover:text-[#00dfdf] transition-colors flex items-center justify-center md:justify-start gap-2 group w-full md:w-fit"
           >
-            <span className="w-1 h-1 rounded-full bg-[#00dfdf] opacity-0 group-hover:opacity-100 transition-opacity" />
+            <span className="w-1 h-1 rounded-full bg-[#00dfdf] opacity-0 group-hover:opacity-100 transition-opacity hidden md:block" />
             {item}
           </Link>
         </li>
@@ -68,9 +100,9 @@ export default function Footer() {
 
   const servicesLinks = (
     <ul className="space-y-3 pl-1 md:pl-0">
-      {['Mantenimiento Preventivo', 'Electricidad & Iluminación', 'Refrigeración & Climatización', 'Pintura e impermeabilización', 'Obra seca y remodelaciones', 'Plomería & Gas'].map((item) => (
+      {['Mantenimiento', 'Electricidad & Iluminación', 'Refrigeración', 'Pintura e impermeabilización', 'Obra seca & remodelaciones', 'Plomería & Gas'].map((item) => (
         <li key={item}>
-          <span className="font-inter text-sm text-gray-400 hover:text-[#00dfdf] transition-colors cursor-default block w-fit">
+          <span className="font-inter text-sm text-gray-400 hover:text-[#00dfdf] transition-colors cursor-default block w-full md:w-fit text-center md:text-left">
             {item}
           </span>
         </li>
@@ -79,22 +111,26 @@ export default function Footer() {
   )
 
   const contactContent = (
-    <div className="space-y-4 pl-1 md:pl-0">
-      <a href="mailto:info@efemaq.com.ar" className="flex items-start gap-3 group">
+    // Centrado en móvil (items-center), izquierda en PC (md:items-start)
+    <div className="space-y-4 pl-1 md:pl-0 flex flex-col items-center md:items-start">
+      <a href="mailto:info@efemaq.com.ar" className="flex items-center md:items-start gap-3 group">
         <div className="mt-0.5 text-[#00dfdf] opacity-80 group-hover:opacity-100 transition-opacity"><Mail size={18} /></div>
         <div>
            <span className="block font-inter text-sm text-gray-300 group-hover:text-white transition-colors">info@efemaq.com.ar</span>
         </div>
       </a>
       
-      <a href="https://wa.me/5491126547271" target="_blank" rel="noopener noreferrer" className="flex items-start gap-3 group">
-        <div className="mt-0.5 text-[#00dfdf] opacity-80 group-hover:opacity-100 transition-opacity"><Phone size={18} /></div>
+      <a href="https://wa.me/5491126547271" target="_blank" rel="noopener noreferrer" className="flex items-center md:items-start gap-3 group">
+        {/* REEMPLAZO POR ICONO WHATSAPP CUSTOM */}
+        <div className="mt-0.5 text-[#00dfdf] opacity-80 group-hover:opacity-100 transition-opacity">
+            <WhatsAppIcon size={18} />
+        </div>
          <div>
            <span className="block font-inter text-sm text-gray-300 group-hover:text-white transition-colors">+54 9 11 2654-7271</span>
         </div>
       </a>
 
-      <div className="flex items-start gap-3">
+      <div className="flex items-center md:items-start gap-3">
          <div className="mt-0.5 text-[#00dfdf] opacity-80"><MapPin size={18} /></div>
          <div>
            <span className="block font-inter text-sm text-gray-400">Buenos Aires, Argentina</span>
@@ -102,6 +138,9 @@ export default function Footer() {
       </div>
     </div>
   )
+
+  // Si no está montado, no renderizamos nada para evitar el error visual de hidratación
+  if (!mounted) return null
 
   return (
     <footer className="relative w-full bg-[#050505] border-t border-white/10 pt-12 md:pt-16 pb-8 overflow-hidden font-sans">
@@ -118,24 +157,27 @@ export default function Footer() {
       >
         
         {/* --- GRID PRINCIPAL --- */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-10 md:gap-8 mb-12 text-left">
+        {/* text-center para móvil, md:text-left para escritorio */}
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-10 md:gap-8 mb-12 text-center md:text-left">
           
           {/* COL 1: MARCA (Siempre visible) */}
-          <motion.div variants={itemVariants} className="flex flex-col items-start">
+          {/* items-center para móvil, md:items-start para escritorio */}
+          <motion.div variants={itemVariants} className="flex flex-col items-center md:items-start">
             <div className="mb-5">
               <Image 
                 src="/logo-efemaq.png" 
                 alt="EFEMAQ" 
                 width={140} 
                 height={45} 
-                className="object-contain brightness-200 contrast-125" 
+                // mx-auto para centrar logo en móvil, md:mx-0 para izquierda en pc
+                className="object-contain brightness-200 contrast-125 mx-auto md:mx-0" 
               />
             </div>
             
             <p className="font-manrope font-bold text-base text-white mb-2 tracking-tight">
               El trabajo bien hecho, <span className="text-[#00dfdf]">siempre.</span>
             </p>
-            <p className="font-inter text-sm text-gray-400 leading-relaxed mb-6 max-w-xs">
+            <p className="font-inter text-sm text-gray-400 leading-relaxed mb-6 max-w-xs mx-auto md:mx-0">
               Soluciones integrales de mantenimiento técnico. Sistema total aplicado a tu tranquilidad.
             </p>
 

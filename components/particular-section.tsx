@@ -28,7 +28,7 @@ const PARTICULAR_PAIN_POINTS = [
   {
     id: 2,
     pain: { title: "Diagnóstico Ciego", desc: "El famoso 'hay que romper para ver'. Arreglos que duran dos días, vuelven a fallar y generan suciedad.", icon: SearchX, color: "#f59e0b" },
-    solution: { title: "Tecnología Aplicada", desc: "Usamos equipos de tecnología avanzada para diagnosticar y trabajar por lo que la prolijidad y la limpieza estan aseguradas.", icon: Wrench, color: "#10b981" }
+    solution: { title: "Tecnología Aplicada", desc: "Usamos equipos de tecnología avanzada para el diagnóstico y el trabajo, por lo que la prolijidad y la limpieza estan aseguradas.", icon: Wrench, color: "#10b981" }
   },
   {
     id: 3,
@@ -71,7 +71,7 @@ export default function ParticularSection() {
 
   return (
     <div className={`transition-opacity duration-500 ${isReady ? 'opacity-100' : 'opacity-0'}`}>
-        <section id="particular-section" ref={containerRef} className="relative w-full pt-32 pb-32 overflow-hidden bg-[#0a0a0a]">
+        <section id="particular-section" ref={containerRef} className="relative w-full pt-32 pb-12 overflow-hidden bg-[#0a0a0a]">
         
         {/* FONDO */}
         <div className="absolute inset-0 z-0 pointer-events-none">
@@ -123,14 +123,14 @@ export default function ParticularSection() {
             </div>
 
             {/* CTA FINAL */}
-            <div className="mt-20 flex flex-col items-center gap-6 border-t border-white/10 pt-16">
+            <div className="mt-10 flex flex-col items-center gap-6 border-t border-white/10 pt-16">
                 <h3 className="text-2xl md:text-3xl font-manrope font-bold text-white text-center px-4">¿Tenés algo para arreglar hoy?</h3>
                 <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto items-center px-6">
-                    <Button onClick={scrollToCTA} className="h-14 px-10 bg-[#10b981] hover:bg-[#0da071] text-black font-manrope font-bold text-lg rounded-full shadow-[0_0_20px_rgba(16,185,129,0.3)] group transition-all hover:scale-105 w-full sm:w-auto">
+                    <Button onClick={scrollToCTA} className="h-14 !px-8 bg-[#10b981] hover:bg-[#0da071] text-black font-manrope font-bold text-lg rounded-full shadow-[0_0_20px_rgba(16,185,129,0.3)] group transition-all hover:scale-105 w-full sm:w-auto">
                         Pedir Técnico Ahora <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
                     </Button>
                     <Link href="/#audience-funnel" className="w-full sm:w-auto">
-                        <Button variant="ghost" className="h-14 px-8 text-white border border-white/10 hover:bg-white/5 hover:text-[#10b981] rounded-full font-manrope font-medium transition-all w-full">
+                        <Button variant="ghost" className="h-14 !px-8 text-white border border-white/10 hover:bg-white/5 hover:text-[#10b981] rounded-full font-manrope font-medium transition-all w-full">
                             <ArrowUp className="mr-2 w-4 h-4" /> Volver
                         </Button>
                     </Link>
@@ -163,7 +163,7 @@ function ComparisonCard({ item }: { item: any }) {
                         <item.pain.icon size={14} className="text-red-500" />
                     </div>
                     <h3 className="text-lg font-manrope font-bold text-gray-200 mb-1">{item.pain.title}</h3>
-                    <p className="text-sm font-inter text-gray-500 leading-snug">{item.pain.desc}</p>
+                    <p className="text-sm font-inter text-balance text-gray-500 leading-snug">{item.pain.desc}</p>
                 </div>
             </motion.div>
             <motion.div style={{ opacity, x: xRight }} className="relative flex flex-col items-start text-left md:pl-8">
@@ -176,7 +176,7 @@ function ComparisonCard({ item }: { item: any }) {
                             <span className="text-[10px] font-manrope font-bold text-[#10b981] uppercase tracking-wider">Solución EFEMAQ</span>
                         </div>
                         <h3 className="text-xl font-manrope font-extrabold text-white mb-2">{item.solution.title}</h3>
-                        <p className="text-sm font-inter text-gray-300 leading-snug">{item.solution.desc}</p>
+                        <p className="text-sm font-inter text-balance text-gray-300 leading-snug">{item.solution.desc}</p>
                     </div>
                 </div>
             </motion.div>

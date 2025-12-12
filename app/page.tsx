@@ -42,8 +42,6 @@ export default function Home() {
       
       <HeroSection />
 
-      <ProcessSection />
-
       {/* ID Clave para anclar el regreso */}
       <div id="audience-funnel"> 
         <AudienceFunnel />

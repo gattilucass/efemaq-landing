@@ -21,43 +21,43 @@ import { useIsMobile } from "@/hooks/use-mobile"
 const SERVICES = [
   {
     id: "01",
-    title: "Auditoría & Diagnóstico",
-    subtitle: "Detección de Fallas",
-    description: "Encontramos el problema real antes de romper. Usamos tecnología para ver lo que el ojo no ve: fugas, recalentamiento eléctrico y humedades.",
-    features: ["Informes Técnicos Certificados", "Detección de Fugas y Calor", "Revisión de Consumo Eléctrico", "Plan de Inversión"],
+    title: "Mantenimiento Preventivo",
+    subtitle: "Aires, tableros y bombas",
+    description: "Evitá las urgencias, rutinas mensuales para cuidar todos los equipos críticos de tu casa, local, tu edificio o tu empresa.",
+    features: ["Limpieza de Aires Acondicionados", "Ajuste de Tableros Eléctricos", "Control de Bombas de Agua", "Pruebas de Seguridad."],
     icon: FileSearch,
     color: "#00dfdf", // Teal
-    image: "/efemaq-team-professional-office.jpg" 
+    image: "/card2.png" 
   },
   {
     id: "02",
-    title: "Mantenimiento Preventivo",
-    subtitle: "Aires, Bombas y Tableros",
-    description: "Evitá las urgencias. Rutinas mensuales para cuidar los equipos críticos de tu edificio: grupos electrógenos, aire acondicionado y bombas de agua.",
-    features: ["Limpieza de Aires Acondicionados", "Ajuste de Tableros Eléctricos", "Control de Bombas de Agua", "Pruebas de Seguridad"],
+    title: "Remodelaciones y ampliaciones",
+    subtitle: "Pintura, obra seca y gas",
+    description: "Renovamos tus espacios con calidad. Desde arreglar una filtración en la terraza hasta pintar el hall de entrada o remodelar una oficina.",
+    features: ["Impermeabilización de techos", "pintura de altura y fachadas", "Instalaciones sanitarias y gas", "Electricidad y luminotecnia"],
     icon: ShieldAlert,
     color: "#10b981", // Emerald
-    image: "/modern-office-building-maintenance.jpg" 
+    image: "/card1.png" 
   },
   {
     id: "03",
-    title: "Obras y Reformas",
-    subtitle: "Albañilería, Pintura y Gas",
-    description: "Renovamos tus espacios con calidad. Desde arreglar una filtración en la terraza hasta pintar el hall de entrada o remodelar una oficina.",
-    features: ["Impermeabilización de Techos", "Pintura de Altura y Fachadas", "Reparaciones de Albañilería", "Instalaciones Sanitarias y Gas"],
+    title: "Urgencias 24/7",
+    subtitle: "Guardia Técnica Activa",
+    description: "Cuando necesites, estamos ahí. Cortes de luz, caños rotos, puertas trabadas o fallas críticas que no pueden esperar a mañana.",
+    features: ["Electricistas de Guardia", "Plomería de Urgencia", "Reparación de Aires", "Fugas de Gas"],
     icon: Hammer,
     color: "#f59e0b", // Amber
-    image: "/modern-office-building-maintenance.jpg"
+    image: "/card3.png"
   },
   {
     id: "04",
-    title: "Urgencias 24/7",
-    subtitle: "Guardia Técnica Activa",
-    description: "Cuando pasa algo grave, estamos ahí. Cortes de luz totales, caños rotos, inundaciones o fallas críticas que no pueden esperar a mañana.",
-    features: ["Electricistas de Guardia", "Plomería de Urgencia", "Reparación de Aires", "Riesgo Eléctrico"],
+    title: "Solución garantizada",
+    subtitle: "Auditoria y Seguimiento",
+    description: "Gestión continua, trazabilidad y transparencia en cada etapa. Sabés qué hicimos, cuándo y cómo. Información clara, verificable y siempre a mano.",
+    features: ["Informes técnicos certificados", "Reportes de avances", "Historial de intervenciones", "Control de calidad y verificación final"],
     icon: Zap,
     color: "#ef4444", // Red
-    image: "/efemaq-team-professional-office.jpg"
+    image: "/card4.png"
   },
 ]
 
@@ -136,7 +136,7 @@ export default function HorizontalServices() {
                  </div>
 
                  <p className="font-inter text-lg md:text-xl text-gray-400 leading-relaxed max-w-sm">
-                    Un equipo completo de electricistas, plomeros, albañiles y técnicos en refrigeración listos para cuidar tu propiedad.
+                   Un equipo completo de electricistas, técnicos en refrigeración, abertureros, pintores, plomeros y más, listos para cuidar tu propiedad.
                  </p>
                  
                  {/* INDICADOR SCROLL */}
@@ -144,12 +144,12 @@ export default function HorizontalServices() {
                     {isMobile ? (
                         <>
                             <ArrowDown className="w-5 h-5" />
-                            <span className="text-xs font-manrope font-bold uppercase tracking-[0.2em]">Desliza hacia abajo</span>
+                            <span className="text-xs font-manrope font-bold uppercase tracking-[0.2em]">Desliza</span>
                         </>
                     ) : (
                         <>
-                            <ArrowRight className="w-5 h-5" />
-                            <span className="text-xs font-manrope font-bold uppercase tracking-[0.3em]">Desliza</span>
+                            <ArrowDown className="w-5 h-5" />
+                            <span className="text-xs font-manrope font-bold uppercase tracking-[0.2em]">Desliza</span>
                         </>
                     )}
                  </motion.div>
@@ -181,7 +181,7 @@ export default function HorizontalServices() {
                                 ¿Necesitás algo a medida?
                             </h3>
                             <p className="text-gray-400 text-base md:text-lg mb-8 font-inter leading-relaxed">
-                                Diseñamos planes a medida para <span className="text-white font-medium">consorcios grandes</span>, <span className="text-white font-medium">cadenas de locales</span> y <span className="text-white font-medium">casas particulares</span>.
+                                Diseñamos planes a medida para <span className="text-white font-medium">consorcios</span>, <span className="text-white font-medium">cadenas de locales,</span> <span className="text-white font-medium">oficinas y hogares</span>.
                             </p>
                             
                             <div className="flex justify-center">

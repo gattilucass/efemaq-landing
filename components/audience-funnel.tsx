@@ -194,10 +194,10 @@ export default function AudienceFunnel() {
                         </div>
 
                         <h3 className="font-manrope text-3xl md:text-4xl font-bold text-white mb-3 group-hover:text-[#00dfdf] transition-colors">
-                            Hogar & Comercios
+                            Hogares & Comercios
                         </h3>
                         <p className="font-inter text-lg text-gray-400 leading-relaxed mb-8 flex-1 border-l-2 border-[#006262]/30 pl-4">
-                           Mantenimiento correctivo y preventivo. Diagnóstico certero, garantía escrita y personal verificado.
+                           Mantenimiento preventivo y correctivo. Diagnósticos claros y efectivos, personal verificado, garantía y seguimiento.
                         </p>
 
                          <div className="mt-auto w-full">

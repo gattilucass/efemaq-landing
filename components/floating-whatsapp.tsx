@@ -8,7 +8,7 @@ export default function FloatingWhatsApp() {
   const [isVisible, setIsVisible] = useState(false)
   const { scrollY } = useScroll()
 
-  useMotionValueEvent(scrollY, "change", (latest) => {
+  useMotionValueEvent(scrollY, "change", (latest: number) => {
     // Solo muestra el botón después de 800px de scroll (Pasando el Hero)
     if (latest > 800) {
       setIsVisible(true)
