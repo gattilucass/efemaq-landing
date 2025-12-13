@@ -33,15 +33,15 @@ export default function CTASection() {
                  backgroundSize: '50px 50px' 
              }} 
           />
-          <div className="absolute top-0 left-0 w-full h-32 bg-gradient-to-b from-[#0a0a0a] to-transparent z-10" />
-          <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-[#0a0a0a] to-transparent z-10" />
+          <div className="absolute top-0 left-0 w-full h-32 bg-gradient-to-b from-[#0a0a0a] to-transparent z-40" />
+          <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-[#0a0a0a] to-transparent z-40" />
           
           {/* Foco Central (Sin animación pesada) */}
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[#00dfdf] opacity-[0.04] blur-[120px] rounded-full" />
       </div>
 
       {/* CONTENEDOR PRINCIPAL */}
-      <div className="relative z-10 w-full max-w-3xl px-4">
+      <div className="relative z-40 w-full max-w-3xl px-4">
         
         {/* --- CARD CENTRAL --- */}
         {/* Animación de entrada ÚNICA (whileInView) en vez de scroll continuo */}
@@ -76,7 +76,7 @@ export default function CTASection() {
                 <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-[#00dfdf]/30 to-transparent" />
                 
                 {/* HEADER & COPY */}
-                <div className="relative z-10 mb-10 mt-12">
+                <div className="relative z-40 mb-10 mt-12">
                     <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#00dfdf]/5 border border-[#00dfdf]/20 mb-6 shadow-[0_0_15px_rgba(0,223,223,0.05)]">
                         <span className="relative flex h-2 w-2">
                             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#00dfdf] opacity-75"></span>
@@ -102,7 +102,7 @@ export default function CTASection() {
                 </div>
 
                 {/* ACCIONES (BOTONES) */}
-                <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12 relative z-10 px-4">
+                <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12 relative z-40 px-4">
                     {/* BTN 1: WHATSAPP */}
                     <a href={whatsappLink} target="_blank" rel="noopener noreferrer" className="w-full sm:w-auto">
                         <Button 

@@ -93,12 +93,13 @@ export default function HorizontalServices() {
   };
 
   return (
-    <section id="horizontal-services" ref={targetRef} className="relative h-[400vh] bg-[#0a0a0a]">
+    // Agregamos z-30 al section base por si acaso
+    <section id="horizontal-services" ref={targetRef} className="relative h-[400vh] bg-[#0a0a0a] z-30">
       
-      {/* STICKY CONTAINER */}
-      <div className="sticky top-0 flex h-screen items-center overflow-hidden">
+      {/* STICKY CONTAINER: Z-30 para levantar toda la estructura */}
+      <div className="sticky top-0 flex h-screen items-center overflow-hidden z-30">
         
-        {/* --- FONDO --- */}
+        {/* --- FONDO (Z-0 y Z-10 para no molestar) --- */}
         <div className="absolute inset-0 z-0 pointer-events-none">
             <div 
                className="absolute inset-0 opacity-[0.08]" 
@@ -107,13 +108,15 @@ export default function HorizontalServices() {
                    backgroundSize: '40px 40px' 
                }} 
             />
+            {/* Gradientes bajados a z-10 para que no tapen nada interactivo */}
             <div className="absolute top-0 left-0 w-full h-64 bg-gradient-to-b from-[#0a0a0a] to-transparent z-10" />
             <div className="absolute bottom-0 left-0 w-full h-64 bg-gradient-to-t from-[#0a0a0a] to-transparent z-10" />
             <div className="absolute top-1/2 left-1/4 w-[600px] h-[600px] bg-[#006262] opacity-[0.05] blur-[120px] rounded-full pointer-events-none" />
         </div>
 
         {/* --- HORIZONTAL TRACK --- */}
-        <motion.div style={{ x }} className="flex gap-6 md:gap-10 px-6 md:px-20 relative z-10 items-center h-full will-change-transform pr-4 md:pr-12">
+        {/* CRUCIAL: Z-40 para igualar la altura del Hero y pelear el foco */}
+        <motion.div style={{ x }} className="flex gap-6 md:gap-10 px-6 md:px-20 relative z-40 items-center h-full will-change-transform pr-4 md:pr-12">
             
             {/* HEADER INTEGRADO */}
             <div className="w-[85vw] md:w-[500px] shrink-0 h-[70vh] flex flex-col justify-center pr-4 md:pr-12 pl-2 md:pl-4">
@@ -172,7 +175,7 @@ export default function HorizontalServices() {
                         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(0,223,223,0.05),transparent_60%)]" />
                         <div className="absolute bottom-0 left-0 w-full h-1/2 bg-gradient-to-t from-[#00dfdf]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
 
-                        <div className="relative z-10 max-w-xl">
+                        <div className="relative z-30 max-w-xl">
                             <div className="inline-flex items-center justify-center p-3 rounded-full bg-[#00dfdf]/10 text-[#00dfdf] mb-6">
                                 <Briefcase size={28} />
                             </div>
@@ -204,8 +207,8 @@ export default function HorizontalServices() {
 
         </motion.div>
 
-        {/* PROGRESS BAR */}
-        <div className="absolute bottom-12 left-8 right-8 md:left-20 md:right-20 h-[2px] bg-white/5 rounded-full overflow-hidden z-20">
+        {/* PROGRESS BAR (Z-40 para que se vea) */}
+        <div className="absolute bottom-12 left-8 right-8 md:left-20 md:right-20 h-[2px] bg-white/5 rounded-full overflow-hidden z-40">
             <motion.div 
                 style={{ width: progressWidth }} 
                 className="h-full bg-gradient-to-r from-[#00dfdf] to-[#10b981] shadow-[0_0_15px_#00dfdf]"
@@ -217,7 +220,7 @@ export default function HorizontalServices() {
   )
 }
 
-// --- SUB-COMPONENTE: CARD FLOTANTE (ESTRUCTURA CORREGIDA) ---
+// --- SUB-COMPONENTE: CARD FLOTANTE ---
 function ServiceCard({ data, index }: { data: any, index: number }) {
     const floatDuration = 6 + index
     
@@ -229,9 +232,9 @@ function ServiceCard({ data, index }: { data: any, index: number }) {
         >
             <div className="relative w-full h-full rounded-[2rem] bg-[#121212] border border-white/10 overflow-hidden transition-all duration-500 group-hover:border-[#00dfdf]/40 group-hover:shadow-[0_20px_80px_-20px_rgba(0,0,0,0.7)] flex flex-col">
                 
-                {/* 1. IMAGEN (Altura controlada) */}
+                {/* 1. IMAGEN */}
                 <div className="relative h-[250px] shrink-0 overflow-hidden">
-                    <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#121212] z-10" />
+                    <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#121212] z-30" />
                     
                     <Image 
                         src={data.image} 
@@ -240,15 +243,14 @@ function ServiceCard({ data, index }: { data: any, index: number }) {
                         className="object-cover transition-transform duration-700 group-hover:scale-110 grayscale group-hover:grayscale-0 opacity-80 group-hover:opacity-100" 
                     />
                     
-                    <div className="absolute top-4 right-4 z-20 w-10 h-10 md:w-12 md:h-12 rounded-full bg-[#0a0a0a]/90 backdrop-blur-xl border border-white/20 flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
+                    <div className="absolute top-4 right-4 z-30 w-10 h-10 md:w-12 md:h-12 rounded-full bg-[#0a0a0a]/90 backdrop-blur-xl border border-white/20 flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
                         <data.icon size={18} color={data.color} />
                     </div>
                 </div>
 
-                {/* 2. CONTENIDO (Scroll interno "Lindo" + Gap corregido) */}
-                <div className="flex-1 p-6 flex flex-col relative z-20 bg-[#121212] overflow-y-auto scrollbar-thin scrollbar-thumb-emerald-500/20 scrollbar-track-transparent hover:scrollbar-thumb-emerald-500/50">
+                {/* 2. CONTENIDO */}
+                <div className="flex-1 p-6 flex flex-col relative z-30 bg-[#121212] overflow-y-auto scrollbar-thin scrollbar-thumb-emerald-500/20 scrollbar-track-transparent hover:scrollbar-thumb-emerald-500/50">
                     
-                    {/* Header pegado arriba */}
                     <div className="shrink-0">
                         <h4 
                             className="text-[10px] md:text-xs font-manrope font-bold uppercase tracking-widest mb-2" 
@@ -266,7 +268,6 @@ function ServiceCard({ data, index }: { data: any, index: number }) {
                         </p>
                     </div>
 
-                    {/* Separador y Checks (Pegados a la descripción) */}
                     <div className="mt-6 pt-4 border-t border-white/5 shrink-0">
                         <div className="grid grid-cols-1 gap-2">
                             {data.features.slice(0, 4).map((feat: string, i: number) => (
@@ -278,7 +279,6 @@ function ServiceCard({ data, index }: { data: any, index: number }) {
                         </div>
                     </div>
                     
-                    {/* Espacio final flexible (Relleno) */}
                     <div className="h-1 shrink-0" />
 
                 </div>

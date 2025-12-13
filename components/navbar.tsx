@@ -50,8 +50,8 @@ export default function Navbar() {
   const navLinks = [
     { name: "Servicios", href: "/#horizontal-services" }, // Asumiendo que la sección tiene id="horizontal-services"
     { name: "Nosotros", href: "/#about-us" },             // Asumiendo que tiene id="about-us"
-    { name: "Administradores", href: "/para-administradores" },
-    { name: "Particulares", href: "/para-particulares" },
+    { name: "Administradores y Empresas", href: "/para-administradores" },
+    { name: "Hogares y Comercios", href: "/para-particulares" },
   ]
 
   const handleScrollTo = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {

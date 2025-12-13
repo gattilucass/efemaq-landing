@@ -81,7 +81,7 @@ export default function AboutUs() {
             <div className="absolute bottom-50 left-1/2 -translate-x-1/2 w-[400px] h-[200px] bg-[#00dfdf] opacity-[0.02] blur-[150px] rounded-full pointer-events-none" />
         </div>
 
-        <div className="relative z-10 max-w-6xl mx-auto">
+        <div className="relative z-30 max-w-6xl mx-auto">
             
             {/* GRID PRINCIPAL */}
             {/* gap reducido para pantallas chicas (gap-12 en vez de 24) */}
@@ -114,7 +114,7 @@ export default function AboutUs() {
                              </div>
                                 {/* CTA "SUMATE" (OVERLAY INFERIOR) */}
                                                         {/* CORRECCIÓN 2: Enlace funcional mailto */}
-                                                        <a href={sumateLink} className="absolute bottom-0 left-0 w-full p-6 block cursor-pointer z-20">
+                                                        <a href={sumateLink} className="absolute bottom-0 left-0 w-full p-6 block cursor-pointer z-30">
                                                             <div className="bg-[#151515]/90 border border-white/10 p-5 rounded-xl flex items-center justify-between shadow-xl backdrop-blur-md transition-all hover:bg-[#1a1a1a] group">
                                                                 <div className="flex items-center gap-4">
                                                                     <div className="w-10 h-10 rounded-full bg-[#00dfdf] flex items-center justify-center text-black shrink-0 shadow-[0_0_15px_rgba(0,223,223,0.4)]">
@@ -215,7 +215,7 @@ export default function AboutUs() {
                 </blockquote>
 
                 {/* FIRMA REAL (Espaciado Compacto con Margen Negativo) */}
-                <div className="flex flex-col items-center gap-0 -mt-2 relative z-20">
+                <div className="flex flex-col items-center gap-0 -mt-2 relative z-30">
                     
                     {/* Contenedor de la firma + Animación de Máscara (Un poquito más lenta: 1.5s) */}
                     <motion.div 

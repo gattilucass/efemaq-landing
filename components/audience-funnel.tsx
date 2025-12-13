@@ -82,11 +82,11 @@ export default function AudienceFunnel() {
          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[400px] bg-[#006262] opacity-10 blur-[100px] md:blur-[150px] rounded-full pointer-events-none will-change-transform" />
       </div>
 
-      <div className="relative z-10 max-w-7xl mx-auto flex flex-col items-center">
+      <div className="relative z-30 max-w-7xl mx-auto flex flex-col items-center">
         
         {/* --- HEADER --- */}
         <motion.div 
-            className="flex flex-col items-center text-center mb-16 relative z-20 will-change-transform"
+            className="flex flex-col items-center text-center mb-16 relative z-30 will-change-transform"
             style={{ opacity: titleOpacity, y: titleY }}
         >
             <div className="flex items-center gap-3 px-4 py-1.5 mb-5 rounded-full bg-white/5 border border-white/10 backdrop-blur-sm shadow-lg shadow-[#006262]/10">
@@ -100,7 +100,7 @@ export default function AudienceFunnel() {
                  </span>
             </div>
 
-            <h2 className="font-manrope text-4xl md:text-6xl lg:text-7xl font-extrabold tracking-tight z-20 leading-tight text-white">
+            <h2 className="font-manrope text-4xl md:text-6xl lg:text-7xl font-extrabold tracking-tight z-30 leading-tight text-white">
                 <motion.span 
                     className="inline-block text-transparent bg-clip-text bg-gradient-to-r from-[#00dfdf] via-white to-[#00dfdf] bg-[length:200%_auto]"
                     animate={{ backgroundPosition: ["0% center", "200% center"] }}
@@ -138,7 +138,7 @@ export default function AudienceFunnel() {
                         ${loadingPath === "/para-administradores" ? "border-[#00dfdf] scale-[0.98] opacity-80" : "border-white/10 hover:border-[#00dfdf]/60 hover:shadow-[#00dfdf]/10"}
                     `}
                 >
-                     <div className="p-8 md:p-10 flex flex-col h-full relative z-10">
+                     <div className="p-8 md:p-10 flex flex-col h-full relative z-30">
                         <div className="mb-6 w-16 h-16 flex items-center justify-center rounded-xl bg-[#006262]/20 border border-[#006262]/40 group-hover:scale-105 transition-transform duration-300">
                            <Building2 size={32} className="text-[#00dfdf]" />
                         </div>
@@ -183,7 +183,7 @@ export default function AudienceFunnel() {
                         ${loadingPath === "/para-particulares" ? "border-[#00dfdf] scale-[0.98] opacity-80" : "border-white/10 hover:border-[#00dfdf]/60 hover:shadow-[#00dfdf]/10"}
                     `}
                 >
-                     <div className="p-8 md:p-10 flex flex-col h-full relative z-10">
+                     <div className="p-8 md:p-10 flex flex-col h-full relative z-30">
                         <div className="mb-6 flex gap-4">
                             <div className="w-16 h-16 flex items-center justify-center rounded-xl bg-[#006262]/20 border border-[#006262]/40 group-hover:scale-105 transition-transform duration-300">
                                 <Home size={28} className="text-[#00dfdf]" />

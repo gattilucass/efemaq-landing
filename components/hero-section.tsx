@@ -30,6 +30,7 @@ export default function HeroSection() {
   };
 
   // --- 1. CONFIGURACIÓN DEL SCROLL ---
+  // Altura ajustada: 300vh para que sea dinámico
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start start", "end end"],
@@ -42,43 +43,54 @@ export default function HeroSection() {
   const smoothY = useSpring(scrollYProgress, springConfig);
 
   // --- 2. ANIMACIONES DEL HERO (TEXTO) ---
-  // Zona muerta extendida: Opacidad 1 hasta el 5% del scroll
-  const heroOpacity = useTransform(smoothY, [0, 0.05, 0.15], [1, 1, 0]);
-  const heroY = useTransform(smoothY, [0.05, 0.2], [0, -200]); 
-  const heroPointerEvents = useTransform(smoothY, (v) => (v > 0.15 ? "none" : "auto"));
+  const heroOpacity = useTransform(smoothY, [0, 0.05, 0.13], [1, 1, 0]);
+  const heroY = useTransform(smoothY, [0.05, 0.15], [0, -200]); 
+  
+  // Pointer Events: Importante para liberar la pantalla cuando el texto se va
+  const heroPointerEvents = useTransform(smoothY, (v) => (v > 0.10 ? "none" : "auto"));
 
   // --- 3. ANIMACIONES DEL PROCESO (CARDS) ---
-  const scanLineTop = useTransform(smoothY, [0, 0.85], ["0%", "100%"]);
+  
+  // SCANNER LINE (Llega casi al final)
+  const scanLineTop = useTransform(smoothY, [0, 0.95], ["0%", "100%"]);
   const scanColor = useTransform(smoothY, 
-    [0.1, 0.35, 0.65, 0.9], 
+    [0.1, 0.35, 0.60, 0.85], 
     ["#f59e0b", "#3b82f6", "#00dfdf", "#10b981"] 
   );
 
+  // CARDS FLUIDAS 
+  // CORRECCIÓN MÓVIL: Escala segura que no desborda.
   const scaleStart = 0.9;
   const scaleEndMobile = 1.0; 
   const scaleEndDesktop = 1.05;
   const targetScale = isMobile ? scaleEndMobile : scaleEndDesktop;
 
-  // Cards
-  const c1Op = useTransform(smoothY, [0.02, 0.1, 0.2, 0.25], [0, 1, 1, 0]);
-  const c1Y  = useTransform(smoothY, [0.02, 0.25], [100, -150]);
-  const c1Scale = useTransform(smoothY, [0.05, 0.25], [scaleStart, targetScale]); 
+  // Card 1
+  const c1Op = useTransform(smoothY, [0.12, 0.15, 0.25, 0.30], [0, 1, 1, 0]);
+  const c1Y  = useTransform(smoothY, [0.10, 0.30], [200, -50]);
+  const c1Scale = useTransform(smoothY, [0.10, 0.30], [scaleStart, targetScale]); 
 
-  const c2Op = useTransform(smoothY, [0.25, 0.35, 0.45, 0.50], [0, 1, 1, 0]);
-  const c2Y  = useTransform(smoothY, [0.25, 0.50], [100, -150]);
-  const c2Scale = useTransform(smoothY, [0.25, 0.50], [scaleStart, targetScale]);
+  // Card 2
+  const c2Op = useTransform(smoothY, [0.28, 0.32, 0.43, 0.48], [0, 1, 1, 0]);
+  const c2Y  = useTransform(smoothY, [0.25, 0.48], [200, -50]);
+  const c2Scale = useTransform(smoothY, [0.25, 0.48], [scaleStart, targetScale]);
 
-  const c3Op = useTransform(smoothY, [0.50, 0.60, 0.70, 0.75], [0, 1, 1, 0]);
-  const c3Y  = useTransform(smoothY, [0.50, 0.75], [100, -150]);
-  const c3Scale = useTransform(smoothY, [0.50, 0.75], [scaleStart, targetScale]);
+  // Card 3
+  const c3Op = useTransform(smoothY, [0.46, 0.50, 0.60, 0.65], [0, 1, 1, 0]);
+  const c3Y  = useTransform(smoothY, [0.43, 0.65], [200, -50]);
+  const c3Scale = useTransform(smoothY, [0.43, 0.65], [scaleStart, targetScale]);
 
-  const c4Op = useTransform(smoothY, [0.75, 0.85], [0, 1]);
-  const c4Y  = useTransform(smoothY, [0.75, 0.9], [150, 0]);
-  const c4Scale = useTransform(smoothY, [0.75, 0.9], [scaleStart, 1.0]);
+  // Card 4 (CORRECCIÓN SCROLL MUERTO)
+  // Ahora termina su recorrido en 0.95 (casi al final de la sección), eliminando la pausa.
+  const c4Op = useTransform(smoothY, [0.63, 0.68], [0, 1]);
+  const c4Y  = useTransform(smoothY, [0.60, 0.95], [200, 0]); // Viaje largo hasta el final
+  const c4Scale = useTransform(smoothY, [0.60, 0.95], [scaleStart, 1.0]);
 
-  const circleDraw = useTransform(smoothY, [0.80, 0.90], [0, 1]);
-  const checkDraw = useTransform(smoothY, [0.82, 0.92], [0, 1]); 
-  const nextSectionHintOp = useTransform(smoothY, [0.9, 0.98], [0, 1]);
+  // Animaciones internas SVG (Sincronizadas con el nuevo final)
+  const circleDraw = useTransform(smoothY, [0.63, 0.95], [0, 1]);
+  const checkDraw = useTransform(smoothY, [0.65, 0.95], [0, 1]); 
+  
+  const nextSectionHintOp = useTransform(smoothY, [0.85, 0.95], [0, 1]);
 
   const containerVariants: Variants = {
     hidden: { opacity: 0 },
@@ -97,13 +109,12 @@ export default function HeroSection() {
   };
 
   return (
-    <section ref={containerRef} className="relative w-full h-[350vh] bg-[#050505]">
+    <section ref={containerRef} className="relative w-full h-[300vh] bg-[#050505]">
       
       {/* STICKY VIEWPORT */}
       <div className="sticky top-0 left-0 w-full h-screen overflow-hidden flex flex-col justify-center items-center">
         
         {/* --- 1. BACKGROUND LAYER (Video) --- */}
-        {/* Se pinta PRIMERO (Fondo) */}
         <div className="absolute inset-0 z-0 pointer-events-none select-none">
              {mounted && (
                  <div className="w-full h-full relative">
@@ -119,8 +130,8 @@ export default function HeroSection() {
                             <source src={isMobile ? "/celular-final.mp4" : "/desktop-final.mp4"} type="video/mp4" />
                         </video>
                         
-                        {/* CAPA DE OSCURIDAD: PURA Y UNIFORME */}
-                        <div className="absolute inset-0 bg-black/80 pointer-events-none mix-blend-normal will-change-auto" /> 
+                        {/* Capa oscura */}
+                        <div className="absolute inset-0 bg-black/80 pointer-events-none" /> 
                  </div>
              )}
              
@@ -134,8 +145,7 @@ export default function HeroSection() {
              />
         </div>
 
-        {/* --- 2. SCANNER LINE (Process Element) --- */}
-        {/* Z-20: Encima del video, debajo del texto */}
+        {/* --- 2. SCANNER LINE --- */}
         <motion.div className="absolute inset-0 z-20 pointer-events-none will-change-transform">
              <motion.div style={{ top: scanLineTop }} className="absolute left-0 w-full h-px z-30 flex justify-end pr-4 md:pr-16">
                  <motion.div 
@@ -151,12 +161,10 @@ export default function HeroSection() {
         </motion.div>
 
         {/* --- 3. CARDS CONTAINER --- */}
-        {/* Z-20: Nivel medio */}
-        <div className="absolute z-20 pointer-events-none flex items-center justify-center
-                        w-full 
-                        w-[85vw] md:w-[55vw] max-w-[800px]
-                        top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2
-                        "> 
+        {/* CORRECCIÓN MÓVIL: w-[85vw] (Margen lateral seguro) */}
+        <div className="absolute z-20 pointer-events-none flex items-center justify-center 
+                        w-[95vw] md:w-[55vw] max-w-[800px] 
+                        top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"> 
             
             {/* CARD A */}
             <div className="absolute w-full perspective-1000">
@@ -259,90 +267,7 @@ export default function HeroSection() {
 
         </div>
 
-        {/* --- 4. HERO CONTENT (MOVIDO AL FINAL PARA ESTAR ENCIMA DE TODO) --- */}
-        {/* Z-INDEX 999: La solución definitiva para que nada lo tape */}
-        <motion.div 
-             style={{ 
-                opacity: heroOpacity, 
-                y: heroY, 
-                pointerEvents: heroPointerEvents as any 
-             }}
-             className="absolute bottom-24 left-0 z-[999] w-full px-6 md:px-16 flex flex-col items-center md:items-start text-center md:text-left"
-        >
-            <motion.div 
-                initial="hidden" 
-                animate="visible" 
-                variants={containerVariants}
-                className="flex flex-col items-center md:items-start w-full md:w-[60vw] lg:w-[50vw]"
-            >
-                {/* Badge */}
-                <motion.div variants={itemVariants} className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-white/10 border border-white/20 backdrop-blur-md mb-6 shadow-lg">
-                    <span className="relative flex h-2.5 w-2.5">
-                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#00dfdf] opacity-75"></span>
-                      <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-[#00dfdf]"></span>
-                    </span>
-                    <span className="text-xs font-manrope font-bold text-white tracking-widest uppercase">
-                      Mantenimiento Total
-                    </span>
-                </motion.div>
-
-                {/* H1 */}
-                <motion.h1 variants={itemVariants} className="font-manrope font-extrabold text-white leading-[1.05] tracking-tighter mb-6 drop-shadow-2xl
-                    text-[clamp(2.5rem,5vw,4.5rem)]
-                ">
-                    Soluciones integrales<br />
-                    <motion.span 
-                        className="text-transparent bg-clip-text bg-gradient-to-r from-[#006262] via-[#00dfdf] to-[#006262] bg-[length:200%_auto]"
-                        animate={{ backgroundPosition: ["0% center", "200% center"] }}
-                        transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
-                    >
-                        para tus activos.
-                    </motion.span>
-                </motion.h1>
-
-                {/* Subtitle */}
-                <motion.p variants={itemVariants} className="font-inter text-gray-100 leading-relaxed max-w-xl md:border-l-4 border-[#00dfdf]/30 md:pl-6 mb-10 mx-auto md:mx-0 drop-shadow-lg
-                    text-[clamp(1rem,1.2vw,1.25rem)]
-                ">
-                    Electricidad, refrigeración, carpintería metálica, <span className="whitespace-nowrap">obra seca</span>, pintura, remodelaciones en general y más, <strong className="text-white font-bold"><span className="whitespace-nowrap">en un solo lugar.</span></strong>
-                </motion.p>
-
-                {/* BUTTONS */}
-                <motion.div 
-                    variants={itemVariants} 
-                    className="flex flex-col sm:flex-row gap-4 pt-2 w-full sm:w-auto items-center md:items-start justify-center md:justify-start"
-                >
-                     <a 
-                        href="#horizontal-services" 
-                        onClick={(e) => {
-                            e.preventDefault();
-                            window.scrollBy({ top: window.innerHeight * 0.5, behavior: 'smooth' });
-                        }}
-                        className="group relative inline-flex h-14 sm:h-16 items-center justify-center px-8 sm:px-10 bg-white hover:bg-gray-200 rounded-lg shadow-[0_0_40px_-10px_rgba(255,255,255,0.5)] transition-all hover:scale-[1.02] active:scale-95 w-full sm:w-auto"
-                        // Estilos puros inline
-                        style={{ backgroundColor: '#ffffff', color: '#000000', opacity: 1, filter: 'none', mixBlendMode: 'normal' }}
-                     >
-                        <span className="relative z-10 font-manrope font-extrabold text-black text-base sm:text-lg tracking-wide flex items-center gap-3">
-                            Ver el Proceso <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                        </span>
-                     </a>
-                     
-                     <a 
-                        href="#cta-section" 
-                        onClick={(e) => handleScrollTo(e, "cta-section")}
-                        className="group inline-flex h-14 sm:h-16 items-center justify-center px-8 sm:px-10 bg-white/10 border border-white/50 hover:border-white text-white font-manrope font-bold text-base sm:text-lg rounded-lg backdrop-blur-md transition-all hover:bg-white/20 w-full sm:w-auto"
-                        style={{ color: '#ffffff', opacity: 1 }}
-                     >
-                        <span className="flex items-center gap-2">
-                            <Wrench size={20} className="text-[#00dfdf] group-hover:rotate-12 transition-transform" /> 
-                            Hablar con un técnico
-                        </span>
-                     </a>
-                </motion.div>
-            </motion.div>
-        </motion.div>
-
-        {/* --- 5. INDICADORES FINALES --- */}
+        {/* INDICADORES FINALES */}
         <motion.div 
             style={{ opacity: heroOpacity }}
             className="absolute left-1/2 -translate-x-1/2 bottom-8 flex flex-col items-center gap-3 z-30 pointer-events-none"
@@ -356,7 +281,7 @@ export default function HeroSection() {
             className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 z-30 pointer-events-none"
         >
             <span className="text-[#00dfdf] text-[10px] font-manrope font-bold uppercase tracking-widest whitespace-nowrap animate-pulse">
-                Siguiente Paso
+                Descubrí más
             </span>
             <div className="flex flex-col items-center gap-1">
                 <Mouse className="text-[#00dfdf] w-5 h-5" />
@@ -365,6 +290,84 @@ export default function HeroSection() {
         </motion.div>
 
       </div>
+
+      {/* 🎯 ZÓCALO FUERA DEL STICKY (TEXTO + BOTONES) */}
+      <motion.div 
+           style={{ 
+              opacity: heroOpacity,
+              y: heroY,
+              // CORRECCIÓN: Usamos el transform para apagar clicks cuando se va, 
+              // pero mientras está visible, dejamos que el usuario interactúe.
+              pointerEvents: heroPointerEvents as any
+           }}
+           // CORRECCIÓN: Z-index 60 es suficiente para estar sobre Cards (z-20) pero bajo Navbar (z-100)
+           className="fixed inset-0 z-[20] flex items-center justify-center md:items-end md:justify-start md:pb-24 md:px-16 pointer-events-none"
+      >
+         <motion.div 
+            initial="hidden" 
+            animate="visible" 
+            variants={containerVariants}
+            className="flex flex-col items-center w-full max-w-[90vw] md:max-w-[60vw] lg:max-w-[50vw] md:items-start pointer-events-auto px-6 md:px-0"
+         >
+            {/* Badge */}
+            <motion.div variants={itemVariants} className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-white/10 border border-white/20 backdrop-blur-md mb-6 shadow-lg">
+                <span className="relative flex h-2.5 w-2.5">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#00dfdf] opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-[#00dfdf]"></span>
+                </span>
+                <span className="text-xs font-manrope font-bold text-white tracking-widest uppercase">
+                  Mantenimiento Total
+                </span>
+            </motion.div>
+
+            {/* H1 */}
+            <motion.h1 variants={itemVariants} className="font-manrope font-extrabold text-white leading-[1.05] tracking-tighter mb-6 drop-shadow-2xl text-[clamp(2.5rem,5vw,4.5rem)] text-center md:text-left">
+                Soluciones integrales<br />
+                <motion.span 
+                    className="text-transparent bg-clip-text bg-gradient-to-r from-[#006262] via-[#00dfdf] to-[#006262] bg-[length:200%_auto]"
+                    animate={{ backgroundPosition: ["0% center", "200% center"] }}
+                    transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
+                >
+                    para tus activos.
+                </motion.span>
+            </motion.h1>
+
+            {/* Subtitle */}
+            <motion.p variants={itemVariants} className="font-inter text-gray-100 leading-relaxed max-w-xl md:border-l-4 border-[#00dfdf]/30 md:pl-6 mb-10 drop-shadow-lg text-[clamp(1rem,1.2vw,1.25rem)] text-center md:text-left">
+                Electricidad, refrigeración, carpintería metálica, <span className="whitespace-nowrap">obra seca</span>, pintura, remodelaciones en general y más, <strong className="text-white font-bold"><span className="whitespace-nowrap">en un solo lugar.</span></strong>
+            </motion.p>
+
+            {/* BUTTONS */}
+            <motion.div 
+               variants={itemVariants}
+               className="flex flex-col sm:flex-row gap-4 pt-2 w-full sm:w-auto items-center"
+            >
+                 <a 
+                    href="#horizontal-services" 
+                    onClick={(e) => {
+                        e.preventDefault();
+                        window.scrollBy({ top: window.innerHeight * 0.5, behavior: 'smooth' });
+                    }}
+                    className="group relative inline-flex h-14 sm:h-16 items-center justify-center px-6 sm:px-10 bg-white hover:bg-gray-200 rounded-lg shadow-[0_0_40px_-10px_rgba(255,255,255,0.5)] transition-all hover:scale-[1.02] active:scale-95 w-full sm:w-auto"
+                 >
+                    <span className="relative z-10 font-manrope font-extrabold text-black text-base sm:text-lg tracking-wide flex items-center gap-3">
+                        Ver el Proceso <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                    </span>
+                 </a>
+                 
+                 <a 
+                    href="#cta-section" 
+                    onClick={(e) => handleScrollTo(e, "cta-section")}
+                    className="group inline-flex h-14 sm:h-16 items-center justify-center px-6 sm:px-10 bg-white/10 border border-white/50 hover:border-white text-white font-manrope font-bold text-base sm:text-lg rounded-lg backdrop-blur-md transition-all hover:bg-white/20 w-full sm:w-auto"
+                 >
+                    <span className="flex items-center gap-2">
+                        <Wrench size={20} className="text-[#00dfdf] group-hover:rotate-12 transition-transform" /> 
+                        Hablar con un técnico
+                    </span>
+                 </a>
+            </motion.div>
+         </motion.div>
+      </motion.div>
     </section>
   );
 }
