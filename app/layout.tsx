@@ -3,6 +3,7 @@ import type { Metadata } from "next"
 import { Manrope, Inter } from "next/font/google"
 import "./globals.css"
 import SmoothScroller from "@/components/smooth-scroller"
+import StructuredData from "@/components/structured-data"
 
 const _manrope = Manrope({ subsets: ["latin"], variable: "--font-manrope" })
 const _inter = Inter({ subsets: ["latin"], variable: "--font-inter" })
@@ -26,6 +27,7 @@ export default function RootLayout({
   return (
     <html lang="es" className={`dark ${_manrope.variable} ${_inter.variable}`}>
       <body className="font-inter antialiased bg-[#111111] text-white">
+        <StructuredData />
         <SmoothScroller>
           {children}
         </SmoothScroller>

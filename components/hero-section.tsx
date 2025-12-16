@@ -127,7 +127,7 @@ export default function HeroSection() {
                             preload="none"
                             key={isMobile ? "mobile-v" : "desktop-v"}
                         >
-                            <source src={isMobile ? "/celular-final.mp4" : "/desktop-final.mp4"} type="video/mp4" />
+                            <source src={isMobile ? "/celular-final-1.mp4" : "/desktop-final-1.mp4"} type="video/mp4" />
                         </video>
                         
                         {/* Capa oscura */}
