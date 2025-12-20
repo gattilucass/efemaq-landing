@@ -51,8 +51,13 @@ export default function HeroSection() {
 
   // --- 3. ANIMACIONES DEL PROCESO (CARDS) ---
   
+// --- SCANLINE FADE-IN ---
+  // Del 0% al 5% del scroll: Opacidad 0 (Invisible)
+  // Del 5% al 15% del scroll: Fade in suave a Opacidad 1 (Visible)
+  const scanLineOpacity = useTransform(smoothY, [0, 0.05, 0.15], [0, 0, 1]);
+
   // SCANNER LINE (Llega casi al final)
-  const scanLineTop = useTransform(smoothY, [0, 0.95], ["0%", "100%"]);
+  const scanLineTop = useTransform(smoothY, [0, 0.95], ["0%", "98%"]);
   const scanColor = useTransform(smoothY, 
     [0.1, 0.35, 0.60, 0.85], 
     ["#f59e0b", "#3b82f6", "#00dfdf", "#10b981"] 
@@ -146,7 +151,10 @@ export default function HeroSection() {
         </div>
 
         {/* --- 2. SCANNER LINE --- */}
-        <motion.div className="absolute inset-0 z-20 pointer-events-none will-change-transform">
+        
+<motion.div 
+             style={{ opacity: scanLineOpacity }} 
+         className="absolute inset-0 z-20 pointer-events-none will-change-transform">
              <motion.div style={{ top: scanLineTop }} className="absolute left-0 w-full h-px z-30 flex justify-end pr-4 md:pr-16">
                  <motion.div 
                     style={{ backgroundColor: scanColor, boxShadow: "0 0 25px 3px var(--tw-shadow-color)" }} 
@@ -267,27 +275,6 @@ export default function HeroSection() {
 
         </div>
 
-        {/* INDICADORES FINALES */}
-        <motion.div 
-            style={{ opacity: heroOpacity }}
-            className="absolute left-1/2 -translate-x-1/2 bottom-8 flex flex-col items-center gap-3 z-30 pointer-events-none"
-        >
-             <span className="text-[10px] font-manrope font-bold uppercase tracking-widest text-white drop-shadow-md animate-pulse">Desliza</span>
-             <ArrowDown className="text-[#00dfdf] animate-bounce w-5 h-5" />
-        </motion.div>
-
-        <motion.div 
-            style={{ opacity: nextSectionHintOp }}
-            className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 z-30 pointer-events-none"
-        >
-            <span className="text-[#00dfdf] text-[10px] font-manrope font-bold uppercase tracking-widest whitespace-nowrap animate-pulse">
-                Descubrí más
-            </span>
-            <div className="flex flex-col items-center gap-1">
-                <Mouse className="text-[#00dfdf] w-5 h-5" />
-                <ArrowDown className="text-[#00dfdf] w-3 h-3" />
-            </div>
-        </motion.div>
 
       </div>
 
@@ -366,6 +353,28 @@ export default function HeroSection() {
                     </span>
                  </a>
             </motion.div>
+            
+        {/* INDICADORES FINALES */}
+        <motion.div 
+            style={{ opacity: heroOpacity }}
+            className="absolute left-1/2 -translate-x-1/2 bottom-8 flex flex-col items-center gap-3 z-30 pointer-events-none"
+        >
+             <span className="text-[10px] font-manrope font-bold uppercase tracking-widest text-white drop-shadow-md animate-pulse">Desliza</span>
+             <ArrowDown className="text-[#00dfdf] animate-bounce w-5 h-5" />
+        </motion.div>
+
+        <motion.div 
+            style={{ opacity: nextSectionHintOp }}
+            className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 z-30 pointer-events-none"
+        >
+            <span className="text-[#00dfdf] text-[10px] font-manrope font-bold uppercase tracking-widest whitespace-nowrap animate-pulse">
+                Descubrí más
+            </span>
+            <div className="flex flex-col items-center gap-1">
+                <Mouse className="text-[#00dfdf] w-5 h-5" />
+                <ArrowDown className="text-[#00dfdf] w-3 h-3" />
+            </div>
+        </motion.div>
          </motion.div>
       </motion.div>
     </section>

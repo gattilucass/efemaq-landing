@@ -41,7 +41,7 @@ export default function CTASection() {
       </div>
 
       {/* CONTENEDOR PRINCIPAL */}
-      <div className="relative z-40 w-full max-w-3xl px-4">
+      <div className="relative z-40 w-full max-w-3xl px-6">
         
         {/* --- CARD CENTRAL --- */}
         {/* Animación de entrada ÚNICA (whileInView) en vez de scroll continuo */}
@@ -115,7 +115,7 @@ export default function CTASection() {
                     </a>
 
                     {/* BTN 2: MAIL */}
-                    <a href={mailLink} className="w-full sm:w-auto">
+                    <a href={mailLink} className="w-63 sm:w-auto">
                         <Button 
                             className="h-14 px-8 bg-transparent hover:bg-white/5 border border-white/10 hover:border-[#00dfdf]/30 text-white hover:text-[#00dfdf] font-manrope font-bold text-lg rounded-xl backdrop-blur-md transition-all duration-300 w-full flex items-center justify-center gap-3 group"
                         >
@@ -126,8 +126,8 @@ export default function CTASection() {
                 </div>
 
                 {/* TRUST INDICATORS */}
-                <div className="pt-6 border-t border-white/5 relative z-14">
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
+                <div className="pt-5 border-t border-white/10 relative z-14">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-2 md:gap-6">
                         
                         {/* Item 1 */}
                         <div className="flex flex-row md:flex-col items-center justify-start md:justify-center gap-3 group p-2 md:p-0 rounded-lg hover:bg-white/5 md:hover:bg-transparent transition-colors">

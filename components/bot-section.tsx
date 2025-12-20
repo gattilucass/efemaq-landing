@@ -42,29 +42,38 @@ export default function BotSection() {
   })
 
   // --- 2. LÓGICA DE CHAT (CINTA DESLIZANTE DESDE ABAJO) ---
-  // El valor 330px es la altura aproximada de los mensajes "nuevos" (Gotera + Foto + Ticket)
-  // Al inicio (0), bajamos todo 330px para ocultarlos.
-  // Al final (1), subimos a 0 para mostrarlos.
-  const chatScrollY = useTransform(smoothScroll, [0, 0.95], [280, 0]) 
+  // AJUSTE SOLICITADO: En PC (isMobile false) arrancamos con menos desplazamiento (130 en vez de 280)
+  // para que se vean los mensajes anteriores ("Hola", "Soy Maqui") desde el principio.
+  // En Móvil mantenemos 280 para que no tape el espacio reducido.
+  const chatInitialOffset = isMobile ? 500 : 130
+  const chatScrollY = useTransform(smoothScroll, [0, 0.95], [chatInitialOffset, 0]) 
   
-  // Opacidad progresiva para suavizar la entrada y que no se vea el "corte" duro
-  const opacityGotera = useTransform(smoothScroll, [0.05, 0.2], [0, 1])
-  const opacityFoto = useTransform(smoothScroll, [0.3, 0.45], [0, 1])
+  const opacityGotera = useTransform(smoothScroll, [100, 0.10], [0, 1])
+  const opacityFoto = useTransform(smoothScroll, [100, 0.10], [0, 1])
   const opacityFinal = useTransform(smoothScroll, [0.55, 0.7], [0, 1])
 
-  // --- 3. ANIMACIONES UI ---
-  // Texto Principal (Móvil se va ANTES de que entre el celular)
-  // [0, 0.08] -> Desaparece al 8% del scroll (el celular entra al 10%)
-  const textOpacity = useTransform(smoothScroll, isMobile ? [0, 0.08] : [0, 1], isMobile ? [1, 0] : [1, 1])
-  const textY = useTransform(smoothScroll, isMobile ? [0, 0.1] : [0, 1], isMobile ? [0, -50] : [0, 0])
-  const textScale = useTransform(smoothScroll, isMobile ? [0, 0.1] : [0, 1], isMobile ? [1, 0.95] : [1, 1])
-
-  // Celular (Entrada simple en móvil / INMEDIATA en Desktop)
-  // SOLUCIÓN: En desktop el output es [1, 1], asegurando visibilidad total desde el inicio.
-  const phoneOpacity = useTransform(smoothScroll, isMobile ? [0.1, 0.16] : [0, 1], isMobile ? [0, 1] : [1, 1])
+ // --- 3. ANIMACIONES UI ---
   
-  // SOLUCIÓN: En desktop el output es [0, 0], asegurando posición fija desde el inicio.
-  const phoneY = useTransform(smoothScroll, isMobile ? [0.1, 0.2] : [0, 1], isMobile ? [50, 0] : [0, 0])
+  // Texto Principal Móvil:
+  // CORRECCIÓN: 
+  // 1. textY: Ahora la bajada ocurre del 0% al 15% del scroll (más lento y suave).
+  // 2. textOpacity: Se va desvaneciendo del 10% al 20% (dura un poco más visible).
+  // 3. textScale: Eliminado el efecto de achicarse ([1, 1]).
+  const textOpacity = useTransform(smoothScroll, isMobile ? [0.10, 0.15] : [0, 1], isMobile ? [1, 0] : [1, 1])
+  
+  const textY = useTransform(
+      smoothScroll, 
+      isMobile ? [0, 0.15] : [0, 1], // Rango más amplio para que la bajada se sienta natural
+      isMobile ? [-80, 0] : [0, 0]   // Baja desde -80px hasta el centro
+  )
+  
+  // Forzamos escala 1 siempre en móvil para que no se "achique"
+  const textScale = useTransform(smoothScroll, [0, 1], [1, 1])
+
+  // Celular
+  const phoneOpacity = useTransform(smoothScroll, isMobile ? [0.15, 0.25] : [0, 1], isMobile ? [0, 1] : [1, 1])
+  const phoneY = useTransform(smoothScroll, isMobile ? [0.15, 0.25] : [0, 1], isMobile ? [50, 0] : [0, 0])
+  
   // Flecha Desktop
   const arrowOpacity = useTransform(smoothScroll, [0, 0.1], [0, 1])
 
@@ -95,10 +104,9 @@ export default function BotSection() {
         {/* --- GRID PRINCIPAL --- */}
         <div className="max-w-6xl w-full h-full flex flex-col lg:grid lg:grid-cols-2 lg:gap-16 items-center justify-center relative mx-auto">
             
-            {/* --- COLUMNA IZQUIERDA: TEXTO --- */}
+          {/* --- COLUMNA IZQUIERDA: TEXTO --- */}
             <motion.div 
-                style={{ opacity: textOpacity, scale: textScale }}
-                // MÓVIL: justify-center + h-full asegura el centrado vertical perfecto
+                style={{ opacity: textOpacity, scale: textScale, y: textY }}
                 className={`flex flex-col items-center lg:items-end text-center lg:text-right w-full lg:pr-8
                            ${isMobile ? "absolute inset-0 justify-center z-20 h-full pointer-events-none" : "relative h-full justify-center pointer-events-auto"}
                 `}
@@ -150,7 +158,7 @@ export default function BotSection() {
                      <div className="mb-4 lg:mb-0 pt-1 lg:pl- pointer-events-auto shrink-0 z-30 relative">
                         <Button 
                             onClick={scrollToCTA}
-                            className="h-15 px-8 bg-white/5 hover:bg-white/10 border border-white/10 text-white hover:text-[#00dfdf] font-manrope font-bold text-lg rounded-full backdrop-blur-md transition-all hover:scale-105 group"
+                            className="h-15 !px-7 bg-white/5 hover:bg-white/10 border border-white/10 text-white hover:text-[#00dfdf] font-manrope font-bold text-lg rounded-full backdrop-blur-md transition-all hover:scale-105 group"
                         >
                             Quiero probarlo
                             <ArrowRight className="ml2 w-9 h-9 group-hover:translate-x-1 transition-transform" />
@@ -158,7 +166,6 @@ export default function BotSection() {
                      </div>
 
                       {/* FLECHA SVG EXTERNA (PC ONLY) */}
-                     {/* Posicionada al 30% vertical, apuntando al celular */}
                      <motion.div 
                         style={{ opacity: arrowOpacity }}
                         className="absolute hidden lg:block right-[-30px] top-[60%] w-[180px] h-[120px] pointer-events-none z-30"
@@ -175,25 +182,21 @@ export default function BotSection() {
                  </div>
             </motion.div>
 
-            {/* INDICADOR "DESLIZA" PARA MÓVIL (REINCORPORADO) */}
-                  <motion.div 
-                        style={{ opacity: textOpacity }} // AGREGADO: Se desvanece junto con el título
-                        className="lg:hidden flex flex-col items-center gap-2 absolute bottom-28 left-1/2 -translate-x-1/2 animate-pulse w-full pointer-events-none"
-                     >
-                        <span className="text-[#00dfdf] text-xs font-bold uppercase tracking-widest">Deslizá para ver demo</span>
-                        <ArrowDown className="text-[#00dfdf]" size={20} />
-                     </motion.div>
+            {/* INDICADOR "DESLIZA" PARA MÓVIL */}
+            <motion.div 
+                style={{ opacity: textY }}
+                className="lg:hidden flex flex-col items-center gap-2 absolute bottom-28 left-1/2 -translate-x-1/2 animate-pulse w-full pointer-events-none"
+            >
+                <span className="text-[#00dfdf] text-xs font-bold uppercase tracking-widest">Deslizá para ver demo</span>
+                <ArrowDown className="text-[#00dfdf]" size={20} />
+            </motion.div>
 
            {/* --- COLUMNA DERECHA: CELULAR --- */}
             <motion.div 
                 style={{ opacity: phoneOpacity, y: phoneY }}
-                // CORRECCIÓN: 
-                // 1. lg:justify-center -> Centra el celular verticalmente
-                // 2. lg:items-start -> Lo tira a la izquierda (cerca del texto) en PC
-                // 3. lg:pl-10 -> Le devuelve el aire lateral
                 className="relative w-full h-full flex flex-col items-center justify-center lg:justify-center lg:items-start lg:pl-10 z-10 pointer-events-none lg:pointer-events-auto"
             >
-                 {/* BADGE MÓVIL (NUEVO: Aparece arriba del celular para llenar espacio) */}
+                 {/* BADGE MÓVIL */}
                  <div className="lg:hidden mb-6 inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 backdrop-blur-md shadow-lg shadow-black/20">
                      <div className="relative flex h-2 w-2">
                         <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-500 opacity-75"></span>
@@ -204,8 +207,9 @@ export default function BotSection() {
                      </span>
                  </div>
 
-                 {/* Contenedor Celular: Altura fija controlada (600px) para evitar estiramientos locos */}
-                 <div className="relative w-full max-w-[300px] md:max-w-[360px] h-[75vh] md:h-[700px] bg-[#050505] rounded-[2.5rem] border-[6px] border-[#181818] shadow-2xl overflow-hidden ring-1 ring-white/10 flex flex-col will-change-transform mx-auto lg:mx-0">
+                 {/* Contenedor Celular: Altura AJUSTADA para evitar desproporción */}
+                 {/* h-[60vh] es mucho más seguro en pantallas chicas. max-h-[600px] evita que se estire demasiado. */}
+                 <div className="relative w-auto h-[70vh] md:h-[700px] aspect-[9/19] bg-[#050505] rounded-[2.5rem] border-[6px] border-[#181818] shadow-2xl overflow-hidden ring-1 ring-white/10 flex flex-col will-change-transform mx-auto lg:mx-0">
                      {/* STATUS BAR */}
                      <div className="absolute top-0 w-full px-6 pt-3 pb-2 flex justify-between items-center z-50 text-white/90 bg-[#111]/95 backdrop-blur-sm">
                          <span className="text-[10px] font-manrope font-bold tracking-wide">9:41</span>
@@ -242,17 +246,16 @@ export default function BotSection() {
                      </div>
 
                      {/* --- CHAT AREA --- */}
-                     {/* Relative para contener el absolute del chat */}
                      <div className="flex-1 bg-[#0a0a0a] relative overflow-hidden flex flex-col font-inter pt-20">
                         <div className="absolute top-0 left-0 w-full h-8 bg-gradient-to-b from-[#0a0a0a] to-transparent z-20" />
 
-                        {/* CONTENEDOR DE MENSAJES (Absolute bottom-0) */}
+                        {/* CONTENEDOR DE MENSAJES */}
                         <motion.div 
-                            className="absolute bottom-16 left-0 w-full flex flex-col px-4 gap-3 z-10 pb-4" // bottom-16 deja espacio para el input
+                            className="absolute bottom-16 left-0 w-full flex flex-col px-4 gap-3 z-10 pb-4" 
                             style={{ y: chatScrollY }}
                         >
                              
-                             {/* --- MENSAJES FIJOS (Se ocultan al subir) --- */}
+                             {/* --- MENSAJES FIJOS --- */}
                              <div className="w-full flex justify-end">
                                  <div className="px-4 py-2 rounded-2xl rounded-tr-sm bg-[#006262] text-white text-xs shadow-md">
                                      Hola
@@ -290,7 +293,7 @@ export default function BotSection() {
                                  </div>
                              </div>
 
-                             {/* --- MENSAJES NUEVOS (Entran desde abajo al subir el bloque) --- */}
+                             {/* --- MENSAJES NUEVOS --- */}
                              <motion.div style={{ opacity: opacityGotera }} className="w-full flex justify-end">
                                  <div className="px-4 py-2 rounded-2xl rounded-tr-sm bg-[#006262] text-white text-xs shadow-md">
                                     Hay una gotera en el hall de ingreso

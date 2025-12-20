@@ -3,7 +3,6 @@ import React, { useEffect } from 'react'
 
 import Navbar from "../components/navbar"
 import HeroSection from "../components/hero-section"
-import ProcessSection from "@/components/process-section";
 import AudienceFunnel from "../components/audience-funnel"
 import BotSection from "../components/bot-section"
 import HorizontalServices from "../components/horizontal-services"
