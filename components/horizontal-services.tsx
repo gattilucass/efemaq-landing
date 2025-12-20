@@ -382,7 +382,7 @@ function ServiceCard({ data, index, isMobile = false, forceActive = false }: { d
                 // ANIMACIÓN DE GLOW
                 animate={isMobile 
                     ? (forceActive 
-                        ? { borderColor: "rgba(0, 223, 223, 0.6)", boxShadow: "0 0 30px -5px rgba(0, 223, 223, 0.3)" }
+                       ? { borderColor: "rgba(0, 223, 223, 0.6)", boxShadow: "0 0 30px -5px rgba(0, 223, 223, 0.3)" }
                         : { borderColor: "rgba(255, 255, 255, 0.1)", boxShadow: "0 0 0px 0px rgba(0,0,0,0)" }
                       )
                     : {}
@@ -409,7 +409,7 @@ function ServiceCard({ data, index, isMobile = false, forceActive = false }: { d
                 </div>
 
                 {/* 2. CONTENIDO */}
-                <div className="flex-1 p-6 flex flex-col relative z-30 bg-[#121212] overflow-y-auto scrollbar-thin scrollbar-thumb-emerald-500/20 scrollbar-track-transparent hover:scrollbar-thumb-emerald-500/50">
+                <div className="flex-1 p-6 flex flex-col relative z-30 bg-[#121212] overflow-y-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
                     
                     <div className="shrink-0">
                         <h4 
