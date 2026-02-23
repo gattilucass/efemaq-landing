@@ -268,7 +268,12 @@ export default function Footer() {
                </Link>
             </div>
         </motion.div>
-
+<div style="margin-top: 10px; font-size: 0.75rem; color: #9ca3af; text-align: center;">
+    <span>Desarrollo y Estrategia Digital: </span>
+    <a href="https://www.linkedin.com/in/lucas-gatti-a67713206/" target="_blank" rel="noopener noreferrer" style="color: #9ca3af; text-decoration: none; border-bottom: 1px dotted #9ca3af; transition: color 0.3s;">
+        Lucas Gatti
+    </a>
+</div>
       </motion.div>
     </footer>
   )
