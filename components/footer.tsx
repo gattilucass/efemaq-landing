@@ -250,38 +250,60 @@ export default function Footer() {
 
         </div>
 
-        {/* --- BOTTOM BAR --- */}
-        <motion.div 
-            variants={itemVariants}
-            className="pt-8 border-t border-white/5 flex flex-col md:flex-row items-center justify-between gap-4 text-center md:text-left"
-        >
-            <p className="font-inter text-xs text-gray-500">
-              &copy; {new Date().getFullYear()} EFEMAQ. Todos los derechos reservados.
-            </p>
-            
-            <div className="flex items-center gap-6">
-               <Link href="/terminos" className="font-inter text-xs text-gray-500 hover:text-white transition-colors">
-                 Términos y Condiciones
-               </Link>
-               <Link href="/privacidad" className="font-inter text-xs text-gray-500 hover:text-white transition-colors">
-                 Política de Privacidad
-               </Link>
-            </div>
-        </motion.div>
-<div className="mt-2.5 flex justify-center md:justify-end">
-  <p className="font-inter text-[11px] md:text-xs text-gray-500 text-center tracking-[0.01em]">
-    <span>Desarrollo y estrategia digital: </span>
-    <a
-      href="https://www.linkedin.com/in/lucas-gatti-a67713206/"
-      target="_blank"
-      rel="noopener noreferrer"
-      aria-label="LinkedIn de Lucas Gatti"
-      className="ml-1 text-gray-300 no-underline transition-colors duration-200 hover:text-white"
+      {/* --- BOTTOM BAR --- */}
+<motion.div
+  variants={itemVariants}
+  className="pt-8 border-t border-white/5"
+>
+  <div className="grid grid-cols-1 md:grid-cols-[1fr_auto_1fr] items-center gap-y-3 gap-x-4 text-center">
+    {/* IZQUIERDA */}
+    <p className="font-inter text-[11px] md:text-xs text-gray-500 tracking-[0.01em] md:justify-self-start">
+      &copy; {new Date().getFullYear()} EFEMAQ. Todos los derechos reservados.
+    </p>
+
+    {/* CENTRO */}
+    <p className="font-inter text-[11px] md:text-xs text-gray-500 tracking-[0.01em] md:justify-self-center">
+      <span>Desarrollo y estrategia digital:</span>
+      <a
+        href="https://www.linkedin.com/in/lucas-gatti-a67713206/"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="LinkedIn de Lucas Gatti"
+        className="ml-1 text-gray-300 transition-colors duration-200 hover:text-white"
+      >
+        Lucas Gatti
+      </a>
+    </p>
+
+    {/* DERECHA */}
+    <nav
+      aria-label="Enlaces legales"
+      className="flex items-center justify-center md:justify-self-end gap-3 md:gap-4"
     >
-      Lucas Gatti
-    </a>
-  </p>
-</div>
+      <Link
+        href="/terminos"
+        className="font-inter text-[11px] md:text-xs text-gray-500 hover:text-white transition-colors duration-200"
+      >
+        Términos y Condiciones
+      </Link>
+
+      {/* Separador sutil */}
+      <span
+        aria-hidden="true"
+        className="text-gray-700 text-[10px] select-none"
+      >
+        •
+      </span>
+
+      <Link
+        href="/privacidad"
+        className="font-inter text-[11px] md:text-xs text-gray-500 hover:text-white transition-colors duration-200"
+      >
+        Política de Privacidad
+      </Link>
+    </nav>
+  </div>
+</motion.div>
       </motion.div>
     </footer>
   )
