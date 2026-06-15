@@ -385,22 +385,31 @@ export default function GuardiaTecnicaWhatsAppPage() {
           </div>
         </section>
 
-        <section id="demo-simulada" className="relative scroll-mt-28 py-8 md:py-8 2xl:py-14 bg-gradient-to-b from-[#080808] via-[#071313] to-[#080808]">
+        <section id="demo-simulada" className="relative scroll-mt-28 py-6 md:py-6 2xl:py-12 bg-gradient-to-b from-[#080808] via-[#071313] to-[#080808]">
           <BackgroundGrid />
-          <div className="relative z-10 max-w-6xl mx-auto px-6 md:px-10">
-            <SectionHeader
-              eyebrow="Cómo funciona"
-              title="Un pedido claro desde WhatsApp."
-              text="La conversación guía al vecino, valida el domicilio, reúne los datos importantes y deja el caso ordenado para el equipo."
-            />
+          <div className="relative z-10 max-w-[1120px] mx-auto px-6 md:px-10">
+            <FadeIn className="text-center max-w-3xl mx-auto">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 mb-3">
+                <Zap size={13} className="text-[#00dfdf]" />
+                <span className="text-[10px] font-manrope font-bold text-[#00dfdf] uppercase tracking-widest">
+                  Cómo funciona
+                </span>
+              </div>
+              <h2 className="font-manrope text-3xl md:text-[34px] 2xl:text-5xl font-extrabold text-white leading-tight mb-2">
+                De mensaje suelto a incidente listo.
+              </h2>
+              <p className="font-inter text-gray-400 text-sm md:text-[15px] 2xl:text-lg leading-relaxed max-w-2xl mx-auto">
+                Maqui valida el domicilio, ordena el pedido y deja la información importante preparada para el equipo.
+              </p>
+            </FadeIn>
 
-            <div className="mt-5 2xl:mt-8 grid lg:grid-cols-[270px_1fr] gap-4 2xl:gap-8 items-start">
+            <div className="mt-4 2xl:mt-8 grid lg:grid-cols-[250px_1fr] gap-4 2xl:gap-8 items-start">
               <div className="grid sm:grid-cols-2 lg:grid-cols-1 gap-3">
                 {SCENARIOS.map((item, index) => (
                   <button
                     key={item.id}
                     onClick={() => setActiveScenario(index)}
-                    className={`text-left rounded-2xl border p-3.5 transition-all duration-300 ease-out hover:-translate-y-0.5 ${
+                    className={`text-left rounded-2xl border p-3 transition-all duration-300 ease-out hover:-translate-y-0.5 ${
                       activeScenario === index
                         ? "border-[#00dfdf]/50 bg-[#00dfdf]/10 shadow-[0_0_24px_rgba(0,223,223,0.08)]"
                         : "border-white/10 bg-white/[0.03] hover:border-white/20"
@@ -408,7 +417,7 @@ export default function GuardiaTecnicaWhatsAppPage() {
                   >
                     <div className="flex items-center gap-3">
                       <div
-                        className="w-9 h-9 rounded-xl border flex items-center justify-center"
+                        className="w-8 h-8 rounded-xl border flex items-center justify-center"
                         style={{
                           color: item.color,
                           borderColor: `${item.color}45`,
@@ -418,7 +427,7 @@ export default function GuardiaTecnicaWhatsAppPage() {
                         <item.icon size={18} />
                       </div>
                       <div className="min-w-0">
-                        <p className="font-manrope text-sm font-bold text-white leading-tight">{item.label}</p>
+                        <p className="font-manrope text-[13px] font-bold text-white leading-tight">{item.label}</p>
                         <p className="font-inter text-xs text-gray-500">{item.kicker}</p>
                       </div>
                     </div>
@@ -581,7 +590,6 @@ export default function GuardiaTecnicaWhatsAppPage() {
               {COMPARISON.map((row, index) => (
                 <FadeIn key={row.manual} delay={index * 0.04}>
                   <div className="group relative h-full rounded-2xl border border-white/10 bg-[#111111] p-4 md:p-5 overflow-hidden transition-all duration-300 hover:-translate-y-1.5 hover:border-[#00dfdf]/30">
-                    <div className="absolute inset-y-5 left-1/2 hidden sm:block w-px bg-gradient-to-b from-transparent via-[#00dfdf]/25 to-transparent" />
                     <div className="grid sm:grid-cols-[1fr_38px_1fr] gap-3 h-full items-stretch">
                       <div className="rounded-2xl border border-red-400/10 bg-red-500/[0.04] p-4">
                         <p className="text-[10px] uppercase tracking-widest font-manrope font-bold text-red-300 mb-2">
@@ -744,45 +752,32 @@ export default function GuardiaTecnicaWhatsAppPage() {
 
         <section id="cta-section" className="relative py-12 md:py-14 2xl:py-24 bg-gradient-to-b from-[#080808] via-[#0a1010] to-[#090909] overflow-hidden">
           <BackgroundGrid />
-          <div className="absolute left-[8%] top-1/3 hidden lg:block rounded-2xl border border-white/10 bg-white/[0.035] px-4 py-3 backdrop-blur-md shadow-[0_0_35px_rgba(0,223,223,0.08)]">
-            <div className="flex items-center gap-3">
-              <Clock size={18} className="text-[#00dfdf]" />
-              <div>
-                <p className="font-manrope text-sm font-extrabold text-white">Fuera de horario</p>
-                <p className="font-inter text-xs text-gray-500">primer filtro claro</p>
-              </div>
-            </div>
-          </div>
-          <div className="absolute right-[8%] bottom-1/4 hidden lg:block rounded-2xl border border-[#00dfdf]/20 bg-[#00dfdf]/[0.055] px-4 py-3 backdrop-blur-md shadow-[0_0_40px_rgba(0,223,223,0.12)]">
-            <div className="flex items-center gap-3">
-              <Wrench size={18} className="text-amber-300" />
-              <div>
-                <p className="font-manrope text-sm font-extrabold text-white">Guardia técnica</p>
-                <p className="font-inter text-xs text-gray-500">casos listos para operar</p>
-              </div>
-            </div>
-          </div>
           <div className="relative z-10 max-w-4xl mx-auto px-6 md:px-10 text-center">
             <FadeIn>
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 mb-5">
-                <PhoneCall size={14} className="text-emerald-400" />
-                <span className="text-[10px] font-manrope font-bold text-emerald-300 tracking-widest uppercase">
-                  Guardia técnica más clara
-                </span>
+              <div className="relative overflow-hidden rounded-[2rem] border border-[#00dfdf]/15 bg-[#101010]/80 px-6 py-8 md:px-10 md:py-10 shadow-[0_0_60px_rgba(0,223,223,0.08)]">
+                <div className="absolute inset-x-10 -top-24 h-44 rounded-full bg-[#00dfdf]/10 blur-[80px]" />
+                <div className="relative">
+                  <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 mb-5">
+                    <PhoneCall size={14} className="text-emerald-400" />
+                    <span className="text-[10px] font-manrope font-bold text-emerald-300 tracking-widest uppercase">
+                      Guardia técnica más clara
+                    </span>
+                  </div>
+                  <h2 className="font-manrope text-3xl md:text-[38px] 2xl:text-5xl font-extrabold text-white leading-tight mb-4">
+                    Si tu administradora atiende por WhatsApp, EFEMAQ puede ordenarlo.
+                  </h2>
+                  <p className="font-inter text-gray-400 text-sm md:text-base 2xl:text-lg leading-relaxed max-w-2xl mx-auto mb-6 2xl:mb-8">
+                    Revisamos tu forma actual de atención y armamos un piloto adaptado al volumen, horarios y responsables de cada cliente.
+                  </p>
+                  <a href={WHATSAPP_LINK} target="_blank" rel="noopener noreferrer">
+                    <Button className="group h-14 px-8 rounded-full bg-[#00dfdf] hover:bg-[#00c4c4] text-black font-manrope font-extrabold text-lg shadow-[0_0_30px_rgba(0,223,223,0.25)] transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-[0_0_48px_rgba(0,223,223,0.4)] active:scale-[0.98]">
+                      <PhoneCall className="mr-2 w-5 h-5" />
+                      Hablar por WhatsApp
+                      <ArrowRight className="ml-2 w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
+                    </Button>
+                  </a>
+                </div>
               </div>
-              <h2 className="font-manrope text-3xl md:text-[38px] 2xl:text-5xl font-extrabold text-white leading-tight mb-4">
-                Si tu administradora atiende por WhatsApp, EFEMAQ puede ordenarlo.
-              </h2>
-              <p className="font-inter text-gray-400 text-sm md:text-base 2xl:text-lg leading-relaxed max-w-2xl mx-auto mb-6 2xl:mb-8">
-                Revisamos tu forma actual de atención y armamos un piloto adaptado al volumen, horarios y responsables de cada cliente.
-              </p>
-              <a href={WHATSAPP_LINK} target="_blank" rel="noopener noreferrer">
-                <Button className="group h-14 px-8 rounded-full bg-[#00dfdf] hover:bg-[#00c4c4] text-black font-manrope font-extrabold text-lg shadow-[0_0_30px_rgba(0,223,223,0.25)] transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-[0_0_48px_rgba(0,223,223,0.4)] active:scale-[0.98]">
-                  <PhoneCall className="mr-2 w-5 h-5" />
-                  Hablar por WhatsApp
-                  <ArrowRight className="ml-2 w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
-                </Button>
-              </a>
             </FadeIn>
           </div>
         </section>
@@ -850,7 +845,7 @@ function HeroDemo() {
           showInput
         />
 
-        <div className="h-full min-h-[450px] md:min-h-[470px] 2xl:min-h-[600px] rounded-[2rem] border border-white/10 bg-[#101010]/95 backdrop-blur-xl p-4 md:p-5 2xl:p-6 shadow-2xl flex flex-col justify-center">
+        <div className="h-full min-h-[430px] md:min-h-[448px] 2xl:min-h-[580px] rounded-[2rem] border border-white/10 bg-[#101010]/95 backdrop-blur-xl p-4 md:p-5 2xl:p-6 shadow-2xl flex flex-col justify-between">
           <div className="flex items-start justify-between gap-4 mb-4 2xl:mb-6">
             <div>
               <p className="font-manrope text-xs font-bold text-[#00dfdf] uppercase tracking-widest">
@@ -879,6 +874,13 @@ function HeroDemo() {
             <StatusPill label="Tipo de solicitud" value="Guardia técnica" color="#f59e0b" />
             <StatusPill label="Categoría" value="Electricidad" color="#10b981" />
             <StatusPill label="Resultado" value="Incidente creado" color="#f59e0b" />
+          </div>
+
+          <div className="mt-4 rounded-2xl border border-[#00dfdf]/15 bg-[#00dfdf]/[0.045] px-4 py-3 flex items-center gap-3">
+            <ShieldCheck size={18} className="text-[#00dfdf] shrink-0" />
+            <p className="font-inter text-xs 2xl:text-sm text-gray-300 leading-relaxed">
+              La guardia recibe el caso con datos mínimos, prioridad y próximo paso.
+            </p>
           </div>
         </div>
       </div>
@@ -939,7 +941,7 @@ function ConversationPhone({
         {showInput && (
           <div className="border-t border-white/10 bg-[#0f0f0f] px-4 py-3">
             <div className="rounded-full border border-white/10 bg-white/[0.04] px-4 py-2.5 font-inter text-[11px] text-gray-500">
-              Escribir mensaje...
+              Escribir un mensaje...
             </div>
           </div>
         )}
@@ -1009,9 +1011,9 @@ function WhatsAppMock({ scenario }: { scenario: (typeof SCENARIOS)[number] }) {
       title="Maqui"
       subtitle="Conversación guiada"
       className="h-[470px] 2xl:h-[580px] max-w-xs 2xl:max-w-sm"
-      style={{ height: 410, maxWidth: 280 }}
+      style={{ height: 448, maxWidth: 258 }}
       animated
-      showInput={false}
+      showInput
     />
   )
 }
@@ -1042,8 +1044,8 @@ function PanelMock({ scenario }: { scenario: (typeof SCENARIOS)[number] }) {
 
   return (
     <div
-      style={{ height: 410 }}
-      className="rounded-[2rem] border border-white/10 bg-[#101010] p-4 2xl:p-6 shadow-2xl h-[470px] 2xl:h-[580px] flex flex-col overflow-hidden"
+      style={{ height: 448 }}
+      className="rounded-[2rem] border border-white/10 bg-[#101010] p-4 2xl:p-6 shadow-2xl h-[470px] 2xl:h-[580px] flex flex-col justify-between overflow-hidden"
     >
       <div className="flex items-center justify-between gap-4 pb-3 border-b border-white/10">
         <div>
@@ -1055,7 +1057,7 @@ function PanelMock({ scenario }: { scenario: (typeof SCENARIOS)[number] }) {
         </div>
       </div>
 
-      <div className="mt-3 rounded-2xl bg-black/25 border border-white/10 p-3.5 2xl:p-5">
+      <div className="mt-3 rounded-2xl bg-black/25 border border-white/10 p-4 2xl:p-5">
         <div className="flex items-start gap-3 mb-3">
           <div
             className="w-11 h-11 rounded-xl flex items-center justify-center border shrink-0"
@@ -1068,13 +1070,13 @@ function PanelMock({ scenario }: { scenario: (typeof SCENARIOS)[number] }) {
             <p className="font-inter text-[11px] 2xl:text-xs text-gray-500 leading-relaxed mt-1">{scenario.result}</p>
           </div>
         </div>
-        <div className="grid sm:grid-cols-2 gap-2.5">
+        <div className="grid sm:grid-cols-2 gap-3">
           <StatusPill label="Resultado" value={scenario.status} color={scenario.color} />
           <StatusPill label="Equipo" value={scenario.owner} color="#00dfdf" />
         </div>
       </div>
 
-      <div className="mt-3 grid grid-cols-2 gap-2.5">
+      <div className="mt-3 grid grid-cols-2 gap-3">
         {statusItems.map((item) => (
           <div
             key={item.label}
