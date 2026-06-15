@@ -1,12 +1,12 @@
 "use client"
 
 import React, { useMemo, useState } from "react"
+import Image from "next/image"
 import { motion } from "framer-motion"
 import {
   AlertTriangle,
   ArrowRight,
   BadgeCheck,
-  Bot,
   Building2,
   Calculator,
   CheckCircle2,
@@ -183,37 +183,41 @@ const FLOW_STEPS = [
 
 const COMPARISON = [
   {
-    manual: "Mensajes mezclados en un mismo chat",
-    system: "Casos separados por tipo, prioridad y responsable",
+    manual: "El WhatsApp se llena de pedidos distintos y cuesta separar lo urgente.",
+    system: "Cada pedido entra clasificado, con prioridad y responsable claro.",
   },
   {
-    manual: "El administrador pide datos básicos una y otra vez",
-    system: "El sistema reúne la información mínima antes de derivar",
+    manual: "El equipo vuelve a pedir dirección, unidad, detalle y fotos.",
+    system: "Maqui reúne los datos clave antes de mover el caso.",
   },
   {
-    manual: "Fotos y audios quedan perdidos en conversaciones",
-    system: "Cada incidente queda registrado con evidencia y contexto",
+    manual: "La información queda dispersa en chats largos y difíciles de revisar.",
+    system: "El incidente queda registrado con contexto para operar y reportar.",
   },
   {
-    manual: "Cada operador resuelve con su propio criterio",
-    system: "El protocolo se configura y se sostiene en cada caso",
+    manual: "Cada persona atiende con su criterio y su disponibilidad.",
+    system: "El protocolo se sostiene igual, incluso fuera de horario.",
   },
 ]
 
 const CONFIG_ITEMS = [
   {
+    icon: Clock,
     title: "Horarios",
     text: "Días, franjas de atención, guardias y respuestas fuera de horario.",
   },
   {
+    icon: Building2,
     title: "Edificios",
     text: "Consorcios, unidades, responsables y reglas por cliente.",
   },
   {
+    icon: SlidersHorizontal,
     title: "Solicitudes",
     text: "Urgencias, reclamos, consultas administrativas y categorías propias.",
   },
   {
+    icon: UserCheck,
     title: "Derivación",
     text: "Qué llega a EFEMAQ, qué queda para la administración y qué se informa.",
   },
@@ -281,7 +285,7 @@ export default function GuardiaTecnicaWhatsAppPage() {
   const monthlyPrice = monthlyIncidents * 10000
 
   const scrollToDemo = () => {
-    document.getElementById("demo-simulada")?.scrollIntoView({ behavior: "smooth" })
+    document.getElementById("demo-simulada")?.scrollIntoView({ behavior: "smooth", block: "start" })
   }
 
   return (
@@ -289,33 +293,33 @@ export default function GuardiaTecnicaWhatsAppPage() {
       <Navbar />
 
       <main>
-        <section className="relative min-h-[100svh] pt-24 md:pt-24 xl:pt-24 2xl:pt-28 pb-12 md:pb-10 2xl:pb-20 flex items-center overflow-hidden bg-gradient-to-b from-[#050505] via-[#071010] to-[#080808]">
+        <section className="relative min-h-[100svh] pt-20 md:pt-20 xl:pt-[88px] 2xl:pt-28 pb-8 md:pb-8 2xl:pb-16 flex items-center overflow-hidden bg-gradient-to-b from-[#050505] via-[#071010] to-[#080808]">
           <BackgroundGrid />
 
           <div className="relative z-10 max-w-[1480px] mx-auto px-6 md:px-10 w-full">
-            <div className="grid lg:grid-cols-[.84fr_1.16fr] gap-9 lg:gap-10 2xl:gap-16 items-center">
+            <div className="grid lg:grid-cols-[.82fr_1.18fr] gap-8 lg:gap-8 2xl:gap-14 items-center">
               <FadeIn>
                 <div>
-                  <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#00dfdf]/5 border border-[#00dfdf]/20 mb-5 2xl:mb-6 backdrop-blur-md">
+                  <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#00dfdf]/5 border border-[#00dfdf]/20 mb-4 2xl:mb-6 backdrop-blur-md">
                     <Sparkles size={14} className="text-[#00dfdf]" />
                     <span className="text-[10px] font-manrope font-bold text-[#00dfdf] tracking-widest uppercase">
                       Nuevo sistema para administradoras
                     </span>
                   </div>
 
-                  <h1 className="font-manrope text-4xl md:text-6xl lg:text-6xl 2xl:text-7xl font-extrabold leading-[1.03] tracking-tight text-white mb-5 2xl:mb-6">
+                  <h1 className="font-manrope text-4xl md:text-5xl xl:text-[56px] 2xl:text-7xl font-extrabold leading-[1.02] tracking-tight text-white mb-4 2xl:mb-6">
                     Guardia técnica por WhatsApp,{" "}
                     <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#00dfdf] to-[#10b981]">
                       ordenada desde el primer mensaje.
                     </span>
                   </h1>
 
-                  <p className="font-inter text-base md:text-lg 2xl:text-xl text-gray-300 leading-relaxed max-w-2xl mb-6 2xl:mb-8">
+                  <p className="font-inter text-base md:text-[17px] 2xl:text-xl text-gray-300 leading-relaxed max-w-2xl mb-5 2xl:mb-8">
                     Atención fuera de horario, consultas separadas de urgencias y casos
                     listos para resolver, sin cambiar el hábito de escribir por WhatsApp.
                   </p>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-7 2xl:mb-9 max-w-2xl">
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-6 2xl:mb-9 max-w-2xl">
                     {[
                       "Atención fuera de horario",
                       "Registro automático",
@@ -323,7 +327,7 @@ export default function GuardiaTecnicaWhatsAppPage() {
                     ].map((item) => (
                       <div
                         key={item}
-                        className="min-h-[58px] 2xl:min-h-[72px] rounded-2xl border border-white/10 bg-white/[0.03] px-4 py-3 text-sm font-manrope font-semibold text-gray-200 flex items-center"
+                        className="min-h-[52px] 2xl:min-h-[70px] rounded-2xl border border-white/10 bg-white/[0.03] px-4 py-3 text-sm font-manrope font-semibold text-gray-200 flex items-center"
                       >
                         <CheckCircle2 size={17} className="mr-2 text-[#00dfdf] shrink-0" />
                         <span className="leading-snug">{item}</span>
@@ -333,14 +337,14 @@ export default function GuardiaTecnicaWhatsAppPage() {
 
                   <div className="flex flex-col sm:flex-row gap-4">
                     <a href={WHATSAPP_LINK} target="_blank" rel="noopener noreferrer">
-                      <Button className="h-14 px-7 bg-[#00dfdf] hover:bg-[#00c4c4] text-black font-manrope font-extrabold text-base md:text-lg rounded-full shadow-[0_0_28px_rgba(0,223,223,0.24)] transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-[0_0_38px_rgba(0,223,223,0.34)] active:scale-[0.98] w-full sm:w-auto">
+                      <Button className="h-[52px] px-6 bg-[#00dfdf] hover:bg-[#00c4c4] text-black font-manrope font-extrabold text-base rounded-full shadow-[0_0_28px_rgba(0,223,223,0.24)] transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-[0_0_38px_rgba(0,223,223,0.34)] active:scale-[0.98] w-full sm:w-auto">
                         Pedir demo a EFEMAQ
                         <ArrowRight className="ml-2 w-5 h-5" />
                       </Button>
                     </a>
                     <Button
                       onClick={scrollToDemo}
-                      className="h-14 px-7 bg-white/5 hover:bg-white/10 border border-white/10 text-white hover:text-[#00dfdf] font-manrope font-bold text-base md:text-lg rounded-full transition-all duration-300 ease-out hover:-translate-y-0.5 active:scale-[0.98] w-full sm:w-auto"
+                      className="h-[52px] px-6 bg-white/5 hover:bg-white/10 border border-white/10 text-white hover:text-[#00dfdf] font-manrope font-bold text-base rounded-full transition-all duration-300 ease-out hover:-translate-y-0.5 active:scale-[0.98] w-full sm:w-auto"
                     >
                       Ver simulación
                       <MousePointer2 className="ml-2 w-5 h-5" />
@@ -356,16 +360,16 @@ export default function GuardiaTecnicaWhatsAppPage() {
           </div>
         </section>
 
-        <section className="relative py-16 md:py-20 2xl:py-28 bg-gradient-to-b from-[#080808] via-[#091111] to-[#080808]">
+        <section className="relative py-12 md:py-14 2xl:py-24 bg-gradient-to-b from-[#080808] via-[#091111] to-[#080808]">
           <BackgroundGrid subtle />
-          <div className="relative z-10 max-w-6xl mx-auto px-6 md:px-10">
+          <div className="relative z-10 max-w-[1120px] mx-auto px-6 md:px-10">
             <SectionHeader
               eyebrow="El problema"
               title="El WhatsApp de guardia no puede depender de memoria y buena suerte."
               text="Cada mensaje debería llegar con contexto, prioridad y responsable claro."
             />
 
-            <div className="grid md:grid-cols-3 gap-4 md:gap-5 mt-10 2xl:mt-12">
+            <div className="grid md:grid-cols-3 gap-4 md:gap-5 mt-8 2xl:mt-12">
               {PAINS.map((item, index) => (
                 <FadeIn key={item.title} delay={index * 0.06}>
                   <div className="h-full rounded-2xl border border-white/10 bg-[#111111]/80 p-6 hover:border-red-400/25 transition-colors">
@@ -381,7 +385,7 @@ export default function GuardiaTecnicaWhatsAppPage() {
           </div>
         </section>
 
-        <section id="demo-simulada" className="relative scroll-mt-6 py-10 md:py-10 2xl:py-16 bg-gradient-to-b from-[#080808] via-[#071313] to-[#080808]">
+        <section id="demo-simulada" className="relative scroll-mt-28 py-8 md:py-8 2xl:py-14 bg-gradient-to-b from-[#080808] via-[#071313] to-[#080808]">
           <BackgroundGrid />
           <div className="relative z-10 max-w-6xl mx-auto px-6 md:px-10">
             <SectionHeader
@@ -390,13 +394,13 @@ export default function GuardiaTecnicaWhatsAppPage() {
               text="La conversación guía al vecino, valida el domicilio, reúne los datos importantes y deja el caso ordenado para el equipo."
             />
 
-            <div className="mt-6 2xl:mt-8 grid lg:grid-cols-[300px_1fr] gap-5 2xl:gap-8 items-start">
+            <div className="mt-5 2xl:mt-8 grid lg:grid-cols-[270px_1fr] gap-4 2xl:gap-8 items-start">
               <div className="grid sm:grid-cols-2 lg:grid-cols-1 gap-3">
                 {SCENARIOS.map((item, index) => (
                   <button
                     key={item.id}
                     onClick={() => setActiveScenario(index)}
-                    className={`text-left rounded-2xl border p-4 transition-all duration-300 ease-out hover:-translate-y-0.5 ${
+                    className={`text-left rounded-2xl border p-3.5 transition-all duration-300 ease-out hover:-translate-y-0.5 ${
                       activeScenario === index
                         ? "border-[#00dfdf]/50 bg-[#00dfdf]/10 shadow-[0_0_24px_rgba(0,223,223,0.08)]"
                         : "border-white/10 bg-white/[0.03] hover:border-white/20"
@@ -404,7 +408,7 @@ export default function GuardiaTecnicaWhatsAppPage() {
                   >
                     <div className="flex items-center gap-3">
                       <div
-                        className="w-10 h-10 rounded-xl border flex items-center justify-center"
+                        className="w-9 h-9 rounded-xl border flex items-center justify-center"
                         style={{
                           color: item.color,
                           borderColor: `${item.color}45`,
@@ -413,8 +417,8 @@ export default function GuardiaTecnicaWhatsAppPage() {
                       >
                         <item.icon size={18} />
                       </div>
-                      <div>
-                        <p className="font-manrope text-sm font-bold text-white">{item.label}</p>
+                      <div className="min-w-0">
+                        <p className="font-manrope text-sm font-bold text-white leading-tight">{item.label}</p>
                         <p className="font-inter text-xs text-gray-500">{item.kicker}</p>
                       </div>
                     </div>
@@ -422,7 +426,7 @@ export default function GuardiaTecnicaWhatsAppPage() {
                 ))}
               </div>
 
-              <div className="grid xl:grid-cols-[.94fr_1.06fr] gap-5 items-stretch">
+              <div className="grid xl:grid-cols-[.94fr_1.06fr] gap-4 2xl:gap-5 items-stretch">
                 <WhatsAppMock scenario={scenario} />
                 <PanelMock scenario={scenario} />
               </div>
@@ -430,7 +434,7 @@ export default function GuardiaTecnicaWhatsAppPage() {
           </div>
         </section>
 
-        <section className="relative py-16 md:py-20 2xl:py-28 bg-gradient-to-b from-[#080808] via-[#0a1010] to-[#080808]">
+        <section className="relative py-12 md:py-14 2xl:py-24 bg-gradient-to-b from-[#080808] via-[#0a1010] to-[#080808]">
           <div className="max-w-7xl mx-auto px-6 md:px-10">
             <SectionHeader
               eyebrow="Circuito"
@@ -438,16 +442,28 @@ export default function GuardiaTecnicaWhatsAppPage() {
               text="EFEMAQ convierte un mensaje suelto en un caso claro: qué pasa, dónde pasa, quién lo atiende y qué sigue."
             />
 
-            <div className="mt-10 2xl:mt-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4">
+            <div className="relative mt-8 2xl:mt-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4">
               {FLOW_STEPS.map((step, index) => (
                 <FadeIn key={step.title} delay={index * 0.04}>
-                  <div className="relative h-full rounded-2xl border border-white/10 bg-[#111111] p-5">
-                    <div className="text-xs font-manrope font-bold text-[#00dfdf] mb-4">
-                      {String(index + 1).padStart(2, "0")}
+                  <div
+                    className={`group relative h-full min-h-[178px] rounded-2xl border border-white/10 bg-[#111111]/90 p-4 2xl:p-5 overflow-hidden transition-all duration-300 hover:-translate-y-2 hover:border-[#00dfdf]/35 hover:shadow-[0_18px_55px_rgba(0,223,223,0.08)] ${
+                      index % 2 === 1 ? "lg:translate-y-3" : ""
+                    }`}
+                  >
+                    <div className="absolute -right-10 -top-10 w-28 h-28 rounded-full bg-[#00dfdf]/0 blur-2xl transition-colors duration-300 group-hover:bg-[#00dfdf]/10" />
+                    {index < FLOW_STEPS.length - 1 && (
+                      <div className="hidden lg:block absolute top-[52px] -right-2 w-4 h-px bg-gradient-to-r from-[#00dfdf]/50 to-transparent" />
+                    )}
+                    <div className="relative flex items-center justify-between mb-4">
+                      <span className="text-xs font-manrope font-bold text-[#00dfdf]">
+                        {String(index + 1).padStart(2, "0")}
+                      </span>
+                      <div className="w-9 h-9 rounded-xl border border-white/10 bg-white/[0.035] flex items-center justify-center text-white group-hover:text-[#00dfdf] transition-colors">
+                        <step.icon size={18} />
+                      </div>
                     </div>
-                    <step.icon size={22} className="text-white mb-5" />
-                    <h3 className="font-manrope font-bold text-white mb-2">{step.title}</h3>
-                    <p className="font-inter text-xs text-gray-400 leading-relaxed">{step.text}</p>
+                    <h3 className="relative font-manrope font-bold text-white mb-2">{step.title}</h3>
+                    <p className="relative font-inter text-xs text-gray-400 leading-relaxed">{step.text}</p>
                   </div>
                 </FadeIn>
               ))}
@@ -455,29 +471,30 @@ export default function GuardiaTecnicaWhatsAppPage() {
           </div>
         </section>
 
-        <section className="relative py-16 md:py-20 2xl:py-28 bg-gradient-to-b from-[#080808] via-[#071313] to-[#080808]">
+        <section className="relative py-12 md:py-14 2xl:py-24 bg-gradient-to-b from-[#080808] via-[#071313] to-[#080808]">
           <BackgroundGrid subtle />
           <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-10">
-            <div className="grid lg:grid-cols-[.95fr_1.05fr] gap-6 lg:gap-8 items-stretch">
+            <div className="grid lg:grid-cols-2 gap-5 lg:gap-7 items-stretch">
               <FadeIn className="h-full">
-                <div className="h-full rounded-[2rem] border border-white/10 bg-[#101010] p-7 md:p-8 flex flex-col justify-between">
+                <div className="relative h-full rounded-[2rem] border border-white/10 bg-[#101010] p-6 md:p-7 flex flex-col justify-between overflow-hidden">
+                  <div className="absolute -left-16 bottom-6 w-44 h-44 rounded-full bg-[#00dfdf]/10 blur-3xl" />
                   <div>
                     <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#00dfdf]/5 border border-[#00dfdf]/20 mb-6">
-                      <Bot size={14} className="text-[#00dfdf]" />
+                      <SlidersHorizontal size={14} className="text-[#00dfdf]" />
                       <span className="text-[10px] font-manrope font-bold text-[#00dfdf] tracking-widest uppercase">
                         A medida
                       </span>
                     </div>
-                    <h2 className="font-manrope text-3xl md:text-4xl 2xl:text-5xl font-extrabold text-white leading-tight mb-5">
+                    <h2 className="font-manrope text-3xl md:text-[38px] 2xl:text-5xl font-extrabold text-white leading-tight mb-4">
                       Un flujo propio para cada administradora.
                     </h2>
-                    <p className="font-inter text-gray-400 text-base md:text-lg leading-relaxed">
+                    <p className="font-inter text-gray-400 text-sm md:text-base leading-relaxed">
                       No todas las administraciones atienden igual. El sistema se configura según horarios,
                       edificios, responsables y tipo de servicio que quieras ofrecer.
                     </p>
                   </div>
 
-                  <div className="mt-8 grid sm:grid-cols-2 gap-3">
+                  <div className="relative mt-6 grid sm:grid-cols-2 gap-3">
                     {[
                       "Horarios y guardias",
                       "Edificios y unidades",
@@ -494,8 +511,8 @@ export default function GuardiaTecnicaWhatsAppPage() {
                     ))}
                   </div>
 
-                  <div className="mt-6 rounded-2xl border border-[#00dfdf]/20 bg-[#00dfdf]/[0.055] p-5">
-                    <p className="font-manrope text-lg font-extrabold text-white mb-2">
+                  <div className="relative mt-5 rounded-2xl border border-[#00dfdf]/20 bg-[#00dfdf]/[0.055] p-4 2xl:p-5">
+                    <p className="font-manrope text-base 2xl:text-lg font-extrabold text-white mb-2">
                       La novedad está en adaptar el circuito, no en imponer uno genérico.
                     </p>
                     <p className="font-inter text-sm text-gray-400 leading-relaxed">
@@ -508,7 +525,7 @@ export default function GuardiaTecnicaWhatsAppPage() {
               <FadeIn delay={0.1} className="h-full">
                 <div className="relative h-full rounded-[2rem] border border-white/10 bg-[#101010] p-5 md:p-6 shadow-2xl overflow-hidden">
                   <div className="absolute -right-10 -top-10 w-44 h-44 rounded-full bg-[#00dfdf]/10 blur-3xl" />
-                  <div className="relative rounded-2xl border border-[#00dfdf]/20 bg-[#061616] p-5 mb-5">
+                  <div className="relative rounded-2xl border border-[#00dfdf]/20 bg-[#061616] p-4 2xl:p-5 mb-4">
                     <p className="font-manrope text-[10px] font-bold text-[#00dfdf] uppercase tracking-widest mb-2">
                       Configuración por cliente
                     </p>
@@ -521,22 +538,22 @@ export default function GuardiaTecnicaWhatsAppPage() {
                     {CONFIG_ITEMS.map((item) => (
                       <div
                         key={item.title}
-                        className="rounded-2xl border border-white/10 bg-black/20 p-4 md:p-5"
+                        className="rounded-2xl border border-white/10 bg-black/20 p-4 transition-all duration-300 hover:-translate-y-1 hover:border-[#00dfdf]/25"
                       >
                         <div className="flex items-start gap-3">
-                          <div className="mt-0.5 w-8 h-8 rounded-xl border border-[#00dfdf]/20 bg-[#00dfdf]/10 flex items-center justify-center shrink-0">
-                            <div className="w-2 h-2 rounded-full bg-[#00dfdf] shadow-[0_0_14px_rgba(0,223,223,0.55)]" />
+                          <div className="w-9 h-9 rounded-xl border border-[#00dfdf]/20 bg-[#00dfdf]/10 flex items-center justify-center shrink-0">
+                            <item.icon size={17} className="text-[#00dfdf]" />
                           </div>
                           <div>
                             <p className="font-manrope text-base font-extrabold text-white">{item.title}</p>
-                            <p className="font-inter text-sm text-gray-400 leading-relaxed mt-1">{item.text}</p>
+                            <p className="font-inter text-sm text-gray-400 leading-relaxed mt-0.5">{item.text}</p>
                           </div>
                         </div>
                       </div>
                     ))}
                   </div>
 
-                  <div className="relative mt-5 grid grid-cols-2 gap-3">
+                  <div className="relative mt-4 grid grid-cols-2 gap-3">
                     <div className="rounded-2xl border border-white/10 bg-white/[0.035] p-4">
                       <p className="font-manrope text-2xl font-extrabold text-white">24/7</p>
                       <p className="font-inter text-xs text-gray-500 mt-1">Respuesta inicial fuera de horario</p>
@@ -552,28 +569,34 @@ export default function GuardiaTecnicaWhatsAppPage() {
           </div>
         </section>
 
-        <section className="relative py-16 md:py-20 2xl:py-28 bg-gradient-to-b from-[#080808] via-[#0a1010] to-[#080808]">
+        <section className="relative py-12 md:py-14 2xl:py-24 bg-gradient-to-b from-[#080808] via-[#0a1010] to-[#080808]">
           <div className="max-w-7xl mx-auto px-6 md:px-10">
             <SectionHeader
               eyebrow="Comparativa"
-              title="Qué cambia frente a una guardia manual."
-              text="No se trata de reemplazar al equipo: se trata de que cada mensaje llegue mejor preparado."
+              title="Del chat manual al sistema EFEMAQ."
+              text="No reemplaza al equipo: hace que cada pedido llegue más claro, completo y accionable."
             />
 
-            <div className="mt-10 2xl:mt-12 grid md:grid-cols-2 gap-4 md:gap-5">
+            <div className="relative mt-8 2xl:mt-12 grid md:grid-cols-2 gap-4 md:gap-5">
               {COMPARISON.map((row, index) => (
                 <FadeIn key={row.manual} delay={index * 0.04}>
-                  <div className="h-full rounded-2xl border border-white/10 bg-[#111111] p-4 md:p-5">
-                    <div className="grid sm:grid-cols-2 gap-3 h-full">
+                  <div className="group relative h-full rounded-2xl border border-white/10 bg-[#111111] p-4 md:p-5 overflow-hidden transition-all duration-300 hover:-translate-y-1.5 hover:border-[#00dfdf]/30">
+                    <div className="absolute inset-y-5 left-1/2 hidden sm:block w-px bg-gradient-to-b from-transparent via-[#00dfdf]/25 to-transparent" />
+                    <div className="grid sm:grid-cols-[1fr_38px_1fr] gap-3 h-full items-stretch">
                       <div className="rounded-2xl border border-red-400/10 bg-red-500/[0.04] p-4">
                         <p className="text-[10px] uppercase tracking-widest font-manrope font-bold text-red-300 mb-2">
-                          Guardia manual
+                          Antes
                         </p>
                         <p className="font-inter text-sm text-gray-400 leading-relaxed">{row.manual}</p>
                       </div>
+                      <div className="hidden sm:flex items-center justify-center">
+                        <div className="w-9 h-9 rounded-full border border-[#00dfdf]/25 bg-[#00dfdf]/10 flex items-center justify-center text-[#00dfdf] shadow-[0_0_22px_rgba(0,223,223,0.12)] transition-transform duration-300 group-hover:scale-110">
+                          <ArrowRight size={16} />
+                        </div>
+                      </div>
                       <div className="rounded-2xl border border-[#00dfdf]/20 bg-[#00dfdf]/[0.06] p-4">
                         <p className="text-[10px] uppercase tracking-widest font-manrope font-bold text-[#00dfdf] mb-2">
-                          Sistema EFEMAQ
+                          Con EFEMAQ
                         </p>
                         <p className="font-inter text-sm text-gray-200 leading-relaxed">{row.system}</p>
                       </div>
@@ -585,19 +608,19 @@ export default function GuardiaTecnicaWhatsAppPage() {
           </div>
         </section>
 
-        <section className="relative py-16 md:py-20 2xl:py-28 bg-gradient-to-b from-[#080808] via-[#091111] to-[#080808]">
+        <section className="relative py-12 md:py-14 2xl:py-24 bg-gradient-to-b from-[#080808] via-[#091111] to-[#080808]">
           <div className="max-w-7xl mx-auto px-6 md:px-10">
             <SectionHeader
               eyebrow="Precio orientativo"
-              title="Una referencia clara para estimar el servicio."
-              text="Valor inicial: ARS 10.000 por evento de incidente creado. El alcance final se ajusta según volumen, protocolo y operación."
+              title="Precio orientativo por incidente creado."
+              text="Base inicial: ARS 10.000 por incidente. El alcance se ajusta según volumen, protocolo y operación."
             />
 
-            <div className="mt-10 2xl:mt-12 grid lg:grid-cols-[.95fr_1.05fr] gap-6 lg:gap-8">
+            <div className="mt-8 2xl:mt-12 grid lg:grid-cols-[.92fr_1.08fr] gap-5 lg:gap-7">
               <FadeIn>
-                <div className="h-full rounded-[2rem] border border-[#00dfdf]/20 bg-[#071515] p-7 md:p-8 shadow-[0_0_50px_rgba(0,223,223,0.08)]">
-                  <div className="flex items-center gap-3 mb-6">
-                    <div className="w-12 h-12 rounded-2xl bg-[#00dfdf]/10 border border-[#00dfdf]/25 flex items-center justify-center">
+                <div className="h-full rounded-[2rem] border border-[#00dfdf]/20 bg-[#071515] p-5 2xl:p-7 shadow-[0_0_50px_rgba(0,223,223,0.08)]">
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="w-11 h-11 rounded-2xl bg-[#00dfdf]/10 border border-[#00dfdf]/25 flex items-center justify-center">
                       <Calculator className="text-[#00dfdf]" />
                     </div>
                     <div>
@@ -627,14 +650,14 @@ export default function GuardiaTecnicaWhatsAppPage() {
                     onChange={setMonthlyEvents}
                   />
 
-                  <div className="mt-8 rounded-2xl bg-black/30 border border-white/10 p-5">
-                    <p className="font-inter text-sm text-gray-400 mb-2">Eventos estimados por mes</p>
-                    <p className="font-manrope text-4xl font-extrabold text-white mb-4">{monthlyIncidents}</p>
-                    <p className="font-inter text-sm text-gray-400 mb-2">Inversión orientativa</p>
-                    <p className="font-manrope text-3xl md:text-4xl font-extrabold text-[#00dfdf]">
+                  <div className="mt-4 rounded-2xl bg-black/30 border border-white/10 p-4">
+                    <p className="font-inter text-xs text-gray-400 mb-1.5">Eventos estimados por mes</p>
+                    <p className="font-manrope text-3xl font-extrabold text-white mb-2">{monthlyIncidents}</p>
+                    <p className="font-inter text-xs text-gray-400 mb-1.5">Inversión orientativa</p>
+                    <p className="font-manrope text-3xl md:text-[34px] font-extrabold text-[#00dfdf]">
                       {formatARS(monthlyPrice)}
                     </p>
-                    <p className="font-inter text-xs text-gray-500 mt-4 leading-relaxed">
+                    <p className="font-inter text-[11px] text-gray-500 mt-3 leading-relaxed">
                       Estimación no vinculante. No incluye ajustes de alcance, operación especial ni integraciones adicionales.
                     </p>
                   </div>
@@ -642,41 +665,41 @@ export default function GuardiaTecnicaWhatsAppPage() {
               </FadeIn>
 
               <FadeIn delay={0.1} className="h-full">
-                <div className="h-full rounded-[2rem] border border-white/10 bg-[#111111] p-7 md:p-8 flex flex-col justify-between">
+                <div className="h-full rounded-[2rem] border border-white/10 bg-[#111111] p-5 2xl:p-7 flex flex-col justify-between">
                   <div>
-                  <p className="font-manrope text-[10px] font-bold text-[#00dfdf] uppercase tracking-widest mb-4">
+                  <p className="font-manrope text-[10px] font-bold text-[#00dfdf] uppercase tracking-widest mb-3">
                     Lo que compra la administradora
                   </p>
-                  <h3 className="font-manrope text-2xl md:text-4xl font-extrabold text-white leading-tight mb-6">
+                  <h3 className="font-manrope text-2xl md:text-3xl 2xl:text-4xl font-extrabold text-white leading-tight mb-4">
                     Pagás por incidentes creados, con alcance ajustado al cliente.
                   </h3>
-                  <div className="space-y-4">
+                  <div className="space-y-2.5">
                     {[
-                      "Una entrada ordenada para guardias y consultas.",
-                      "Un protocolo que no depende de quién esté mirando el celular.",
-                      "Un registro claro para operar, revisar y reportar.",
-                      "Un piloto controlado antes de escalar a más edificios.",
+                    "Una entrada ordenada para guardias y consultas.",
+                    "Un protocolo claro, incluso fuera de horario.",
+                    "Un registro útil para operar, revisar y reportar.",
+                    "Un piloto controlado antes de escalar.",
                     ].map((item) => (
                       <div key={item} className="flex gap-3">
-                        <CheckCircle2 size={20} className="text-[#00dfdf] shrink-0 mt-0.5" />
-                        <p className="font-inter text-gray-300 leading-relaxed">{item}</p>
+                        <CheckCircle2 size={18} className="text-[#00dfdf] shrink-0 mt-0.5" />
+                        <p className="font-inter text-sm 2xl:text-base text-gray-300 leading-relaxed">{item}</p>
                       </div>
                     ))}
                   </div>
                   </div>
-                  <div className="mt-8 grid sm:grid-cols-3 gap-3">
+                  <div className="mt-5 grid sm:grid-cols-3 gap-3">
                     {[
                       ["Base", "ARS 10.000"],
                       ["Unidad", "por incidente"],
                       ["Ajuste", "caso por caso"],
                     ].map(([label, value]) => (
-                      <div key={label} className="rounded-2xl border border-white/10 bg-white/[0.035] p-4">
+                      <div key={label} className="rounded-2xl border border-white/10 bg-white/[0.035] p-3.5 2xl:p-4">
                         <p className="font-inter text-[11px] text-gray-500 mb-1">{label}</p>
                         <p className="font-manrope text-base font-extrabold text-white">{value}</p>
                       </div>
                     ))}
                   </div>
-                  <div className="flex justify-center mt-8">
+                  <div className="flex justify-center mt-5">
                     <a href={WHATSAPP_LINK} target="_blank" rel="noopener noreferrer" className="inline-flex">
                       <Button className="h-14 px-6 rounded-full bg-white text-black hover:bg-[#00dfdf] font-manrope font-extrabold transition-all duration-300 ease-out hover:-translate-y-0.5 active:scale-[0.98]">
                         Conversar implementación
@@ -690,7 +713,7 @@ export default function GuardiaTecnicaWhatsAppPage() {
           </div>
         </section>
 
-        <section className="relative py-16 md:py-20 2xl:py-28 bg-gradient-to-b from-[#080808] via-[#070b0b] to-[#080808]">
+        <section className="relative py-12 md:py-14 2xl:py-24 bg-gradient-to-b from-[#080808] via-[#070b0b] to-[#080808]">
           <div className="max-w-4xl mx-auto px-6 md:px-10">
             <SectionHeader
               eyebrow="Preguntas frecuentes"
@@ -698,7 +721,7 @@ export default function GuardiaTecnicaWhatsAppPage() {
               text="Las preguntas más comunes antes de ordenar la atención por WhatsApp."
             />
 
-            <FadeIn className="mt-10">
+            <FadeIn className="mt-8">
               <Accordion type="single" collapsible className="space-y-3">
                 {FAQ.map((item, index) => (
                   <AccordionItem
@@ -719,26 +742,45 @@ export default function GuardiaTecnicaWhatsAppPage() {
           </div>
         </section>
 
-        <section className="relative py-16 md:py-20 2xl:py-28 bg-gradient-to-b from-[#080808] via-[#0a1010] to-[#090909] overflow-hidden">
+        <section id="cta-section" className="relative py-12 md:py-14 2xl:py-24 bg-gradient-to-b from-[#080808] via-[#0a1010] to-[#090909] overflow-hidden">
           <BackgroundGrid />
+          <div className="absolute left-[8%] top-1/3 hidden lg:block rounded-2xl border border-white/10 bg-white/[0.035] px-4 py-3 backdrop-blur-md shadow-[0_0_35px_rgba(0,223,223,0.08)]">
+            <div className="flex items-center gap-3">
+              <Clock size={18} className="text-[#00dfdf]" />
+              <div>
+                <p className="font-manrope text-sm font-extrabold text-white">Fuera de horario</p>
+                <p className="font-inter text-xs text-gray-500">primer filtro claro</p>
+              </div>
+            </div>
+          </div>
+          <div className="absolute right-[8%] bottom-1/4 hidden lg:block rounded-2xl border border-[#00dfdf]/20 bg-[#00dfdf]/[0.055] px-4 py-3 backdrop-blur-md shadow-[0_0_40px_rgba(0,223,223,0.12)]">
+            <div className="flex items-center gap-3">
+              <Wrench size={18} className="text-amber-300" />
+              <div>
+                <p className="font-manrope text-sm font-extrabold text-white">Guardia técnica</p>
+                <p className="font-inter text-xs text-gray-500">casos listos para operar</p>
+              </div>
+            </div>
+          </div>
           <div className="relative z-10 max-w-4xl mx-auto px-6 md:px-10 text-center">
             <FadeIn>
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 mb-6">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 mb-5">
                 <PhoneCall size={14} className="text-emerald-400" />
                 <span className="text-[10px] font-manrope font-bold text-emerald-300 tracking-widest uppercase">
                   Guardia técnica más clara
                 </span>
               </div>
-              <h2 className="font-manrope text-3xl md:text-4xl 2xl:text-5xl font-extrabold text-white leading-tight mb-5">
+              <h2 className="font-manrope text-3xl md:text-[38px] 2xl:text-5xl font-extrabold text-white leading-tight mb-4">
                 Si tu administradora atiende por WhatsApp, EFEMAQ puede ordenarlo.
               </h2>
-              <p className="font-inter text-gray-400 text-base 2xl:text-lg leading-relaxed max-w-2xl mx-auto mb-7 2xl:mb-8">
+              <p className="font-inter text-gray-400 text-sm md:text-base 2xl:text-lg leading-relaxed max-w-2xl mx-auto mb-6 2xl:mb-8">
                 Revisamos tu forma actual de atención y armamos un piloto adaptado al volumen, horarios y responsables de cada cliente.
               </p>
               <a href={WHATSAPP_LINK} target="_blank" rel="noopener noreferrer">
-                <Button className="h-14 px-8 rounded-full bg-[#00dfdf] hover:bg-[#00c4c4] text-black font-manrope font-extrabold text-lg shadow-[0_0_30px_rgba(0,223,223,0.25)] transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-[0_0_40px_rgba(0,223,223,0.34)] active:scale-[0.98]">
+                <Button className="group h-14 px-8 rounded-full bg-[#00dfdf] hover:bg-[#00c4c4] text-black font-manrope font-extrabold text-lg shadow-[0_0_30px_rgba(0,223,223,0.25)] transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-[0_0_48px_rgba(0,223,223,0.4)] active:scale-[0.98]">
+                  <PhoneCall className="mr-2 w-5 h-5" />
                   Hablar por WhatsApp
-                  <ArrowRight className="ml-2 w-5 h-5" />
+                  <ArrowRight className="ml-2 w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
                 </Button>
               </a>
             </FadeIn>
@@ -780,16 +822,16 @@ function SectionHeader({
 }) {
   return (
     <FadeIn className="text-center max-w-3xl mx-auto">
-      <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 mb-5">
+      <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 mb-4">
         <Zap size={13} className="text-[#00dfdf]" />
         <span className="text-[10px] font-manrope font-bold text-[#00dfdf] uppercase tracking-widest">
           {eyebrow}
         </span>
       </div>
-      <h2 className="font-manrope text-3xl md:text-4xl 2xl:text-5xl font-extrabold text-white leading-tight mb-4 2xl:mb-5">
+      <h2 className="font-manrope text-3xl md:text-[38px] 2xl:text-5xl font-extrabold text-white leading-tight mb-3 2xl:mb-5">
         {title}
       </h2>
-      <p className="font-inter text-gray-400 text-base 2xl:text-lg leading-relaxed">{text}</p>
+      <p className="font-inter text-gray-400 text-sm md:text-base 2xl:text-lg leading-relaxed">{text}</p>
     </FadeIn>
   )
 }
@@ -798,41 +840,41 @@ function HeroDemo() {
   return (
     <div className="relative">
       <div className="absolute -inset-8 bg-[#00dfdf]/10 blur-[90px] rounded-full opacity-70" />
-      <div className="relative grid md:grid-cols-[minmax(310px,420px)_minmax(300px,390px)] gap-5 xl:gap-6 items-center justify-center max-w-[880px] mx-auto">
+      <div className="relative grid md:grid-cols-[minmax(280px,340px)_minmax(300px,370px)] gap-4 xl:gap-5 items-center justify-center max-w-[760px] 2xl:max-w-[860px] mx-auto">
         <ConversationPhone
           messages={HERO_MESSAGES}
           title="Maqui"
           subtitle="Asistente virtual EFEMAQ"
-          className="h-[560px] md:h-[560px] xl:h-[520px] 2xl:h-[660px] max-w-[390px] 2xl:max-w-[410px]"
+          className="h-[520px] md:h-[500px] xl:h-[486px] 2xl:h-[630px] max-w-[318px] 2xl:max-w-[370px]"
           animated={false}
           showInput
         />
 
-        <div className="h-full min-h-[500px] md:min-h-[520px] 2xl:min-h-[620px] rounded-[2rem] border border-white/10 bg-[#101010]/95 backdrop-blur-xl p-5 md:p-6 shadow-2xl flex flex-col justify-center">
-          <div className="flex items-start justify-between gap-4 mb-5 2xl:mb-6">
+        <div className="h-full min-h-[450px] md:min-h-[470px] 2xl:min-h-[600px] rounded-[2rem] border border-white/10 bg-[#101010]/95 backdrop-blur-xl p-4 md:p-5 2xl:p-6 shadow-2xl flex flex-col justify-center">
+          <div className="flex items-start justify-between gap-4 mb-4 2xl:mb-6">
             <div>
               <p className="font-manrope text-xs font-bold text-[#00dfdf] uppercase tracking-widest">
                 Panel operativo
               </p>
-              <h3 className="font-manrope text-2xl md:text-3xl font-extrabold text-white mt-1 leading-tight">
+              <h3 className="font-manrope text-2xl 2xl:text-3xl font-extrabold text-white mt-1 leading-tight">
                 Incidente listo para derivar
               </h3>
             </div>
-            <div className="w-12 h-12 rounded-2xl border border-amber-400/30 bg-amber-400/10 flex items-center justify-center shrink-0 text-amber-300">
+            <div className="w-11 h-11 2xl:w-12 2xl:h-12 rounded-2xl border border-amber-400/30 bg-amber-400/10 flex items-center justify-center shrink-0 text-amber-300">
               <Wrench size={20} />
             </div>
           </div>
 
-          <div className="rounded-2xl border border-white/10 bg-black/20 p-5 mb-4 2xl:mb-5">
-            <p className="font-manrope text-lg md:text-xl font-extrabold text-white leading-tight mb-2">
+          <div className="rounded-2xl border border-white/10 bg-black/20 p-4 2xl:p-5 mb-4 2xl:mb-5">
+            <p className="font-manrope text-base 2xl:text-xl font-extrabold text-white leading-tight mb-2">
               Maqui valida, clasifica y registra antes de mover a la guardia.
             </p>
-            <p className="font-inter text-sm text-gray-400 leading-relaxed">
+            <p className="font-inter text-xs 2xl:text-sm text-gray-400 leading-relaxed">
               La administración recibe un caso con domicilio, categoría, detalle y próximo paso claro.
             </p>
           </div>
 
-          <div className="grid gap-3">
+          <div className="grid sm:grid-cols-2 gap-3">
             <StatusPill label="Domicilio" value="Mitre 1240 · 6° B" color="#00dfdf" />
             <StatusPill label="Tipo de solicitud" value="Guardia técnica" color="#f59e0b" />
             <StatusPill label="Categoría" value="Electricidad" color="#10b981" />
@@ -850,6 +892,7 @@ function ConversationPhone({
   title,
   subtitle,
   className = "",
+  style,
   animated = true,
   showInput = false,
 }: {
@@ -857,15 +900,19 @@ function ConversationPhone({
   title: string
   subtitle: string
   className?: string
+  style?: React.CSSProperties
   animated?: boolean
   showInput?: boolean
 }) {
   return (
-    <div className={`mx-auto w-full rounded-[2.35rem] border-[6px] border-[#1c1c1c] bg-[#050505] overflow-hidden shadow-2xl ring-1 ring-white/10 ${className}`}>
-      <div className="h-[64px] bg-[#111111] border-b border-white/10 px-4 flex items-end pb-3">
+    <div
+      style={style}
+      className={`mx-auto w-full rounded-[2.2rem] border-[5px] border-[#1c1c1c] bg-[#050505] overflow-hidden shadow-2xl ring-1 ring-white/10 ${className}`}
+    >
+      <div className="h-[58px] bg-[#111111] border-b border-white/10 px-4 flex items-end pb-3">
         <div className="flex items-center gap-3 w-full">
-          <div className="w-9 h-9 rounded-full bg-[#006262] flex items-center justify-center shadow-[0_0_22px_rgba(0,223,223,0.18)]">
-            <Bot size={17} className="text-white" />
+          <div className="relative w-9 h-9 rounded-full bg-[#006262] overflow-hidden ring-1 ring-[#00dfdf]/20 shadow-[0_0_22px_rgba(0,223,223,0.18)]">
+            <Image src="/logo.jpg" alt="EFEMAQ" fill sizes="36px" className="object-cover" />
           </div>
           <div>
             <p className="font-manrope text-sm font-bold text-white">{title}</p>
@@ -874,7 +921,7 @@ function ConversationPhone({
         </div>
       </div>
 
-      <div className="h-[calc(100%-4rem)] bg-[#090909] flex flex-col">
+      <div className="h-[calc(100%-58px)] bg-[#090909] flex flex-col">
         <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain p-3.5 md:p-4 pr-2 flex flex-col gap-2.5 [scrollbar-gutter:stable] [scrollbar-width:thin] [scrollbar-color:rgba(0,223,223,0.35)_transparent]">
           <div className="mx-auto rounded-full bg-white/[0.06] border border-white/10 px-3 py-1 font-inter text-[10px] text-gray-500">
             Hoy
@@ -961,7 +1008,8 @@ function WhatsAppMock({ scenario }: { scenario: (typeof SCENARIOS)[number] }) {
       messages={scenario.messages}
       title="Maqui"
       subtitle="Conversación guiada"
-      className="h-[470px] md:h-[470px] 2xl:h-[590px] max-w-[430px]"
+      className="h-[470px] 2xl:h-[580px] max-w-xs 2xl:max-w-sm"
+      style={{ height: 410, maxWidth: 280 }}
       animated
       showInput={false}
     />
@@ -972,7 +1020,7 @@ function PanelMock({ scenario }: { scenario: (typeof SCENARIOS)[number] }) {
   const statusItems = [
     {
       label: "Canal",
-      value: scenario.id === "horario" ? "Atención humana" : "WhatsApp ordenado",
+      value: scenario.id === "horario" ? "Atención humana" : "WhatsApp",
     },
     {
       label: "Tipo de pedido",
@@ -980,21 +1028,24 @@ function PanelMock({ scenario }: { scenario: (typeof SCENARIOS)[number] }) {
         scenario.id === "consulta"
           ? "Consulta"
           : scenario.id === "guardia"
-            ? "Urgencia técnica"
+            ? "Guardia"
             : scenario.id === "datos"
-              ? "Validación"
-              : "Atención general",
+              ? "Domicilio"
+              : "Atención",
     },
     {
-      label: "Información",
-      value: scenario.id === "datos" ? "Domicilio confirmado" : "Lista para avanzar",
+      label: "Datos",
+      value: scenario.id === "datos" ? "Confirmados" : "Completos",
     },
-    { label: "Próximo paso", value: scenario.nextStep },
+    { label: "Próximo paso", value: "Seguimiento" },
   ]
 
   return (
-    <div className="rounded-[2rem] border border-white/10 bg-[#101010] p-5 md:p-6 shadow-2xl h-[470px] md:h-[470px] 2xl:h-[590px] flex flex-col">
-      <div className="flex items-center justify-between gap-4 pb-5 border-b border-white/10">
+    <div
+      style={{ height: 410 }}
+      className="rounded-[2rem] border border-white/10 bg-[#101010] p-4 2xl:p-6 shadow-2xl h-[470px] 2xl:h-[580px] flex flex-col overflow-hidden"
+    >
+      <div className="flex items-center justify-between gap-4 pb-3 border-b border-white/10">
         <div>
           <p className="font-manrope font-bold text-white">Resumen para el equipo</p>
           <p className="font-inter text-xs text-gray-500">Datos ordenados para decidir rápido</p>
@@ -1004,8 +1055,8 @@ function PanelMock({ scenario }: { scenario: (typeof SCENARIOS)[number] }) {
         </div>
       </div>
 
-      <div className="mt-5 rounded-2xl bg-black/25 border border-white/10 p-5">
-        <div className="flex items-start gap-3 mb-4">
+      <div className="mt-3 rounded-2xl bg-black/25 border border-white/10 p-3.5 2xl:p-5">
+        <div className="flex items-start gap-3 mb-3">
           <div
             className="w-11 h-11 rounded-xl flex items-center justify-center border shrink-0"
             style={{ color: scenario.color, borderColor: `${scenario.color}45`, backgroundColor: `${scenario.color}14` }}
@@ -1013,26 +1064,26 @@ function PanelMock({ scenario }: { scenario: (typeof SCENARIOS)[number] }) {
             <scenario.icon size={20} />
           </div>
           <div>
-            <p className="font-manrope text-lg font-extrabold text-white">{scenario.title}</p>
-            <p className="font-inter text-xs text-gray-500">{scenario.result}</p>
+            <p className="font-manrope text-base 2xl:text-lg font-extrabold text-white leading-tight">{scenario.title}</p>
+            <p className="font-inter text-[11px] 2xl:text-xs text-gray-500 leading-relaxed mt-1">{scenario.result}</p>
           </div>
         </div>
-        <div className="grid sm:grid-cols-2 gap-3">
+        <div className="grid sm:grid-cols-2 gap-2.5">
           <StatusPill label="Resultado" value={scenario.status} color={scenario.color} />
           <StatusPill label="Equipo" value={scenario.owner} color="#00dfdf" />
         </div>
       </div>
 
-      <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-3">
+      <div className="mt-3 grid grid-cols-2 gap-2.5">
         {statusItems.map((item) => (
           <div
             key={item.label}
-            className="rounded-xl border border-white/10 bg-white/[0.025] px-4 py-2.5"
+            className="rounded-xl border border-white/10 bg-white/[0.025] px-3 py-2"
           >
             <span className="font-inter text-[11px] text-gray-500 block mb-1">
               {item.label}
             </span>
-            <span className="text-sm font-manrope font-extrabold text-white leading-tight block">
+            <span className="text-xs 2xl:text-sm font-manrope font-extrabold text-white leading-tight block">
               {item.value}
             </span>
           </div>
@@ -1053,9 +1104,9 @@ function StatusPill({
   color: string
 }) {
   return (
-    <div className="rounded-xl bg-white/[0.03] border border-white/10 px-4 py-3">
+    <div className="rounded-xl bg-white/[0.03] border border-white/10 px-3.5 py-2.5">
       <p className="font-inter text-[11px] text-gray-500 mb-1">{label}</p>
-      <p className="font-manrope text-sm font-extrabold leading-snug" style={{ color }}>
+      <p className="font-manrope text-[13px] 2xl:text-sm font-extrabold leading-snug" style={{ color }}>
         {value}
       </p>
     </div>
@@ -1080,8 +1131,8 @@ function SliderField({
   onChange: (value: number) => void
 }) {
   return (
-    <div className="mb-6">
-      <div className="flex items-center justify-between gap-4 mb-3">
+    <div className="mb-4">
+      <div className="flex items-center justify-between gap-4 mb-2.5">
         <label className="font-manrope text-sm font-bold text-white">{label}</label>
         <span className="font-inter text-sm text-[#00dfdf]">
           {value.toLocaleString("es-AR")} {suffix}
