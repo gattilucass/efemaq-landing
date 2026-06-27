@@ -237,7 +237,7 @@ const FAQ = [
     a: "El sistema separa consultas de urgencias. Una consulta queda registrada para horario hábil y una urgencia avanza con los datos necesarios.",
   },
   {
-    q: "¿Se adapta a administradoras chicas y grandes?",
+    q: "¿Se adapta a administradores chicas y grandes?",
     a: "Sí. El flujo se ajusta según cantidad de edificios, responsables, horarios, categorías y forma real de trabajo de cada cliente.",
   },
   {
@@ -303,20 +303,19 @@ export default function GuardiaTecnicaWhatsAppPage() {
                   <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#00dfdf]/5 border border-[#00dfdf]/20 mb-4 2xl:mb-6 backdrop-blur-md">
                     <Sparkles size={14} className="text-[#00dfdf]" />
                     <span className="text-[10px] font-manrope font-bold text-[#00dfdf] tracking-widest uppercase">
-                      Nuevo sistema para administradoras
+                      Nuevo sistema para administradores
                     </span>
                   </div>
 
                   <h1 className="font-manrope text-4xl md:text-5xl xl:text-[56px] 2xl:text-7xl font-extrabold leading-[1.02] tracking-tight text-white mb-4 2xl:mb-6">
-                    Guardia técnica por WhatsApp,{" "}
+                    Guardia técnica por WhatsApp simple{" "}
                     <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#00dfdf] to-[#10b981]">
-                      ordenada desde el primer mensaje.
+                      y ordenada desde el primer mensaje.
                     </span>
                   </h1>
 
                   <p className="font-inter text-base md:text-[17px] 2xl:text-xl text-gray-300 leading-relaxed max-w-2xl mb-5 2xl:mb-8">
-                    Atención fuera de horario, consultas separadas de urgencias y casos
-                    listos para resolver, sin cambiar el hábito de escribir por WhatsApp.
+                    Atención fuera de horario, diferenciación de consultas y urgencias. Soporte humano para resolver los casos que requieran asistencia inmediata. Todo sin dejar la comodidad de escribir por Whatsapp.
                   </p>
 
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-6 2xl:mb-9 max-w-2xl">
