@@ -308,19 +308,19 @@ export default function GuardiaTecnicaWhatsAppPage() {
                   </div>
 
                   <h1 className="font-manrope text-4xl md:text-5xl xl:text-[56px] 2xl:text-7xl font-extrabold leading-[1.02] tracking-tight text-white mb-4 2xl:mb-6">
-                    Guardia técnica por WhatsApp simple{" "}
+                    Guardia técnica por WhatsApp simple y ordenada{" "}
                     <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#00dfdf] to-[#10b981]">
-                      y ordenada desde el primer mensaje.
+                    desde el primer mensaje.
                     </span>
                   </h1>
 
                   <p className="font-inter text-base md:text-[17px] 2xl:text-xl text-gray-300 leading-relaxed max-w-2xl mb-5 2xl:mb-8">
-                    Atención fuera de horario, diferenciación de consultas y urgencias. Soporte humano para resolver los casos que requieran asistencia inmediata. Todo sin dejar la comodidad de escribir por Whatsapp.
+                    Atención fuera de horario administrativo. Diferenciación de consultas y urgencias. Soporte humano para resolver los casos que requieran asistencia inmediata. Todo sin dejar la comodidad de escribir por Whatsapp.
                   </p>
 
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-6 2xl:mb-9 max-w-2xl">
                     {[
-                      "Atención fuera de horario",
+                      "Soporte humano,
                       "Registro automático",
                       "Flujos a medida",
                     ].map((item) => (
@@ -851,7 +851,7 @@ function HeroDemo() {
                 Panel operativo
               </p>
               <h3 className="font-manrope text-2xl 2xl:text-3xl font-extrabold text-white mt-1 leading-tight">
-                Incidente listo para derivar
+                Pedido listo para derivar
               </h3>
             </div>
             <div className="w-11 h-11 2xl:w-12 2xl:h-12 rounded-2xl border border-amber-400/30 bg-amber-400/10 flex items-center justify-center shrink-0 text-amber-300">
