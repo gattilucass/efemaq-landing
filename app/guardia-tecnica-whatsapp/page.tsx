@@ -320,7 +320,7 @@ export default function GuardiaTecnicaWhatsAppPage() {
 
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-6 2xl:mb-9 max-w-2xl">
                     {[
-                      "Soporte humano,
+                      "Soporte humano",
                       "Registro automático",
                       "Flujos a medida",
                     ].map((item) => (
