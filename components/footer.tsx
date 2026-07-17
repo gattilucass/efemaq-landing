@@ -44,7 +44,7 @@ const WhatsAppIcon = ({ size = 18, className = "" }: { size?: number, className?
   </svg>
 )
 
-export default function Footer() {
+export default function Footer({ showWhatsapp = true }: { showWhatsapp?: boolean }) {
   const isMobile = useIsMobile()
   const [mounted, setMounted] = useState(false)
 
@@ -120,15 +120,17 @@ export default function Footer() {
         </div>
       </a>
       
-      <a href="https://wa.me/5491126547271" target="_blank" rel="noopener noreferrer" className="flex items-center md:items-start gap-3 group">
-        {/* REEMPLAZO POR ICONO WHATSAPP CUSTOM */}
-        <div className="mt-0.5 text-[#00dfdf] opacity-80 group-hover:opacity-100 transition-opacity">
-            <WhatsAppIcon size={18} />
-        </div>
-         <div>
-           <span className="block font-inter text-sm text-gray-300 group-hover:text-white transition-colors">+54 9 11 2654-7271</span>
-        </div>
-      </a>
+      {showWhatsapp ? (
+        <a href="https://wa.me/5491126547271" target="_blank" rel="noopener noreferrer" className="flex items-center md:items-start gap-3 group">
+          {/* REEMPLAZO POR ICONO WHATSAPP CUSTOM */}
+          <div className="mt-0.5 text-[#00dfdf] opacity-80 group-hover:opacity-100 transition-opacity">
+              <WhatsAppIcon size={18} />
+          </div>
+           <div>
+             <span className="block font-inter text-sm text-gray-300 group-hover:text-white transition-colors">+54 9 11 2654-7271</span>
+          </div>
+        </a>
+      ) : null}
 
       <div className="flex items-center md:items-start gap-3">
          <div className="mt-0.5 text-[#00dfdf] opacity-80"><MapPin size={18} /></div>
@@ -170,7 +172,7 @@ export default function Footer() {
                 width={140} 
                 height={45} 
                 // mx-auto para centrar logo en móvil, md:mx-0 para izquierda en pc
-                className="object-contain brightness-200 contrast-125 mx-auto md:mx-0" 
+                className="h-auto w-auto object-contain brightness-200 contrast-125 mx-auto md:mx-0"
               />
             </div>
             
