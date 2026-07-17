@@ -87,6 +87,10 @@ const FAQ = [
     a: "No. EFEMAQ puede coordinar proveedores propios, asociados, los habituales de la administradora o una modalidad combinada.",
   },
   {
+    q: "¿Se adapta a carteras chicas y grandes?",
+    a: "Sí. El flujo se ajusta según la cantidad de edificios, responsables, horarios, categorías y la forma real de trabajo de cada cliente.",
+  },
+  {
     q: "¿Se puede usar fuera de Buenos Aires?",
     a: "Sí. La recepción, evaluación y coordinación no dependen de una visita de Fernando. La modalidad de resolución se acuerda según la ubicación y la red disponible.",
   },
