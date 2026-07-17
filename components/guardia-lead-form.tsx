@@ -87,7 +87,7 @@ export default function GuardiaLeadForm() {
   const fallbackMailto = useMemo(() => {
     const subject = encodeURIComponent("Reunión por Guardia Integral EFEMAQ")
     const body = encodeURIComponent(
-      `Hola Lucas, quiero coordinar una reunión por la Guardia Integral de EFEMAQ.\n\nNombre: ${form.nombre}\nAdministradora: ${form.administradora}\nEmail: ${form.email}\nWhatsApp: ${form.whatsapp || "No informado"}\nEdificios: ${form.edificios || "No informado"}\nHorario de interés: ${form.horario_guardia || "No informado"}`,
+      `Hola, quiero coordinar una reunión por la Guardia Integral de EFEMAQ.\n\nNombre: ${form.nombre}\nAdministradora: ${form.administradora}\nEmail: ${form.email}\nWhatsApp: ${form.whatsapp || "No informado"}\nEdificios: ${form.edificios || "No informado"}\nHorario de interés: ${form.horario_guardia || "No informado"}`,
     )
     return `mailto:lgatti@efemaq.com.ar?subject=${subject}&body=${body}`
   }, [form])
@@ -139,7 +139,7 @@ export default function GuardiaLeadForm() {
         </div>
         <h3 className="mt-6 font-manrope text-2xl font-extrabold text-white">Solicitud recibida</h3>
         <p className="mx-auto mt-3 max-w-md font-inter text-sm leading-relaxed text-gray-300">
-          Lucas va a contactarte para coordinar una reunión virtual con Fernando y revisar la cobertura que necesita tu administradora.
+          El equipo de EFEMAQ va a contactarte para revisar la cobertura que necesita tu administradora.
         </p>
         <p className="mt-5 font-inter text-xs text-gray-500">También podés escribir a lgatti@efemaq.com.ar.</p>
       </div>
@@ -154,7 +154,7 @@ export default function GuardiaLeadForm() {
         </div>
         <div>
           <h3 className="font-manrope text-xl font-extrabold text-white">Coordinar una reunión</h3>
-          <p className="mt-1 font-inter text-xs leading-relaxed text-gray-500">Completá los datos y Lucas se ocupa de encontrar un horario.</p>
+          <p className="mt-1 font-inter text-xs leading-relaxed text-gray-500">Completá los datos y el equipo de EFEMAQ se pondrá en contacto.</p>
         </div>
       </div>
 
