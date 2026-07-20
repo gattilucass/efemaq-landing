@@ -61,19 +61,19 @@ const TRADES = [
 const FAQ = [
   {
     q: "¿Cómo interviene el soporte humano?",
-    a: "Cuando un caso requiere asistencia, la guardia evalúa la información recibida, define el próximo paso y coordina la respuesta necesaria.",
+    a: "Cuando un caso requiere asistencia, la guardia evalúa la información recibida, solicita más datos en caso de requerirlo y coordina la solución necesaria.",
   },
   {
     q: "¿Se configura igual para todas las administradoras?",
-    a: "No. Cada administradora cuenta con un flujo propio, definido según sus edificios, horarios, criterios de urgencia, responsables y proveedores.",
+    a: "No. Cada administradora cuenta con un flujo propio, definido según sus edificios, horarios, criterios de urgencia, y proveedores.",
   },
   {
     q: "¿Tenemos que reemplazar a nuestros proveedores?",
     a: "No. EFEMAQ puede trabajar con los proveedores habituales de la administradora, con su propia red o con una modalidad combinada.",
   },
   {
-    q: "¿Funciona fuera de Buenos Aires?",
-    a: "Sí. La cobertura se define según la ubicación, los horarios requeridos y la red disponible para cada cartera.",
+    q: "¿Funciona en todo el pais?",
+    a: "Sí. Nuestro sistema con desarrollo propio permite gestionar los pedidos de tu consorcio estés donde estés.",
   },
 ]
 
@@ -129,7 +129,7 @@ export default function GuardiaTecnicaWhatsAppPage() {
             <div className="mx-auto max-w-[950px] text-center">
               <p className="font-manrope text-xs font-extrabold tracking-[.08em] text-[#00dfdf]">Asistencia total</p>
               <h2 className="mt-5 font-manrope text-4xl font-extrabold leading-tight text-white md:text-[54px]">
-             Guardia activa para tu tranquilidad. Todos los pedidos son atendidos.
+             <span className="text-[#00dfdf]">Guardia activa.</span> para tu tranquilidad. Todos los pedidos son atendidos.
               </h2>
               <p className="mx-auto mt-6 max-w-3xl font-inter text-base leading-relaxed text-gray-400 md:text-lg">
                 Durante la cobertura acordada, los incidentes siguen siendo recibidos y gestionados aunque el administrador no esté pendiente del teléfono.
@@ -155,7 +155,7 @@ export default function GuardiaTecnicaWhatsAppPage() {
                 <div className="max-w-2xl">
                   <h3 className="font-manrope text-2xl font-extrabold text-white">Un flujo configurado para tu administradora.</h3>
                   <p className="mt-3 font-inter text-sm leading-relaxed text-gray-300 md:text-base">
-                    La cobertura se adapta a la cantidad de edificios, los horarios, los responsables, los criterios de urgencia y los proveedores de cada cartera.
+                    La cobertura se adapta a la cantidad de edificios, los horarios, los criterios de urgencia y los proveedores de cada cartera.
                   </p>
                 </div>
                 <div className="flex max-w-sm flex-wrap gap-2 md:justify-end">
@@ -174,8 +174,8 @@ export default function GuardiaTecnicaWhatsAppPage() {
           <div className="mx-auto max-w-[1160px] px-6 md:px-10">
             <SectionHeader
               eyebrow="Cobertura técnica"
-              title="Una guardia preparada para los pedidos recurrentes del edificio."
-              text="La atención se organiza de acuerdo con el incidente y la cobertura definida para cada administradora."
+              title="Una guardia preparada para todos los pedidos del edificio."
+              text="La atención se organiza de acuerdo con el incidente y la cobertura definida para cada administradora, abarcando todos los rubros que sean necesarios."
             />
 
             <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -190,7 +190,7 @@ export default function GuardiaTecnicaWhatsAppPage() {
                 </FadeIn>
               ))}
             </div>
-            <p className="mt-5 text-center font-inter text-sm text-gray-500">También se atienden vidrios, aberturas y otros pedidos de asistencia.</p>
+            <p className="mt-5 text-center font-inter text-sm text-gray-500">Las opciones de rubros se parametrizan según la necesidad del consorcio.</p>
           </div>
         </section>
 
@@ -224,10 +224,10 @@ export default function GuardiaTecnicaWhatsAppPage() {
             <FadeIn>
               <p className="font-manrope text-xs font-extrabold tracking-[.08em] text-[#00dfdf]">Próximo paso</p>
               <h2 className="mt-4 font-manrope text-4xl font-extrabold leading-tight text-white md:text-5xl">
-                Hablemos de la guardia de tu administradora.
+               Hablamos de la guardia que necesitas hoy.
               </h2>
               <p className="mx-auto mt-5 max-w-2xl font-inter text-base leading-relaxed text-gray-300 md:text-lg">
-                Contanos cuántos edificios administrás y qué horarios necesitás cubrir. Te respondemos por WhatsApp para evaluar una cobertura a medida.
+                Contanos como se resuelven hoy tus urgencias técnicas y coordinemos una reunión para evaluar una cobertura a tu medida.
               </p>
               <a
                 href={WHATSAPP_URL}
