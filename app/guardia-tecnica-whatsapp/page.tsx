@@ -127,9 +127,9 @@ export default function GuardiaTecnicaWhatsAppPage() {
           <BackgroundGrid subtle />
           <div className="relative z-10 mx-auto max-w-[1160px] px-6 md:px-10">
             <div className="mx-auto max-w-[950px] text-center">
-              <p className="font-manrope text-xs font-extrabold tracking-[.08em] text-[#00dfdf]">Guardia delegada</p>
+              <p className="font-manrope text-xs font-extrabold tracking-[.08em] text-[#00dfdf]">Asistencia total</p>
               <h2 className="mt-5 font-manrope text-4xl font-extrabold leading-tight text-white md:text-[54px]">
-             Guardia activa para tu tranquilidad. Todos los pedidos son atendidos
+             Guardia activa para tu tranquilidad. Todos los pedidos son atendidos.
               </h2>
               <p className="mx-auto mt-6 max-w-3xl font-inter text-base leading-relaxed text-gray-400 md:text-lg">
                 Durante la cobertura acordada, los incidentes siguen siendo recibidos y gestionados aunque el administrador no esté pendiente del teléfono.
