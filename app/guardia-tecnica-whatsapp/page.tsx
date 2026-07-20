@@ -97,7 +97,7 @@ export default function GuardiaTecnicaWhatsAppPage() {
               </h1>
 
               <p className="mt-7 max-w-2xl font-inter text-base leading-[1.75] text-gray-300 md:text-lg">
-                Atención fuera del horario administrativo. Diferenciación de consultas y urgencias. Soporte humano para resolver los casos que requieren asistencia inmediata. Todo, sin dejar la comodidad de escribir por WhatsApp.
+                Atención fuera del horario administrativo. Personal técnico calificado. Soporte humano para resolver los casos que requieren asistencia inmediata. Todo, sin dejar la comodidad de escribir por WhatsApp.
               </p>
 
               <div className="mt-7 flex flex-wrap gap-2.5">
@@ -123,32 +123,13 @@ export default function GuardiaTecnicaWhatsAppPage() {
           </div>
         </section>
 
-        <section className="border-b border-white/5 bg-[#070b0b] py-10">
-          <div className="mx-auto flex max-w-[1120px] flex-col items-center justify-between gap-5 px-6 text-center md:flex-row md:text-left">
-            <div className="flex max-w-4xl items-center gap-4">
-              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-[#00dfdf]/20 bg-[#00dfdf]/8">
-                <ShieldCheck className="text-[#00dfdf]" size={23} />
-              </div>
-              <div>
-                <p className="font-manrope text-lg font-extrabold text-white">Un sistema probado en una cartera de cientos de edificios.</p>
-                <p className="mt-1 font-inter text-sm leading-relaxed text-gray-400">
-                  La solución ya se utiliza para recibir, clasificar y acompañar incidentes fuera del horario administrativo.
-                </p>
-              </div>
-            </div>
-            <span className="shrink-0 rounded-full border border-emerald-400/20 bg-emerald-400/8 px-4 py-2 font-manrope text-xs font-bold text-emerald-300">
-              En funcionamiento
-            </span>
-          </div>
-        </section>
-
         <section className="relative overflow-hidden bg-[#080d0d] py-20 md:py-28">
           <BackgroundGrid subtle />
           <div className="relative z-10 mx-auto max-w-[1160px] px-6 md:px-10">
             <div className="mx-auto max-w-[950px] text-center">
               <p className="font-manrope text-xs font-extrabold tracking-[.08em] text-[#00dfdf]">Guardia delegada</p>
               <h2 className="mt-5 font-manrope text-4xl font-extrabold leading-tight text-white md:text-[54px]">
-                Apagá el teléfono el viernes a la noche. Volvé a prenderlo el lunes a la mañana.
+             Guardia activa para tu tranquilidad. Todos los pedidos son atendidos
               </h2>
               <p className="mx-auto mt-6 max-w-3xl font-inter text-base leading-relaxed text-gray-400 md:text-lg">
                 Durante la cobertura acordada, los incidentes siguen siendo recibidos y gestionados aunque el administrador no esté pendiente del teléfono.
