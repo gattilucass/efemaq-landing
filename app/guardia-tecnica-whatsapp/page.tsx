@@ -45,7 +45,7 @@ const PILLARS = [
   {
     icon: SlidersHorizontal,
     title: "A medida",
-    text: "Cada administradora define horarios, edificios, criterios y proveedores para su propia operación.",
+    text: "La cobertura se adapta a la cantidad de edificios, los horarios, los criterios de urgencia y los proveedores de cada cartera.",
   },
 ]
 
@@ -149,24 +149,6 @@ export default function GuardiaTecnicaWhatsAppPage() {
                 </FadeIn>
               ))}
             </div>
-
-            <FadeIn className="mt-8">
-              <div className="flex flex-col gap-6 rounded-3xl border border-[#00dfdf]/18 bg-[#00dfdf]/[0.055] p-7 md:flex-row md:items-center md:justify-between md:p-9">
-                <div className="max-w-2xl">
-                  <h3 className="font-manrope text-2xl font-extrabold text-white">Un flujo configurado para tu administradora.</h3>
-                  <p className="mt-3 font-inter text-sm leading-relaxed text-gray-300 md:text-base">
-                    La cobertura se adapta a la cantidad de edificios, los horarios, los criterios de urgencia y los proveedores de cada cartera.
-                  </p>
-                </div>
-                <div className="flex max-w-sm flex-wrap gap-2 md:justify-end">
-                  {['Horarios', 'Edificios', 'Criterios', 'Proveedores'].map((item) => (
-                    <span key={item} className="rounded-full border border-white/10 bg-black/15 px-3.5 py-2 font-manrope text-xs font-bold text-gray-200">
-                      {item}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            </FadeIn>
           </div>
         </section>
 
