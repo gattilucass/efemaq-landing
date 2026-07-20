@@ -101,7 +101,7 @@ export default function GuardiaTecnicaWhatsAppPage() {
               </p>
 
               <div className="mt-7 flex flex-wrap gap-2.5">
-                <Tag icon={MoonStar}>Atención fuera de horario</Tag>
+                <Tag icon={MoonStar}>Atención las 24 hs.</Tag>
                 <Tag icon={Headphones}>Soporte humano</Tag>
                 <Tag icon={SlidersHorizontal}>Flujo a medida</Tag>
               </div>
