@@ -68,8 +68,8 @@ const FAQ = [
     a: "No. Cada administradora cuenta con un flujo propio, definido según sus edificios, horarios, criterios de urgencia, y proveedores.",
   },
   {
-    q: "¿Tenemos que reemplazar a nuestros proveedores?",
-    a: "No. EFEMAQ puede trabajar con los proveedores habituales de la administradora, con su propia red o con una modalidad combinada.",
+    q: "¿Tenemos que reemplazar a los proveedores?",
+    a: "No. en EFEMAQ podemos trabajar con los proveedores habituales del edificio, con nuestra propia red de técnicos o con una modalidad combinada.",
   },
   {
     q: "¿Funciona en todo el pais?",
@@ -157,7 +157,7 @@ export default function GuardiaTecnicaWhatsAppPage() {
             <SectionHeader
               eyebrow="Cobertura técnica"
               title="Una guardia preparada para todos los pedidos del edificio."
-              text="La atención se organiza de acuerdo con el incidente y la cobertura definida para cada administradora, abarcando todos los rubros que sean necesarios."
+              text="La atención se organiza de acuerdo con el pedido y la cobertura definida para cada administradora, abarcando todos los rubros que sean necesarios."
             />
 
             <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -181,7 +181,7 @@ export default function GuardiaTecnicaWhatsAppPage() {
             <SectionHeader
               eyebrow="Preguntas frecuentes"
               title="Lo importante antes de conversar."
-              text="La cobertura se define de acuerdo con la cartera y la forma de trabajo de cada administradora."
+              text="La cobertura se define de acuerdo a las necesidades y la forma de trabajo de cada administradora."
             />
             <FadeIn className="mt-10 rounded-3xl border border-white/10 bg-white/[0.025] px-6 md:px-8">
               <Accordion type="single" collapsible className="w-full">
