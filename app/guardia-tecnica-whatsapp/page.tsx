@@ -35,7 +35,7 @@ const PILLARS = [
   {
     icon: Clock3,
     title: "Atención 24/7",
-    text: "WhatsApp puede recibir incidentes a cualquier hora y mantener disponible el canal de guardia.",
+    text: "Nuestro sistema recibe pedidos y consultas a toda hora, manteniendose siempre disponible el canal de guardia.",
   },
   {
     icon: UserRoundCheck,
