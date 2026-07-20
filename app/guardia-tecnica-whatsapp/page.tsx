@@ -8,7 +8,7 @@ import {
   Flame,
   Headphones,
   KeyRound,
-  MessageCircle,F
+  MessageCircle,
   MoonStar,
   ShieldCheck,
   SlidersHorizontal,
