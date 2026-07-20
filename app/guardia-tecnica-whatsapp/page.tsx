@@ -69,7 +69,7 @@ const FAQ = [
   },
   {
     q: "¿Tenemos que reemplazar a los proveedores?",
-    a: "No. en EFEMAQ podemos trabajar con los proveedores habituales del edificio, con nuestra propia red de técnicos o con una modalidad combinada.",
+    a: "No. En EFEMAQ podemos trabajar con los proveedores habituales del edificio, con nuestra propia red de técnicos o con una modalidad combinada.",
   },
   {
     q: "¿Funciona en todo el pais?",
@@ -156,8 +156,8 @@ export default function GuardiaTecnicaWhatsAppPage() {
           <div className="mx-auto max-w-[1160px] px-6 md:px-10">
             <SectionHeader
               eyebrow="Cobertura técnica"
-              title="Una guardia preparada para todos los pedidos del edificio."
-              text="La atención se organiza de acuerdo con el pedido y la cobertura definida para cada administradora, abarcando todos los rubros que sean necesarios."
+              title="Una guardia preparada para <span className="text-[#00dfdf]">todos</span> los pedidos del edificio."
+              text="La atención se organiza de acuerdo con la solicitud y la cobertura definida para cada administradora, abarcando todos los rubros que sean necesarios."
             />
 
             <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
