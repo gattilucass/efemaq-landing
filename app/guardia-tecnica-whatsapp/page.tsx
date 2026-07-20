@@ -206,10 +206,10 @@ export default function GuardiaTecnicaWhatsAppPage() {
             <FadeIn>
               <p className="font-manrope text-xs font-extrabold tracking-[.08em] text-[#00dfdf]">Próximo paso</p>
               <h2 className="mt-4 font-manrope text-4xl font-extrabold leading-tight text-white md:text-5xl">
-               Hablamos de la guardia que necesitas hoy.
+               Hablemos de la guardia que necesitas hoy.
               </h2>
               <p className="mx-auto mt-5 max-w-2xl font-inter text-base leading-relaxed text-gray-300 md:text-lg">
-                Contanos como se resuelven hoy tus urgencias técnicas y coordinemos una reunión para evaluar una cobertura a tu medida.
+                Contanos cómo se resuelven hoy tus urgencias técnicas y coordinemos una reunión para evaluar una cobertura a tu medida.
               </p>
               <a
                 href={WHATSAPP_URL}
