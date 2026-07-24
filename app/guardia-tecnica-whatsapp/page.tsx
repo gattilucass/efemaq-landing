@@ -1,7 +1,5 @@
 "use client"
 
-import { useEffect } from "react"
-import { track } from "@vercel/analytics"
 import {
   ArrowRight,
   Building2,
@@ -32,77 +30,6 @@ import {
 
 const WHATSAPP_URL =
   "https://wa.me/5491126547271?text=Hola%20EFEMAQ%2C%20quiero%20conocer%20m%C3%A1s%20sobre%20la%20guardia%20t%C3%A9cnica%20para%20administradoras."
-
-type CampaignEvent = "guardia_landing_visit" | "guardia_whatsapp_click"
-type EventLocation = "page" | "hero" | "closing" | "contact"
-
-function getAttribution() {
-  const params = new URLSearchParams(window.location.search)
-  return {
-    rid: params.get("rid") || "",
-    utm_source: params.get("utm_source") || "direct",
-    utm_medium: params.get("utm_medium") || "website",
-    utm_campaign: params.get("utm_campaign") || "guardia_integral_2026",
-    utm_content: params.get("utm_content") || "landing",
-  }
-}
-
-function recordCampaignEvent(event: CampaignEvent, location: EventLocation) {
-  const attribution = getAttribution()
-  track(event, {
-    attributed: Boolean(attribution.rid),
-    campaign: attribution.utm_campaign,
-    source: attribution.utm_source,
-    content: attribution.utm_content,
-    location,
-  })
-
-  if (!/^[A-Za-z0-9_-]{3,120}$/.test(attribution.rid)) return
-
-  const dedupeKey = `efemaq_guardia_event_v1:${event}:${location}:${attribution.rid}`
-  try {
-    if (window.sessionStorage.getItem(dedupeKey)) return
-    window.sessionStorage.setItem(dedupeKey, "pending")
-  } catch {
-    // La medición continúa aunque el navegador bloquee sessionStorage.
-  }
-
-  void fetch("/api/guardia-events", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      event,
-      event_id: crypto.randomUUID(),
-      occurred_at_utc: new Date().toISOString(),
-      location,
-      ...attribution,
-    }),
-    keepalive: true,
-  })
-    .then(async (response) => {
-      const result = (await response.json().catch(() => null)) as { forwarded?: boolean } | null
-      if (!response.ok || result?.forwarded !== true) {
-        try {
-          window.sessionStorage.removeItem(dedupeKey)
-        } catch {
-          // No interrumpir la navegación por un error de medición.
-        }
-        return
-      }
-      try {
-        window.sessionStorage.setItem(dedupeKey, "sent")
-      } catch {
-        // La idempotencia del receptor protege igualmente de duplicados.
-      }
-    })
-    .catch(() => {
-      try {
-        window.sessionStorage.removeItem(dedupeKey)
-      } catch {
-        // No interrumpir la navegación por un error de medición.
-      }
-    })
-}
 
 const PILLARS = [
   {
@@ -151,10 +78,6 @@ const FAQ = [
 ]
 
 export default function GuardiaTecnicaWhatsAppPage() {
-  useEffect(() => {
-    recordCampaignEvent("guardia_landing_visit", "page")
-  }, [])
-
   return (
     <div className="min-h-screen overflow-x-hidden bg-[#060909] text-white selection:bg-[#00dfdf] selection:text-black">
       <Navbar />
@@ -187,7 +110,6 @@ export default function GuardiaTecnicaWhatsAppPage() {
                 href={WHATSAPP_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                onClick={() => recordCampaignEvent("guardia_whatsapp_click", "hero")}
                 className="group mt-9 inline-flex min-h-14 items-center justify-center rounded-full bg-[#00dfdf] px-7 font-manrope text-sm font-extrabold text-black shadow-[0_0_35px_rgba(0,223,223,.16)] transition hover:bg-[#2af1ed]"
               >
                 Consultar por WhatsApp
@@ -297,7 +219,6 @@ export default function GuardiaTecnicaWhatsAppPage() {
                 href={WHATSAPP_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                onClick={() => recordCampaignEvent("guardia_whatsapp_click", "closing")}
                 className="group mt-8 inline-flex min-h-14 items-center justify-center rounded-full bg-[#00dfdf] px-8 font-manrope text-sm font-extrabold text-black shadow-[0_0_35px_rgba(0,223,223,.16)] transition hover:bg-[#2af1ed]"
               >
                 Consultar por WhatsApp
@@ -310,7 +231,6 @@ export default function GuardiaTecnicaWhatsAppPage() {
                   href={WHATSAPP_URL}
                   target="_blank"
                   rel="noopener noreferrer"
-                  onClick={() => recordCampaignEvent("guardia_whatsapp_click", "contact")}
                   className="transition hover:text-white"
                 >
                   +54 9 11 2654-7271
