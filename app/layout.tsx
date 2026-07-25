@@ -4,7 +4,6 @@ import { Manrope, Inter } from "next/font/google"
 import "./globals.css"
 import SmoothScroller from "@/components/smooth-scroller"
 import StructuredData from "@/components/structured-data"
-import { Analytics } from "@vercel/analytics/next"
 
 const _manrope = Manrope({ subsets: ["latin"], variable: "--font-manrope" })
 const _inter = Inter({ subsets: ["latin"], variable: "--font-inter" })
@@ -32,7 +31,6 @@ export default function RootLayout({
         <SmoothScroller>
           {children}
         </SmoothScroller>
-        <Analytics />
       </body>
     </html>
   )
